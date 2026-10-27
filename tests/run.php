@@ -299,6 +299,13 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'CLQ hub FAQ: no unverified figures', ! preg_match( '/\d[\d,]* (beds|days|workers)/', wp_json_encode( $hf ) ) );
 		check( 'CLQ hub template shows the FAQ', false !== strpos( file_get_contents( $SUITE . '/modules/clq-sites/templates/hub.php' ), 'ccq_hub_faq()' ) );
 		check( 'Wave after an FAQ section matches the FAQ background', false !== strpos( file_get_contents( $SUITE . '/modules/sections/concepts-sections.php' ), '.vc_row:has(.cgs-fq)+.vc_row .cgs-ct-wave{--cgs-wv-top:#eaf4ff!important}' ) );
+		if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) {
+			$ft = call_user_func( $GLOBALS['SC']['cgs_footer'], array(), '', 'cgs_footer' );
+			check( 'Footer: Main Pages starts with Home', (bool) preg_match( '#<h4>Main Pages</h4><a href="' . preg_quote( home_url( '/' ), '#' ) . '">Home</a>#', $ft ) );
+			$fp = cgs_footer_pages( array( array( 'label' => 'About Us', 'url' => '', 'children' => "Our Story|https://x.test/our-story/\nVision|https://x.test/vision/\n" ), array( 'label' => 'Blog', 'url' => 'https://x.test/blog/', 'children' => '' ), array( 'label' => 'Home', 'url' => home_url( '/' ), 'children' => '' ) ) );
+			check( 'Footer: dropdown parents link to their first sub-page, Home not doubled', 4 - 1 === count( $fp ) && 'Home' === $fp[0]['label'] && 'https://x.test/our-story/' === $fp[1]['url'] && 'https://x.test/blog/' === $fp[2]['url'] );
+			check( 'Footer: Contact shows the office address with a map link', false !== strpos( $ft, 'Jalan Batu Nilam 16' ) && false !== strpos( $ft, 'google.com/maps' ) );
+		}
 		check( 'CLQ hub H1 default: Centralised Labour Quarters in Klang Valley', 'Centralised Labour Quarters in Klang Valley' === ccq_hub()['title'] );
 	}
 

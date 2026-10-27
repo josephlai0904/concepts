@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGSEO_VERSION', '1.1.0' );
+define( 'CGSEO_VERSION', '1.2.0' );
 
 /**
  * Default title and description per page slug ('front' = homepage).
@@ -45,6 +45,7 @@ function cgseo_org() {
 		'telephone'    => '+603-3318 7773',
 		'email'        => 'support@concepts-groups.com',
 		'areaServed'   => array( 'Klang Valley', 'Selangor', 'Malaysia' ),
+		'address'      => array( '@type' => 'PostalAddress', 'streetAddress' => 'No 2-9, Block 9, Jalan Batu Nilam 16, Bandar Bukit Tinggi 2', 'postalCode' => '41200', 'addressLocality' => 'Klang', 'addressRegion' => 'Selangor', 'addressCountry' => 'MY' ),
 		'sameAs'       => array( 'https://www.facebook.com/conceptsgroup.my' ),
 		'contactPoint' => array( '@type' => 'ContactPoint', 'telephone' => '+603-3318 7773', 'contactType' => 'sales', 'areaServed' => 'MY', 'availableLanguage' => array( 'English', 'Malay' ) ),
 	);

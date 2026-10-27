@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.42.0' );
+define( 'CGS_VERSION', '1.42.1' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -16,6 +16,7 @@ define( 'CGS_LOGO_HDW', 'https://concepts.manyproject.my/wp-content/uploads/2026
 /* Current white brand logo, used in the header and footer. Change it here only. */
 /* Colour logo for light backgrounds (footer card). */
 define( 'CGS_LOGO_DARK', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo-since-1991.webp' );
+define( 'CGS_ADDRESS', 'No 2-9, Block 9, Jalan Batu Nilam 16, Bandar Bukit Tinggi 2, 41200 Klang, Selangor, Malaysia' );
 
 /* Layered wave at the top of the dark bands, same shapes as the homepage hero wave (2.7.2).
  * $top = colour of the section above (it fills the space above the curves). */
@@ -523,6 +524,33 @@ function cgs_menu_items( $id ) {
 		}
 	}
 	return array_values( $top );
+}
+
+/* Footer "Main Pages" links (2.7.3): Home first, and dropdown parents without a link of their own
+ * (About Us, CLQ, Service) point to their first sub-page instead of the current page. */
+function cgs_footer_pages( $menu ) {
+	$home = home_url( '/' );
+	$out  = array( array( 'label' => 'Home', 'url' => $home ) );
+	foreach ( (array) $menu as $it ) {
+		$url = trim( (string) ( isset( $it['url'] ) ? $it['url'] : '' ) );
+		if ( untrailingslashit( $url ) === untrailingslashit( $home ) || '/' === $url ) {
+			continue;
+		}
+		if ( '' === $url || '#' === $url[0] ) {
+			$url = '';
+			foreach ( preg_split( '/\r\n|\r|\n/', trim( (string) ( isset( $it['children'] ) ? $it['children'] : '' ) ) ) as $line ) {
+				$p = array_map( 'trim', explode( '|', ltrim( $line, '>' ), 2 ) );
+				if ( isset( $p[1] ) && '' !== $p[1] && '#' !== $p[1][0] ) {
+					$url = $p[1];
+					break;
+				}
+			}
+		}
+		if ( '' !== $url ) {
+			$out[] = array( 'label' => $it['label'], 'url' => $url );
+		}
+	}
+	return $out;
 }
 
 /* ------------------------------------------------------------------
@@ -1724,6 +1752,7 @@ add_action( 'vc_before_init', function () {
 			array( 'type' => 'textfield', 'heading' => 'Solutions title', 'param_name' => 't2', 'value' => 'Solutions', 'group' => 'Menus' ),
 			array( 'type' => 'textfield', 'heading' => 'Contact title', 'param_name' => 't3', 'value' => 'Contact', 'group' => 'Contact' ),
 			array( 'type' => 'textfield', 'heading' => 'Phone', 'param_name' => 'phone', 'value' => '+60 17-887 3361', 'group' => 'Contact' ),
+			array( 'type' => 'textarea', 'heading' => 'Address', 'param_name' => 'addr', 'value' => CGS_ADDRESS, 'description' => 'Shown under Contact with a Google Maps link. Leave empty to hide.', 'group' => 'Contact' ),
 			array( 'type' => 'textfield', 'heading' => 'Copyright', 'param_name' => 'copy', 'value' => CGS_FT_COPY, 'description' => 'Write {year} for the current year. Any "© 2024"-style year is also updated automatically.', 'group' => 'Contact' ),
 			array( 'type' => 'dropdown', 'heading' => 'Style', 'param_name' => 'style', 'value' => array( 'Card (light, floating card)' => 'card', 'Modern (dark, big heading)' => 'modern', 'Classic (previous footer)' => 'classic' ), 'std' => 'card', 'admin_label' => true, 'group' => 'Layout' ),
 			array( 'type' => 'textfield', 'heading' => 'Tagline (under the logo)', 'param_name' => 'tagline', 'value' => 'Workforce, accommodation and HR solutions since 1991', 'group' => 'Layout' ),
@@ -1754,14 +1783,15 @@ add_shortcode( 'cgs_footer', function ( $atts ) {
 		'cta_b' => 'Get in touch', 'cta_u' => '/contact/', 'mark' => 'Concepts Group', 'credit' => '',
 		'logo' => '', 'logo_h' => '34', 'fb' => 'https://www.facebook.com/conceptsgroup.my', 'email' => 'support@concepts-groups.com',
 		'wa' => 'https://api.whatsapp.com/send?phone=60178873361&text=Hello%20there,%20I%20would%20like%20to%20know%20about%20your%20services',
-		'menu' => '', 't1' => 'Main Pages', 't2' => 'Solutions', 't3' => 'Contact', 'phone' => '+60 17-887 3361',
+		'menu' => '', 't1' => 'Main Pages', 't2' => 'Solutions', 't3' => 'Contact', 'phone' => '+60 17-887 3361', 'addr' => CGS_ADDRESS,
 		'copy' => CGS_FT_COPY,
 	), $atts, 'cgs_footer' );
 	$copy = cgs_footer_copy( $a['copy'] );
 
 	$logo = $a['logo'] ? wp_get_attachment_image_url( (int) $a['logo'], 'full' ) : '';
 	$logo = cgs_brand_logo( $logo );
-	$menu = cgs_menu_items( (int) $a['menu'] );
+	$menu  = cgs_menu_items( (int) $a['menu'] );
+	$pages = cgs_footer_pages( $menu );
 	$u    = function ( $url ) {
 		$url = trim( (string) $url );
 		return esc_url( ( 0 === strpos( $url, '/' ) && 0 !== strpos( $url, '//' ) ) ? home_url( $url ) : $url );
@@ -1802,9 +1832,9 @@ add_shortcode( 'cgs_footer', function ( $atts ) {
 <div class="cgs-ft-soc3"><?php foreach ( $links as $name => $l ) : ?><a href="<?php echo esc_url( $l[0], array( 'http', 'https', 'mailto' ) ); ?>"<?php echo $l[1] ? ' target="_blank" rel="noopener"' : ''; ?> aria-label="<?php echo esc_attr( $name ); ?>"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><?php echo $icons[ $name ]; // Static SVG. ?></svg></a><?php endforeach; ?></div>
 </div>
 <div class="cgs-ft-cols3">
-<nav class="cgs-ft-c" aria-label="<?php echo esc_attr( $a['t1'] ); ?>"><h4><?php echo esc_html( $a['t1'] ); ?></h4><?php foreach ( $menu as $it ) : ?><a href="<?php echo $u( $it['url'] ); ?>"><?php echo esc_html( $it['label'] ); ?></a><?php endforeach; ?></nav>
+<nav class="cgs-ft-c" aria-label="<?php echo esc_attr( $a['t1'] ); ?>"><h4><?php echo esc_html( $a['t1'] ); ?></h4><?php foreach ( $pages as $it ) : ?><a href="<?php echo $u( $it['url'] ); ?>"><?php echo esc_html( $it['label'] ); ?></a><?php endforeach; ?></nav>
 <nav class="cgs-ft-c" aria-label="<?php echo esc_attr( $a['t2'] ); ?>"><h4><?php echo esc_html( $a['t2'] ); ?></h4><?php foreach ( $sol as $s ) : ?><a href="<?php echo $u( $s[1] ); ?>"><?php echo esc_html( $s[0] ); ?></a><?php endforeach; ?></nav>
-<div class="cgs-ft-c"><h4><?php echo esc_html( $a['t3'] ); ?></h4><a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $a['phone'] ) ); ?>"><?php echo esc_html( $a['phone'] ); ?></a><a href="mailto:<?php echo esc_attr( $a['email'] ); ?>"><?php echo esc_html( $a['email'] ); ?></a></div>
+<div class="cgs-ft-c"><h4><?php echo esc_html( $a['t3'] ); ?></h4><a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $a['phone'] ) ); ?>"><?php echo esc_html( $a['phone'] ); ?></a><a href="mailto:<?php echo esc_attr( $a['email'] ); ?>"><?php echo esc_html( $a['email'] ); ?></a><?php if ( '' !== trim( (string) $a['addr'] ) ) : ?><a class="cgs-ft-addr" href="<?php echo esc_url( 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $a['addr'] ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $a['addr'] ); ?></a><?php endif; ?></div>
 </div>
 </div>
 <div class="cgs-ft-bot3"><span><?php echo esc_html( $copy ); ?></span><div><a href="#top">Back to top ↑</a><?php if ( '' !== trim( $a['credit'] ) ) : ?><a href="https://manyproject.my" target="_blank" rel="noopener"><?php echo esc_html( $a['credit'] ); ?></a><?php endif; ?></div></div>
@@ -1824,9 +1854,9 @@ add_shortcode( 'cgs_footer', function ( $atts ) {
 </div>
 <div class="cgs-ft-grid">
 <div class="cgs-ft-c"><a class="cgs-ft-up" href="#top">Back to top ↑</a></div>
-<nav class="cgs-ft-c" aria-label="<?php echo esc_attr( $a['t1'] ); ?>"><h4><?php echo esc_html( $a['t1'] ); ?></h4><?php foreach ( $menu as $it ) : ?><a href="<?php echo $u( $it['url'] ); ?>"><?php echo esc_html( $it['label'] ); ?></a><?php endforeach; ?></nav>
+<nav class="cgs-ft-c" aria-label="<?php echo esc_attr( $a['t1'] ); ?>"><h4><?php echo esc_html( $a['t1'] ); ?></h4><?php foreach ( $pages as $it ) : ?><a href="<?php echo $u( $it['url'] ); ?>"><?php echo esc_html( $it['label'] ); ?></a><?php endforeach; ?></nav>
 <nav class="cgs-ft-c" aria-label="<?php echo esc_attr( $a['t2'] ); ?>"><h4><?php echo esc_html( $a['t2'] ); ?></h4><?php foreach ( $sol as $s ) : ?><a href="<?php echo $u( $s[1] ); ?>"><?php echo esc_html( $s[0] ); ?></a><?php endforeach; ?></nav>
-<div class="cgs-ft-c"><h4><?php echo esc_html( $a['t3'] ); ?></h4><a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $a['phone'] ) ); ?>"><?php echo esc_html( $a['phone'] ); ?></a><a href="mailto:<?php echo esc_attr( $a['email'] ); ?>"><?php echo esc_html( $a['email'] ); ?></a></div>
+<div class="cgs-ft-c"><h4><?php echo esc_html( $a['t3'] ); ?></h4><a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $a['phone'] ) ); ?>"><?php echo esc_html( $a['phone'] ); ?></a><a href="mailto:<?php echo esc_attr( $a['email'] ); ?>"><?php echo esc_html( $a['email'] ); ?></a><?php if ( '' !== trim( (string) $a['addr'] ) ) : ?><a class="cgs-ft-addr" href="<?php echo esc_url( 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $a['addr'] ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $a['addr'] ); ?></a><?php endif; ?></div>
 <div class="cgs-ft-c"><h4>Follow us</h4><?php foreach ( $soc_txt as $s ) : ?><a href="<?php echo esc_url( $s[0], array( 'http', 'https', 'mailto' ) ); ?>"<?php echo $s[2] ? ' target="_blank" rel="noopener"' : ''; ?>><?php echo esc_html( $s[1] ); ?></a><?php endforeach; ?></div>
 </div>
 <?php if ( '' !== trim( $a['mark'] ) ) : wp_enqueue_script( 'cgs-footer' ); ?><div class="cgs-ft-mark" aria-hidden="true"><span><?php echo esc_html( $a['mark'] ); ?></span></div><?php endif; ?>
@@ -1849,14 +1879,14 @@ add_shortcode( 'cgs_footer', function ( $atts ) {
 </div>
 <div class="cgs-ft-cols">
 <div class="cgs-ft-col"><h4><?php echo esc_html( $a['t1'] ); ?></h4>
-<?php foreach ( $menu as $it ) : ?><a href="<?php echo $u( $it['url'] ); ?>"><?php echo esc_html( $it['label'] ); ?></a><?php endforeach; ?>
+<?php foreach ( $pages as $it ) : ?><a href="<?php echo $u( $it['url'] ); ?>"><?php echo esc_html( $it['label'] ); ?></a><?php endforeach; ?>
 </div>
 <div class="cgs-ft-col"><h4><?php echo esc_html( $a['t2'] ); ?></h4>
 <?php foreach ( $sol as $s ) : ?><a href="<?php echo $u( $s[1] ); ?>"><?php echo esc_html( $s[0] ); ?></a><?php endforeach; ?>
 </div>
 <div class="cgs-ft-col"><h4><?php echo esc_html( $a['t3'] ); ?></h4>
 <a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $a['phone'] ) ); ?>"><?php echo esc_html( $a['phone'] ); ?></a>
-<a href="mailto:<?php echo esc_attr( $a['email'] ); ?>"><?php echo esc_html( $a['email'] ); ?></a>
+<a href="mailto:<?php echo esc_attr( $a['email'] ); ?>"><?php echo esc_html( $a['email'] ); ?></a><?php if ( '' !== trim( (string) $a['addr'] ) ) : ?><a class="cgs-ft-addr" href="<?php echo esc_url( 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $a['addr'] ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $a['addr'] ); ?></a><?php endif; ?>
 </div>
 </div>
 </div>
