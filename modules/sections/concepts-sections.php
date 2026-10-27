@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.36.2' );
+define( 'CGS_VERSION', '1.37.0' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -237,10 +237,21 @@ body.cgs-site #lqd-site-content .cgs-hero h1.cgs-hero-h{margin:0;font-family:var
 .cgs-hero-sky .cgs-hero-txt{max-width:min(48vw,820px)}
 .cgs-hero-sky .cgs-hero-lead{max-width:min(40vw,640px)}
 .cgs-hero-sky .cgs-sky-scene{position:absolute;right:0;bottom:0;width:62vw;height:100%;z-index:2;pointer-events:none}
-.cgs-hero-sky .cgs-sky-bld{position:absolute;right:-3vw;bottom:clamp(24px,2.4vw,48px);width:59vw;max-width:none;height:auto;display:block;filter:drop-shadow(0 30px 40px rgba(7,26,51,.18))}
-.cgs-hero-sky .cgs-sky-team{position:absolute;right:5vw;bottom:0;height:77%;width:auto;max-width:none;display:block;filter:drop-shadow(0 24px 30px rgba(7,26,51,.28))}
-.cgs-hero-sky .cgs-hero-enq{left:auto;right:2vw;bottom:24%;pointer-events:auto}
-@media(min-width:1025px) and (max-width:1320px){.cgs-hero-sky .cgs-sky-team{height:74%;right:3vw}.cgs-hero-sky .cgs-hero-txt{max-width:46vw}}
+.cgs-hero-sky .cgs-sky-bld{position:absolute;right:-7vw;bottom:clamp(24px,2.4vw,48px);width:59vw;max-width:none;height:auto;display:block;filter:drop-shadow(0 30px 40px rgba(7,26,51,.18))}
+.cgs-hero-sky .cgs-sky-team{position:absolute;right:9vw;bottom:0;height:83%;width:auto;max-width:none;display:block;filter:drop-shadow(0 24px 30px rgba(7,26,51,.28))}
+.cgs-hero-sky .cgs-hero-enq{left:auto;right:2vw;bottom:24%;pointer-events:auto;display:flex;align-items:center;gap:14px;padding:14px 22px 14px 14px;border-radius:22px;background:linear-gradient(180deg,#ffffff 0%,#f2f8ff 100%);border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 #fff,inset 0 -3px 0 rgba(11,95,196,.07),0 2px 4px rgba(7,26,51,.06),0 14px 28px -10px rgba(7,26,51,.22),0 36px 70px -24px rgba(11,95,196,.55);transform:perspective(900px) rotateY(-10deg) rotateX(5deg);transform-origin:right center;transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s;animation:cgsEnqUp 1s 1s cubic-bezier(.2,.8,.2,1) both}
+.cgs-hero-sky .cgs-hero-enq:hover{transform:perspective(900px) rotateY(0) rotateX(0) translateY(-6px);box-shadow:inset 0 1px 0 #fff,inset 0 -3px 0 rgba(11,95,196,.07),0 4px 8px rgba(7,26,51,.08),0 22px 40px -12px rgba(7,26,51,.28),0 48px 90px -28px rgba(11,95,196,.65)}
+.cgs-hero-sky .cgs-enq-ic{flex:none;display:grid;place-items:center;width:48px;height:48px;border-radius:16px;color:#fff;background:linear-gradient(145deg,#4aa8ff 0%,#1e90ff 45%,#0b5fc4 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 0 rgba(7,26,51,.2),0 10px 18px -6px rgba(30,144,255,.75)}
+.cgs-hero-sky .cgs-enq-ic svg{display:block;filter:drop-shadow(0 1px 1px rgba(7,26,51,.25))}
+.cgs-hero-sky .cgs-enq-tx{display:block;line-height:1.25}
+.cgs-hero-sky .cgs-hero-enq small{font-size:.78rem}
+.cgs-hero-sky .cgs-hero-enq b{display:inline-block;margin-top:2px;font-size:1.02rem}
+@keyframes cgsEnqUp{from{opacity:0;translate:0 90px}to{opacity:1;translate:0 0}}
+.cgs-hero-sky .cgs-wave3{height:clamp(80px,8.4vw,150px)}
+.cgs-hero-sky .cgs-wave-back{z-index:1}
+.cgs-hero-sky .cgs-sky-team{will-change:translate}
+@media(prefers-reduced-motion:reduce){.cgs-hero-sky .cgs-hero-enq{animation:none;transition:none}}
+@media(min-width:1025px) and (max-width:1320px){.cgs-hero-sky .cgs-sky-team{height:78%;right:6vw}.cgs-hero-sky .cgs-hero-txt{max-width:46vw}}
 .cgs-hero-sky .cgs-hb2{border-color:#d6e4f5;box-shadow:0 12px 28px -14px rgba(7,26,51,.35)}
 @media(max-width:1024px){body .cgs-hero.cgs-hero-sky{min-height:0;flex-direction:column;align-items:stretch;padding-bottom:0}.cgs-hero-sky::before{background:linear-gradient(180deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.7) 45%,rgba(255,255,255,0) 70%)}.cgs-hero-sky .cgs-hero-txt,.cgs-hero-sky .cgs-hero-lead{max-width:none}.cgs-hero-sky .cgs-sky-scene{position:relative;width:100%;height:auto;aspect-ratio:5/4;margin-top:clamp(24px,5vw,40px)}.cgs-hero-sky .cgs-sky-bld{right:-6%;bottom:14%;width:84%}.cgs-hero-sky .cgs-sky-team{right:auto;left:2%;bottom:0;width:52%;height:auto}.cgs-hero-sky .cgs-hero-enq{left:auto;right:4%;bottom:auto;top:8%}}
 @media(max-width:767px){.cgs-hero-sky .cgs-hero-enq{display:none}.cgs-hero-sky .cgs-sky-scene{aspect-ratio:1/1}.cgs-hero-sky .cgs-sky-team{width:66%;left:0}.cgs-hero-sky .cgs-sky-bld{width:96%;right:-12%;bottom:22%}}
@@ -585,7 +596,7 @@ add_shortcode( 'cgs_hero', function ( $atts ) {
 <div class="cgs-sky-scene">
 <img class="cgs-sky-bld" src="<?php echo esc_url( cgs_media_url( $a['bldc'], CGS_HERO_DEF['bldc'] ) ); ?>" alt="Concepts Group worker accommodation building" width="1506" height="1078" fetchpriority="high">
 <img class="cgs-sky-team" src="<?php echo esc_url( cgs_media_url( $a['team'], CGS_HERO_DEF['team'] ) ); ?>" alt="Concepts Group team" width="1536" height="1536">
-<a class="cgs-hero-enq" href="<?php echo $u( '' !== trim( (string) $a['enqu'] ) ? $a['enqu'] : $a['u1'] ); ?>"><small><?php echo esc_html( $a['enq'] ); ?></small><b><?php echo esc_html( $a['enqb'] ); ?></b></a>
+<a class="cgs-hero-enq" href="<?php echo $u( '' !== trim( (string) $a['enqu'] ) ? $a['enqu'] : $a['u1'] ); ?>"><span class="cgs-enq-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.5.4-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5v-8Z" fill="currentColor"/><circle cx="8.5" cy="9.5" r="1.2" fill="#1e90ff"/><circle cx="12" cy="9.5" r="1.2" fill="#1e90ff"/><circle cx="15.5" cy="9.5" r="1.2" fill="#1e90ff"/></svg></span><span class="cgs-enq-tx"><small><?php echo esc_html( $a['enq'] ); ?></small><b><?php echo esc_html( $a['enqb'] ); ?></b></span></a>
 </div>
 <?php else : ?>
 <div class="cgs-hero-vis" style="--cgs-ws:<?php echo (int) min( 160, max( 40, (int) $a['wsize'] ) ); ?>%">
@@ -596,7 +607,12 @@ add_shortcode( 'cgs_hero', function ( $atts ) {
 </div>
 </div>
 <?php endif; ?>
+<?php if ( $sky ) : ?>
+<svg class="cgs-hero-wave cgs-wave3 cgs-wave-back" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="cgsWaveG" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#0b5fc4"/><stop offset="1" stop-color="#1e90ff"/></linearGradient></defs><path class="cgs-wave-l1" d="M0 140V40C260 4 520-2 760 28s460 54 680 0V140Z" fill="#cfe6ff" fill-opacity=".85"/><path class="cgs-wave-l2" d="M0 140V64C240 26 480 18 720 48s480 50 720 6V140Z" fill="url(#cgsWaveG)"/></svg>
+<svg class="cgs-hero-wave cgs-wave3 cgs-wave-front" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true"><path class="cgs-wave-l3" d="M0 140V78C240 40 480 32 720 62s480 50 720 6V140Z" fill="#fff"/></svg>
+<?php else : ?>
 <svg class="cgs-hero-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100V46C240 8 480 0 720 34s480 44 720 4V100Z" fill="#fff"/></svg>
+<?php endif; ?>
 </section>
 	<?php
 	return ob_get_clean();
@@ -1574,6 +1590,8 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_register_script( 'cgs-hero', false, array(), CGS_VERSION, true );
 	wp_add_inline_script( 'cgs-hero', "(function(){var els=document.querySelectorAll('.cgs-hero-stats b');if(!els.length||matchMedia('(prefers-reduced-motion:reduce)').matches)return;els.forEach(function(el){var t=el.dataset.n,m=t.match(/^([\\d,]+)(.*)$/);if(!m)return;var end=+m[1].replace(/,/g,''),suf=m[2],big=m[1].indexOf(',')>-1,t0=performance.now()+600;el.textContent='0'+suf;(function k(n){var p=Math.min(Math.max((n-t0)/1600,0),1),v=Math.round(end*(1-Math.pow(1-p,3)));el.textContent=(big?v.toLocaleString('en-US'):v)+suf;if(p<1)requestAnimationFrame(k)})(t0)})})();" );
 	wp_add_inline_script( 'cgs-hero', "(function(){var h=document.querySelector('.cgs-hero:not(.cgs-hero-story)');if(!h)return;var ar=h.querySelector('.cgs-hero-arch'),hd=h.querySelector('.cgs-hero-head'),wk=h.querySelector('.cgs-hero-work'),vs=h.querySelector('.cgs-hero-vis');if(!ar||!hd||!wk)return;function fit(){var a=ar.offsetHeight,w=wk.offsetHeight;if(!a||!w)return;var c=w>a?Math.min(100,(w-a+26)/w*100):0;hd.style.clipPath='inset(0 0 '+(100-c).toFixed(1)+'% 0)'}[wk,hd].forEach(function(i){if(i.complete)fit();else i.addEventListener('load',fit)});addEventListener('resize',fit);fit();if(matchMedia('(prefers-reduced-motion:reduce)').matches||!('translate' in document.documentElement.style))return;var t=0;function p(){t=0;var r=h.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var y=Math.min(90,Math.max(0,-r.top*.22)).toFixed(1)+'px';ar.style.translate='0 '+y;hd.style.translate='0 '+y;if(vs)vs.style.setProperty('--cgs-pb',parseFloat(y).toFixed(1)+'px')}addEventListener('scroll',function(){if(!t)t=requestAnimationFrame(p)},{passive:true});p()})();" );
+	/* Sky hero: workers drift down as the page scrolls (parallax). Off for reduced motion. */
+	wp_add_inline_script( 'cgs-hero', "(function(){var h=document.querySelector('.cgs-hero-sky');if(!h)return;var w=h.querySelector('.cgs-sky-team');if(!w||matchMedia('(prefers-reduced-motion:reduce)').matches||!('translate' in document.documentElement.style))return;var k=0;function p(){k=0;var r=h.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var y=Math.min(r.height*.25,Math.max(0,-r.top*.35));w.style.translate='0 '+y.toFixed(1)+'px'}addEventListener('scroll',function(){if(!k)k=requestAnimationFrame(p)},{passive:true});addEventListener('resize',p);p()})();" );
 }, 31 );
 
 /* ------------------------------------------------------------------

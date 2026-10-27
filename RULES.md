@@ -93,6 +93,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.2.0** (2026-10-27): Sky hero: 3-layer wave (light + blue band behind the people, white in front), 3D enquiry card with icon and slide-up entry, workers parallax on scroll (off for reduced motion), workers bigger and further left, building further right. Sections 1.37.0.
 - **2.1.2** (2026-10-27): Sky hero images: hostel with the full left wing (Concept-Group-Hostel-and-accommodation.webp, building 59vw) and new people photo (foreign-workers.webp); people scaled for tablet/phone. Sections 1.36.2.
 - **2.1.1** (2026-10-27): Sky hero: people sized by hero height (heads in the top 30%), bigger building, "Since 1991" card removed, enquiry card moved to the right. Sections 1.36.1.
 - **2.1.0** (2026-10-27): New "Sky" homepage hero (default): sky background (1472.webp), building + two-men cutouts standing on the wave, soft white fade behind the text. Restore the old look: WPBakery > Concepts Hero (Home) > Style = Classic. Sky, building and people images are editable in the Images tab. Sections 1.36.0.

@@ -2,7 +2,7 @@
 Contributors: Many Project (Web App Marketing Sdn Bhd)
 Requires at least: 5.9
 Requires PHP: 7.4
-Stable tag: 2.1.2
+Stable tag: 2.2.0
 
 One plugin for the Concepts Group site. Combines:
 - Concepts Group Sections 1.35.7 (global CSS, header, hero, footer, all WPBakery sections)

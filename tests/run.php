@@ -140,12 +140,22 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'sky hero keeps H1, buttons, stats, enquiry card, wave', false !== strpos( $sky, '<h1 class="cgs-hero-h"' ) && false !== strpos( $sky, 'cgs-hb1' ) && false !== strpos( $sky, 'cgs-hero-stats' ) && false !== strpos( $sky, 'cgs-hero-enq' ) && false !== strpos( $sky, 'cgs-hero-wave' ) );
 		check( 'sky hero has no "Since 1991" chip (2.1.1)', false === strpos( $sky, 'cgs-hero-chip' ) );
 		check( 'classic hero still has its chip', false !== strpos( $cls, 'cgs-hero-chip' ) );
-		check( 'sky team sized by hero height (heads in top 30%)', (bool) preg_match( '/\.cgs-hero-sky \.cgs-sky-team\{[^}]*height:7[6-9]%;width:auto/', cgs_hero_css() ) );
-		check( 'sky building wide enough to show left wing (59vw)', false !== strpos( cgs_hero_css(), '.cgs-sky-bld{position:absolute;right:-3vw;bottom:clamp(24px,2.4vw,48px);width:59vw;' ) );
+		check( 'sky team sized by hero height (heads in top 30%)', (bool) preg_match( '/\.cgs-hero-sky \.cgs-sky-team\{[^}]*height:(7[6-9]|8[0-9])%;width:auto/', cgs_hero_css() ) );
+		check( 'sky building wide enough to show left wing (59vw)', false !== strpos( cgs_hero_css(), '.cgs-sky-bld{position:absolute;right:-7vw;bottom:clamp(24px,2.4vw,48px);width:59vw;' ) );
 		check( 'tablet team not stretched (height:auto)', false !== strpos( cgs_hero_css(), 'width:52%;height:auto}' ) );
 		check( 'sky enquiry card on the right', (bool) preg_match( '/\.cgs-hero-sky \.cgs-hero-enq\{left:auto;right:[0-9.]+vw/', cgs_hero_css() ) && false === strpos( cgs_hero_css(), 'right:42vw' ) );
 		check( 'classic style restores the old hero', false !== strpos( $cls, 'cgs-hero-arch' ) && false === strpos( $cls, 'cgs-hero-sky' ) );
 		check( 'sky hero CSS present (desktop + mobile)', false !== strpos( cgs_hero_css(), '.cgs-hero-sky .cgs-sky-team{' ) && false !== strpos( cgs_hero_css(), '@media(max-width:1024px){body .cgs-hero.cgs-hero-sky{' ) );
+		// 2.2.0: layered wave, 3D enquiry card with entry animation, worker parallax, bigger/left workers, building right.
+		check( 'sky hero has a 3-layer wave', false !== strpos( $sky, 'cgs-wave-l1' ) && false !== strpos( $sky, 'cgs-wave-l2' ) && false !== strpos( $sky, 'cgs-wave-l3' ) );
+		check( 'classic hero keeps its single wave', false !== strpos( $cls, 'cgs-hero-wave' ) && false === strpos( $cls, 'cgs-wave-l1' ) );
+		check( 'wave back layers sit behind the workers, white layer in front', false !== strpos( $sky, 'cgs-wave-back' ) && false !== strpos( $sky, 'cgs-wave-front' ) && false !== strpos( cgs_hero_css(), '.cgs-hero-sky .cgs-wave-back{z-index:1}' ) );
+		check( 'enquiry card has icon bubble', false !== strpos( $sky, 'cgs-enq-ic' ) );
+		check( 'enquiry card slides up on entry (with reduced-motion off switch)', false !== strpos( cgs_hero_css(), '@keyframes cgsEnqUp' ) && (bool) preg_match( '/prefers-reduced-motion:reduce\)\{[^@]*\.cgs-hero-sky \.cgs-hero-enq\{[^}]*animation:none/', cgs_hero_css() ) );
+		do_action( 'wp_enqueue_scripts' );
+		$js = implode( "\n", (array) ( $GLOBALS['INLINE']['cgs-hero'] ?? array() ) );
+		check( 'workers parallax script present (respects reduced motion)', false !== strpos( $js, '.cgs-sky-team' ) && false !== strpos( $js, "cgs-hero-sky" ) && substr_count( $js, 'prefers-reduced-motion' ) >= 2 );
+		check( 'workers bigger (83%) and further left (9vw); building further right (-7vw)', false !== strpos( cgs_hero_css(), '.cgs-hero-sky .cgs-sky-team{position:absolute;right:9vw;bottom:0;height:83%;' ) && false !== strpos( cgs_hero_css(), '.cgs-sky-bld{position:absolute;right:-7vw;' ) );
 		check( 'homepage hero H1 = max(24px,min(6cqw,52px))', (bool) preg_match( '/\.cgs-hero h1\.cgs-hero-h\{margin:0;[^}]*font-size:max\(24px,min\(6cqw,52px\)\)\}/', cgs_hero_css() ) );
 		check( 'header bar uses 6vw gutter at <=1024px like the content', false !== strpos( cgs_header_css(), '@media(max-width:1024px){.cgs-hd .cgs-bar{width:calc(100% - 12vw)}}' ) );
 	}

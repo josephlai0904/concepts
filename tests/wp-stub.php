@@ -97,7 +97,7 @@ function wp_enqueue_style( $h, ...$a ) { $GLOBALS['REG'][ 'css:' . $h ] = 1; }
 function wp_add_inline_style( $h, $c ) { return true; }
 function wp_register_script( $h, ...$a ) { $GLOBALS['REG'][ 'js:' . $h ] = 1; return true; }
 function wp_enqueue_script( $h, ...$a ) { $GLOBALS['REG'][ 'js:' . $h ] = 1; }
-function wp_add_inline_script( $h, $c, $p = 'after' ) { return true; }
+function wp_add_inline_script( $h, $c, $p = 'after' ) { $GLOBALS['INLINE'][ $h ][] = $c; return true; }
 function wp_script_is( $h, $l = 'enqueued' ) { return isset( $GLOBALS['REG'][ 'js:' . $h ] ); }
 function wp_localize_script() { return true; }
 function wp_enqueue_media() {}
