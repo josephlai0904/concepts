@@ -180,6 +180,7 @@ if ( 'activate-request' !== $SCEN ) {
 	if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) {
 		$hc2 = cgs_hero_css();
 		check( 'Home hero text slightly smaller on desktop/tablet (H1 max 46px, lead, buttons, stats)', false !== strpos( $hc2, '@media(min-width:768px){body.cgs-site #lqd-site-content .cgs-hero-sky h1.cgs-hero-h{font-size:max(24px,min(5.4cqw,46px))}' ) && false !== strpos( $hc2, '.cgs-hero-sky .cgs-hero-stats b{font-size:clamp(24px,1.8vw,30px)}' ) );
+		check( 'Home hero buttons padding halfway (14px 26px)', false !== strpos( $hc2, '.cgs-hero-sky .cgs-hb{padding:14px 26px;font-size:15px}' ) );
 	}
 
 	// 2.3.0: modern footer (reference style), auto year, company reg. no., classic restore.
