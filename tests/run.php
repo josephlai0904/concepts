@@ -132,6 +132,14 @@ if ( 'activate-request' !== $SCEN ) {
 		$bar = $bar ? $bar[0] : '';
 		check( 'header bar spans content width (calc(100% - 10vw))', false !== strpos( $bar, 'width:calc(100% - 10vw)' ) );
 		check( 'header bar has no px max-width cap', ! preg_match( '/max-width:\d+px/', $bar ) );
+		// Sky hero (2.1.0): default style; Classic stays available as a one-click restore.
+		$sky = call_user_func( $GLOBALS['SC']['cgs_hero'], array(), '', 'cgs_hero' );
+		$cls = call_user_func( $GLOBALS['SC']['cgs_hero'], array( 'style' => 'classic' ), '', 'cgs_hero' );
+		check( 'hero default = sky style', false !== strpos( $sky, 'cgs-hero cgs-hero-sky' ) );
+		check( 'sky hero uses sky, building and team images', false !== strpos( $sky, '1472.webp' ) && false !== strpos( $sky, 'Concept-Group-Hostel.webp' ) && false !== strpos( $sky, 'Natural-two-man-portrait-corrected-perspective.webp' ) );
+		check( 'sky hero keeps H1, buttons, stats, cards, wave', false !== strpos( $sky, '<h1 class="cgs-hero-h"' ) && false !== strpos( $sky, 'cgs-hb1' ) && false !== strpos( $sky, 'cgs-hero-stats' ) && false !== strpos( $sky, 'cgs-hero-chip' ) && false !== strpos( $sky, 'cgs-hero-enq' ) && false !== strpos( $sky, 'cgs-hero-wave' ) );
+		check( 'classic style restores the old hero', false !== strpos( $cls, 'cgs-hero-arch' ) && false === strpos( $cls, 'cgs-hero-sky' ) );
+		check( 'sky hero CSS present (desktop + mobile)', false !== strpos( cgs_hero_css(), '.cgs-hero-sky .cgs-sky-team{' ) && false !== strpos( cgs_hero_css(), '@media(max-width:1024px){body .cgs-hero.cgs-hero-sky{' ) );
 		check( 'homepage hero H1 = max(24px,min(6cqw,52px))', (bool) preg_match( '/\.cgs-hero h1\.cgs-hero-h\{margin:0;[^}]*font-size:max\(24px,min\(6cqw,52px\)\)\}/', cgs_hero_css() ) );
 		check( 'header bar uses 6vw gutter at <=1024px like the content', false !== strpos( cgs_header_css(), '@media(max-width:1024px){.cgs-hd .cgs-bar{width:calc(100% - 12vw)}}' ) );
 	}

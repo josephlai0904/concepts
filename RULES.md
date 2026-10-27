@@ -75,6 +75,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.1.0** (2026-10-27): New "Sky" homepage hero (default): sky background (1472.webp), building + two-men cutouts standing on the wave, soft white fade behind the text. Restore the old look: WPBakery > Concepts Hero (Home) > Style = Classic. Sky, building and people images are editable in the Images tab. Sections 1.36.0.
 - **2.0.4** (2026-10-27): Homepage hero H1 smaller: max(24px, min(6cqw, 52px)), was 62px max. Sections 1.35.11.
 - **2.0.3** (2026-10-27): Header bar matches the content width on tablets too (901–1024px). Sections 1.35.10.
 - **2.0.2** (2026-10-27): Header bar now spans the same width as the page content (removed the 1360px cap). Sections 1.35.9.

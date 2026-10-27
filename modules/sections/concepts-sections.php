@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.35.11' );
+define( 'CGS_VERSION', '1.36.0' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -229,6 +229,21 @@ body.cgs-site #lqd-site-content .cgs-hero h1.cgs-hero-h{margin:0;font-family:var
 .cgs-hero-story .cgs-hero-work{position:absolute;inset:0;width:100%;height:100%;max-width:none;aspect-ratio:auto;margin:0;border:clamp(4px,.4vw,6px) solid #fff;box-shadow:0 26px 44px -20px rgba(7,26,51,.45);object-position:center;border-radius:clamp(16px,1.6vw,24px)}
 @media(min-width:1025px){body.cgs-site #lqd-site-content .cgs-hero-story h1.cgs-hero-h{font-size:max(24px,min(3.7vw,70px))}}
 @media(min-width:768px) and (max-width:1024px){body.cgs-site #lqd-site-content .cgs-hero-story h1.cgs-hero-h{font-size:max(24px,min(6.5vw,70px))}}
+/* Sky hero (2.1.0): sky background, building + people cutouts on the right, text on a soft white fade. */
+.cgs-hero.cgs-hero-sky{background:#eaf4ff var(--cgs-sky,none) center 30%/cover no-repeat;min-height:clamp(620px,47vw,900px);align-items:center}
+.cgs-hero-sky::after{display:none}
+.cgs-hero-sky::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.7) 30%,rgba(255,255,255,.15) 50%,rgba(255,255,255,0) 60%)}
+.cgs-hero-sky .cgs-hero-in{grid-template-columns:1fr}
+.cgs-hero-sky .cgs-hero-txt{max-width:min(48vw,820px)}
+.cgs-hero-sky .cgs-hero-lead{max-width:min(40vw,640px)}
+.cgs-hero-sky .cgs-sky-scene{position:absolute;right:0;bottom:0;width:58vw;height:100%;z-index:2;pointer-events:none}
+.cgs-hero-sky .cgs-sky-bld{position:absolute;right:-3vw;bottom:clamp(24px,2.4vw,48px);width:42vw;max-width:none;height:auto;display:block;filter:drop-shadow(0 30px 40px rgba(7,26,51,.18))}
+.cgs-hero-sky .cgs-sky-team{position:absolute;right:12vw;bottom:0;width:35vw;max-width:none;height:auto;display:block;filter:drop-shadow(0 24px 30px rgba(7,26,51,.28))}
+.cgs-hero-sky .cgs-hero-chip{top:auto;bottom:58%;right:4vw;pointer-events:auto}
+.cgs-hero-sky .cgs-hero-enq{left:auto;right:42vw;bottom:clamp(120px,11vw,190px);pointer-events:auto}
+.cgs-hero-sky .cgs-hb2{border-color:#d6e4f5;box-shadow:0 12px 28px -14px rgba(7,26,51,.35)}
+@media(max-width:1024px){body .cgs-hero.cgs-hero-sky{min-height:0;flex-direction:column;align-items:stretch;padding-bottom:0}.cgs-hero-sky::before{background:linear-gradient(180deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.7) 45%,rgba(255,255,255,0) 70%)}.cgs-hero-sky .cgs-hero-txt,.cgs-hero-sky .cgs-hero-lead{max-width:none}.cgs-hero-sky .cgs-sky-scene{position:relative;width:100%;height:auto;aspect-ratio:5/4;margin-top:clamp(24px,5vw,40px)}.cgs-hero-sky .cgs-sky-bld{right:-6%;bottom:14%;width:84%}.cgs-hero-sky .cgs-sky-team{right:auto;left:2%;bottom:0;width:70%}.cgs-hero-sky .cgs-hero-chip{bottom:auto;top:4%;right:4%}.cgs-hero-sky .cgs-hero-enq{right:auto;left:4%;bottom:auto;top:10%}}
+@media(max-width:767px){.cgs-hero-sky .cgs-hero-enq{display:none}.cgs-hero-sky .cgs-sky-scene{aspect-ratio:1/1}.cgs-hero-sky .cgs-sky-team{width:92%;left:-4%}.cgs-hero-sky .cgs-sky-bld{width:96%;right:-12%;bottom:22%}}
 @media(max-width:1024px){.cgs-hero-story .cgs-hero-in{grid-template-columns:1fr}.cgs-hero-story .cgs-hero-txt{padding:clamp(48px,8vw,72px) 6vw clamp(12px,2.5vw,20px)}.cgs-hero-story .cgs-hero-vis{margin:clamp(12px,2vw,20px) 6vw 0;min-height:0}.cgs-hero-story .cgs-hero-work{position:static;height:auto;aspect-ratio:3/2}}
 @media(min-width:768px) and (max-width:1024px){.cgs-hero-story .cgs-hero-work{aspect-ratio:2.2/1}}
 @media(max-width:767px){body.page-id-488 .cgs-hero-story .cgs-hero-h .cgs-ln{display:block;white-space:nowrap}body.page-id-488 .cgs-hero-story .cgs-hero-h .cgs-ln+.cgs-ln{margin-left:0}}
@@ -508,6 +523,11 @@ define( 'CGS_HERO_DEF', array(
 	'enq' => 'Need workers or accommodation?', 'enqb' => 'Enquire now →', 'enqu' => '/#contact', 'chip' => 'Since 1991', 'chips' => 'Workforce &amp; accommodation',
 	'bld' => 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concept-Group-Hostel-Hero-Img.webp',
 	'img' => 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Group-Concepts_Worker1.webp',
+	/* Sky style (2.1.0). style = sky | classic (classic = the previous arch design). */
+	'style' => 'sky',
+	'sky'   => 'https://concepts.manyproject.my/wp-content/uploads/2026/10/1472.webp',
+	'bldc'  => 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concept-Group-Hostel.webp',
+	'team'  => 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Natural-two-man-portrait-corrected-perspective.webp',
 ) );
 
 add_action( 'vc_before_init', function () {
@@ -521,11 +541,12 @@ add_action( 'vc_before_init', function () {
 		'Buttons' => array( 'b1' => 'Button 1 text', 'u1' => 'Button 1 link', 'b2' => 'Button 2 text', 'u2' => 'Button 2 link', 'arrow' => 'Arrow icon URL' ),
 		'Stats'   => array( 'n1' => 'Number 1', 'l1' => 'Label 1', 'n2' => 'Number 2', 'l2' => 'Label 2', 'n3' => 'Number 3', 'l3' => 'Label 3', 'n4' => 'Number 4', 'l4' => 'Label 4' ),
 		'Enquiry card' => array( 'enq' => 'Small text', 'enqb' => 'Link text', 'enqu' => 'Card link (page, #section or full URL)', 'chip' => 'Top chip title', 'chips' => 'Top chip text' ),
-		'Images'  => array( 'bld' => 'Hostel background image URL', 'img' => 'Worker image (click to change)', 'wsize' => 'Worker size (% of column width, 100 = default)' ),
+		'Images'  => array( 'sky' => 'Sky style: sky background', 'bldc' => 'Sky style: building (transparent PNG/WebP)', 'team' => 'Sky style: people (transparent PNG/WebP)', 'bld' => 'Classic style: hostel background image', 'img' => 'Classic style: worker image', 'wsize' => 'Classic style: worker size (% of column width, 100 = default)' ),
 	);
+	$p[] = array( 'type' => 'dropdown', 'heading' => 'Style', 'param_name' => 'style', 'value' => array( 'Sky (building + people on sky background)' => 'sky', 'Classic (blue arch, previous design)' => 'classic' ), 'std' => 'sky', 'admin_label' => true, 'description' => 'Choose Classic to restore the previous hero design.' );
 	foreach ( $f as $group => $fields ) {
 		foreach ( $fields as $k => $label ) {
-			$p[] = array( 'type' => 'lead' === $k ? 'textarea' : ( in_array( $k, array( 'bld', 'img', 'arrow' ), true ) ? 'attach_image' : 'textfield' ), 'heading' => $label, 'param_name' => $k, 'value' => $d[ $k ], 'group' => $group );
+			$p[] = array( 'type' => 'lead' === $k ? 'textarea' : ( in_array( $k, array( 'bld', 'img', 'arrow', 'sky', 'bldc', 'team' ), true ) ? 'attach_image' : 'textfield' ), 'heading' => $label, 'param_name' => $k, 'value' => $d[ $k ], 'group' => $group );
 		}
 	}
 	vc_map( array( 'name' => 'Concepts Hero (Home)', 'base' => 'cgs_hero', 'category' => 'Concepts Group', 'icon' => 'icon-wpb-row', 'params' => $p ) );
@@ -538,8 +559,13 @@ add_shortcode( 'cgs_hero', function ( $atts ) {
 		return esc_url( ( 0 === strpos( $url, '/' ) && 0 !== strpos( $url, '//' ) ) ? home_url( $url ) : $url );
 	};
 	wp_enqueue_script( 'cgs-hero' );
+	$sky = 'classic' !== strtolower( trim( (string) $a['style'] ) );
 	ob_start(); ?>
+<?php if ( $sky ) : ?>
+<section class="cgs-hero cgs-hero-sky" style="--cgs-sky:url('<?php echo esc_url( cgs_media_url( $a['sky'], CGS_HERO_DEF['sky'] ) ); ?>')"><div class="cgs-hero-in">
+<?php else : ?>
 <section class="cgs-hero" style="--cgs-bg:url('<?php echo esc_url( cgs_media_url( $a['bld'], CGS_HERO_DEF['bld'] ) ); ?>')"><div class="cgs-hero-in">
+<?php endif; ?>
 <div class="cgs-hero-txt">
 <h2 class="cgs-hero-eb cgs-fade"><?php echo esc_html( $a['eyebrow'] ); ?></h2>
 <h1 class="cgs-hero-h"><span class="cgs-ln"><span><?php echo esc_html( $a['h1'] ); ?></span></span><span class="cgs-ln"><span><em><?php echo esc_html( $a['h2'] ); ?></em></span></span></h1>
@@ -554,6 +580,15 @@ add_shortcode( 'cgs_hero', function ( $atts ) {
 		continue;
 	} ?><div><b data-n="<?php echo esc_attr( $n ); ?>"><?php echo esc_html( $n ); ?></b><span><?php echo esc_html( $a[ 'l' . $i ] ); ?></span></div><?php endforeach; ?></div>
 </div>
+<?php if ( $sky ) : ?>
+</div>
+<div class="cgs-sky-scene">
+<img class="cgs-sky-bld" src="<?php echo esc_url( cgs_media_url( $a['bldc'], CGS_HERO_DEF['bldc'] ) ); ?>" alt="Concepts Group worker accommodation building" width="1328" height="1078" fetchpriority="high">
+<img class="cgs-sky-team" src="<?php echo esc_url( cgs_media_url( $a['team'], CGS_HERO_DEF['team'] ) ); ?>" alt="Concepts Group team" width="1448" height="1086">
+<div class="cgs-hero-chip"><b><?php echo esc_html( $a['chip'] ); ?></b><span><?php echo esc_html( $a['chips'] ); ?></span></div>
+<a class="cgs-hero-enq" href="<?php echo $u( '' !== trim( (string) $a['enqu'] ) ? $a['enqu'] : $a['u1'] ); ?>"><small><?php echo esc_html( $a['enq'] ); ?></small><b><?php echo esc_html( $a['enqb'] ); ?></b></a>
+</div>
+<?php else : ?>
 <div class="cgs-hero-vis" style="--cgs-ws:<?php echo (int) min( 160, max( 40, (int) $a['wsize'] ) ); ?>%">
 <div class="cgs-hero-arch"><img class="cgs-hero-work" src="<?php echo esc_url( cgs_media_url( $a['img'], CGS_HERO_DEF['img'] ) ); ?>" alt="Concepts Group workforce"></div>
 <img class="cgs-hero-head" src="<?php echo esc_url( cgs_media_url( $a['img'], CGS_HERO_DEF['img'] ) ); ?>" alt="" aria-hidden="true">
@@ -561,6 +596,7 @@ add_shortcode( 'cgs_hero', function ( $atts ) {
 <a class="cgs-hero-enq" href="<?php echo $u( '' !== trim( (string) $a['enqu'] ) ? $a['enqu'] : $a['u1'] ); ?>"><small><?php echo esc_html( $a['enq'] ); ?></small><b><?php echo esc_html( $a['enqb'] ); ?></b></a>
 </div>
 </div>
+<?php endif; ?>
 <svg class="cgs-hero-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100V46C240 8 480 0 720 34s480 44 720 4V100Z" fill="#fff"/></svg>
 </section>
 	<?php
