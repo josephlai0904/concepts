@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.35.8' );
+define( 'CGS_VERSION', '1.35.9' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -70,7 +70,7 @@ body:has(.cgs-hero) #header:has(.cgs-hd){height:0!important;min-height:0!importa
 @media(max-width:600px){.admin-bar .cgs-hd{top:56px;transition:top .3s}.admin-bar .cgs-hd.s{top:10px}}
 .cgs-hd *{box-sizing:border-box}
 .cgs-hd a{color:inherit;text-decoration:none}
-.cgs-hd .cgs-bar{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2vw;height:clamp(52px,4.4vw,62px);max-width:1360px;width:calc(100% - 10vw);margin:0 auto;padding:0 10px 0 clamp(18px,2.1vw,30px);border-radius:60px;background:linear-gradient(90deg,#0b5fc4,var(--cgs-blue,#1e90ff));box-shadow:0 14px 40px -14px rgba(11,95,196,.7)}
+.cgs-hd .cgs-bar{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2vw;height:clamp(52px,4.4vw,62px);max-width:none;width:calc(100% - 10vw);margin:0 auto;padding:0 10px 0 clamp(18px,2.1vw,30px);border-radius:60px;background:linear-gradient(90deg,#0b5fc4,var(--cgs-blue,#1e90ff));box-shadow:0 14px 40px -14px rgba(11,95,196,.7)}
 .cgs-hd .cgs-lg{display:block;justify-self:center}
 .cgs-hd .cgs-lg img{height:clamp(24px,2.2vw,32px);width:auto;display:block}
 .cgs-hd nav{display:flex;align-items:center;justify-content:flex-start;gap:26px;font-weight:500;font-size:.94rem;color:#fff}

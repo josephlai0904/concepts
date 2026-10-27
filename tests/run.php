@@ -126,6 +126,14 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'custom logo picked in WPBakery is kept', false !== strpos( $cu, 'i42.jpg' ) );
 	}
 
+	// Header bar matches the content width (2.0.2): same 5vw gutter as .cgs-hero-in, no fixed px cap.
+	if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) {
+		preg_match( '/\.cgs-hd \.cgs-bar\{[^}]*\}/', cgs_header_css(), $bar );
+		$bar = $bar ? $bar[0] : '';
+		check( 'header bar spans content width (calc(100% - 10vw))', false !== strpos( $bar, 'width:calc(100% - 10vw)' ) );
+		check( 'header bar has no px max-width cap', ! preg_match( '/max-width:\d+px/', $bar ) );
+	}
+
 	// Enquiry endpoint
 	$r = ccq_enquiry( new WP_REST_Request( array( 'site' => $site[0]->ID, 'company' => 'ACME', 'workers' => 30, 'email' => 'x@y.com', 'message' => 'hi' ) ) );
 	check( 'enquiry accepted + 2 emails', is_array( $r ) && ! empty( $r['ok'] ) && 2 === count( $GLOBALS['MAIL'] ?? array() ) );
