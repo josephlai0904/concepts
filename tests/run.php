@@ -270,6 +270,9 @@ if ( 'activate-request' !== $SCEN ) {
 		$GLOBALS['Q'] = array( 'is_front_page' => true ); call_user_func( $GLOBALS['SC']['cgs_faq'], array(), '', 'cgs_faq' ); ob_start(); do_action( 'wp_footer' ); $f = ob_get_clean();
 		$fi = cgs_faq_items_default();
 		check( 'AEO: FAQPage schema built from the visible FAQ', false !== strpos( $f, '"@type":"FAQPage"' ) && false !== strpos( $f, wp_json_encode( $fi[0]['q'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) ) );
+		$GLOBALS['cgs_faq_seen'] = array(); call_user_func( $GLOBALS['SC']['cgs_fwr_faq'], array(), '', 'cgs_fwr_faq' ); ob_start(); do_action( 'wp_footer' ); $f = ob_get_clean();
+		$fw = cgs_fwr_faq_items_default();
+		check( 'AEO: recruitment FAQ also gets FAQPage schema', false !== strpos( $f, '"@type":"FAQPage"' ) && false !== strpos( $f, wp_json_encode( $fw[0]['q'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) ) );
 		}
 		$pt = apply_filters( 'wp_sitemaps_post_types', array( 'post' => 1, 'page' => 1, 'liquid-header' => 1, 'liquid-footer' => 1 ) );
 		check( 'Sitemap: theme header/footer posts removed', ! isset( $pt['liquid-header'] ) && ! isset( $pt['liquid-footer'] ) && isset( $pt['page'] ) );

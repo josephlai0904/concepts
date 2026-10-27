@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CCQ_VERSION', '1.7.6' );
+define( 'CCQ_VERSION', '1.7.7' );
 define( 'CCQ_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CCQ_URL', plugin_dir_url( __FILE__ ) );
 define( 'CCQ_FOUNDED', 1991 );

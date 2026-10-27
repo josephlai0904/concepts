@@ -43,6 +43,12 @@ if ( $r['term'] ) {
 $rate_text = $rate ? ucfirst( implode( ', ', $rate ) ) . '.' : ( $r['pricing_factors'] ? 'Price depends on: ' . rtrim( $r['pricing_factors'], '.' ) . '.' : '' );
 
 $faq = ccq_rows( $r['faq'], 'faq' );
+if ( empty( $r['sample'] ) && $faq ) {
+	/* Verified sites only: FAQPage structured data (printed by the SEO module). */
+	foreach ( $faq as $f ) {
+		$GLOBALS['cgs_faq_seen'][] = array( 'q' => $f[0], 'a' => $f[1] );
+	}
+}
 $others = ccq_sites( $r['id'] );
 
 /* Surroundings cards: the Nearby places list, or estates / expressways / daily needs as a fallback.
