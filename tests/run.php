@@ -120,7 +120,7 @@ if ( 'activate-request' !== $SCEN ) {
 	$hd = call_user_func( $GLOBALS['SC']['cgs_header'], array(), '', 'cgs_header' );
 	$ft = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'logo' => '999' ), '', 'cgs_footer' );
 	$cu = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'logo' => '42' ), '', 'cgs_footer' );
-	{
+	if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) { // only when the suite's own Sections module is loaded
 		check( 'header default logo = since-1991 white', false !== strpos( $hd, 'Concepts-Group-Logo-since-1991-white.webp' ) );
 		check( 'old white logo picked in WPBakery swaps to new', false !== strpos( $ft, 'Concepts-Group-Logo-since-1991-white.webp' ) && false === strpos( $ft, 'Concepts-Group-White-Logo.webp' ) );
 		check( 'custom logo picked in WPBakery is kept', false !== strpos( $cu, 'i42.jpg' ) );
