@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.36.0' );
+define( 'CGS_VERSION', '1.36.1' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -237,12 +237,12 @@ body.cgs-site #lqd-site-content .cgs-hero h1.cgs-hero-h{margin:0;font-family:var
 .cgs-hero-sky .cgs-hero-txt{max-width:min(48vw,820px)}
 .cgs-hero-sky .cgs-hero-lead{max-width:min(40vw,640px)}
 .cgs-hero-sky .cgs-sky-scene{position:absolute;right:0;bottom:0;width:58vw;height:100%;z-index:2;pointer-events:none}
-.cgs-hero-sky .cgs-sky-bld{position:absolute;right:-3vw;bottom:clamp(24px,2.4vw,48px);width:42vw;max-width:none;height:auto;display:block;filter:drop-shadow(0 30px 40px rgba(7,26,51,.18))}
-.cgs-hero-sky .cgs-sky-team{position:absolute;right:12vw;bottom:0;width:35vw;max-width:none;height:auto;display:block;filter:drop-shadow(0 24px 30px rgba(7,26,51,.28))}
-.cgs-hero-sky .cgs-hero-chip{top:auto;bottom:58%;right:4vw;pointer-events:auto}
-.cgs-hero-sky .cgs-hero-enq{left:auto;right:42vw;bottom:clamp(120px,11vw,190px);pointer-events:auto}
+.cgs-hero-sky .cgs-sky-bld{position:absolute;right:-4vw;bottom:clamp(24px,2.4vw,48px);width:50vw;max-width:none;height:auto;display:block;filter:drop-shadow(0 30px 40px rgba(7,26,51,.18))}
+.cgs-hero-sky .cgs-sky-team{position:absolute;right:7vw;bottom:0;height:77%;width:auto;max-width:none;display:block;filter:drop-shadow(0 24px 30px rgba(7,26,51,.28))}
+.cgs-hero-sky .cgs-hero-enq{left:auto;right:2vw;bottom:24%;pointer-events:auto}
+@media(min-width:1025px) and (max-width:1320px){.cgs-hero-sky .cgs-sky-team{height:74%;right:3vw}.cgs-hero-sky .cgs-hero-txt{max-width:46vw}}
 .cgs-hero-sky .cgs-hb2{border-color:#d6e4f5;box-shadow:0 12px 28px -14px rgba(7,26,51,.35)}
-@media(max-width:1024px){body .cgs-hero.cgs-hero-sky{min-height:0;flex-direction:column;align-items:stretch;padding-bottom:0}.cgs-hero-sky::before{background:linear-gradient(180deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.7) 45%,rgba(255,255,255,0) 70%)}.cgs-hero-sky .cgs-hero-txt,.cgs-hero-sky .cgs-hero-lead{max-width:none}.cgs-hero-sky .cgs-sky-scene{position:relative;width:100%;height:auto;aspect-ratio:5/4;margin-top:clamp(24px,5vw,40px)}.cgs-hero-sky .cgs-sky-bld{right:-6%;bottom:14%;width:84%}.cgs-hero-sky .cgs-sky-team{right:auto;left:2%;bottom:0;width:70%}.cgs-hero-sky .cgs-hero-chip{bottom:auto;top:4%;right:4%}.cgs-hero-sky .cgs-hero-enq{right:auto;left:4%;bottom:auto;top:10%}}
+@media(max-width:1024px){body .cgs-hero.cgs-hero-sky{min-height:0;flex-direction:column;align-items:stretch;padding-bottom:0}.cgs-hero-sky::before{background:linear-gradient(180deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.7) 45%,rgba(255,255,255,0) 70%)}.cgs-hero-sky .cgs-hero-txt,.cgs-hero-sky .cgs-hero-lead{max-width:none}.cgs-hero-sky .cgs-sky-scene{position:relative;width:100%;height:auto;aspect-ratio:5/4;margin-top:clamp(24px,5vw,40px)}.cgs-hero-sky .cgs-sky-bld{right:-6%;bottom:14%;width:84%}.cgs-hero-sky .cgs-sky-team{right:auto;left:2%;bottom:0;width:70%;height:auto}.cgs-hero-sky .cgs-hero-enq{left:auto;right:4%;bottom:auto;top:8%}}
 @media(max-width:767px){.cgs-hero-sky .cgs-hero-enq{display:none}.cgs-hero-sky .cgs-sky-scene{aspect-ratio:1/1}.cgs-hero-sky .cgs-sky-team{width:92%;left:-4%}.cgs-hero-sky .cgs-sky-bld{width:96%;right:-12%;bottom:22%}}
 @media(max-width:1024px){.cgs-hero-story .cgs-hero-in{grid-template-columns:1fr}.cgs-hero-story .cgs-hero-txt{padding:clamp(48px,8vw,72px) 6vw clamp(12px,2.5vw,20px)}.cgs-hero-story .cgs-hero-vis{margin:clamp(12px,2vw,20px) 6vw 0;min-height:0}.cgs-hero-story .cgs-hero-work{position:static;height:auto;aspect-ratio:3/2}}
 @media(min-width:768px) and (max-width:1024px){.cgs-hero-story .cgs-hero-work{aspect-ratio:2.2/1}}
@@ -585,7 +585,6 @@ add_shortcode( 'cgs_hero', function ( $atts ) {
 <div class="cgs-sky-scene">
 <img class="cgs-sky-bld" src="<?php echo esc_url( cgs_media_url( $a['bldc'], CGS_HERO_DEF['bldc'] ) ); ?>" alt="Concepts Group worker accommodation building" width="1328" height="1078" fetchpriority="high">
 <img class="cgs-sky-team" src="<?php echo esc_url( cgs_media_url( $a['team'], CGS_HERO_DEF['team'] ) ); ?>" alt="Concepts Group team" width="1448" height="1086">
-<div class="cgs-hero-chip"><b><?php echo esc_html( $a['chip'] ); ?></b><span><?php echo esc_html( $a['chips'] ); ?></span></div>
 <a class="cgs-hero-enq" href="<?php echo $u( '' !== trim( (string) $a['enqu'] ) ? $a['enqu'] : $a['u1'] ); ?>"><small><?php echo esc_html( $a['enq'] ); ?></small><b><?php echo esc_html( $a['enqb'] ); ?></b></a>
 </div>
 <?php else : ?>

@@ -137,7 +137,13 @@ if ( 'activate-request' !== $SCEN ) {
 		$cls = call_user_func( $GLOBALS['SC']['cgs_hero'], array( 'style' => 'classic' ), '', 'cgs_hero' );
 		check( 'hero default = sky style', false !== strpos( $sky, 'cgs-hero cgs-hero-sky' ) );
 		check( 'sky hero uses sky, building and team images', false !== strpos( $sky, '1472.webp' ) && false !== strpos( $sky, 'Concept-Group-Hostel.webp' ) && false !== strpos( $sky, 'Natural-two-man-portrait-corrected-perspective.webp' ) );
-		check( 'sky hero keeps H1, buttons, stats, cards, wave', false !== strpos( $sky, '<h1 class="cgs-hero-h"' ) && false !== strpos( $sky, 'cgs-hb1' ) && false !== strpos( $sky, 'cgs-hero-stats' ) && false !== strpos( $sky, 'cgs-hero-chip' ) && false !== strpos( $sky, 'cgs-hero-enq' ) && false !== strpos( $sky, 'cgs-hero-wave' ) );
+		check( 'sky hero keeps H1, buttons, stats, enquiry card, wave', false !== strpos( $sky, '<h1 class="cgs-hero-h"' ) && false !== strpos( $sky, 'cgs-hb1' ) && false !== strpos( $sky, 'cgs-hero-stats' ) && false !== strpos( $sky, 'cgs-hero-enq' ) && false !== strpos( $sky, 'cgs-hero-wave' ) );
+		check( 'sky hero has no "Since 1991" chip (2.1.1)', false === strpos( $sky, 'cgs-hero-chip' ) );
+		check( 'classic hero still has its chip', false !== strpos( $cls, 'cgs-hero-chip' ) );
+		check( 'sky team sized by hero height (heads in top 30%)', (bool) preg_match( '/\.cgs-hero-sky \.cgs-sky-team\{[^}]*height:7[6-9]%;width:auto/', cgs_hero_css() ) );
+		check( 'sky building larger (50vw)', false !== strpos( cgs_hero_css(), '.cgs-sky-bld{position:absolute;right:-4vw;bottom:clamp(24px,2.4vw,48px);width:50vw;' ) );
+		check( 'tablet team not stretched (height:auto)', false !== strpos( cgs_hero_css(), 'width:70%;height:auto}' ) );
+		check( 'sky enquiry card on the right', (bool) preg_match( '/\.cgs-hero-sky \.cgs-hero-enq\{left:auto;right:[0-9.]+vw/', cgs_hero_css() ) && false === strpos( cgs_hero_css(), 'right:42vw' ) );
 		check( 'classic style restores the old hero', false !== strpos( $cls, 'cgs-hero-arch' ) && false === strpos( $cls, 'cgs-hero-sky' ) );
 		check( 'sky hero CSS present (desktop + mobile)', false !== strpos( cgs_hero_css(), '.cgs-hero-sky .cgs-sky-team{' ) && false !== strpos( cgs_hero_css(), '@media(max-width:1024px){body .cgs-hero.cgs-hero-sky{' ) );
 		check( 'homepage hero H1 = max(24px,min(6cqw,52px))', (bool) preg_match( '/\.cgs-hero h1\.cgs-hero-h\{margin:0;[^}]*font-size:max\(24px,min\(6cqw,52px\)\)\}/', cgs_hero_css() ) );
