@@ -93,6 +93,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.2.4** (2026-10-27): Hero eyebrow default "Workforce · Since 1991"; header button default "Get in touch"; Sky hero bottom padding slightly shorter (clamp(130px,13vw,220px)). Sections 1.37.4.
 - **2.2.3** (2026-10-27): Sky hero readability: H1 tracking -.02em / line-height 1.1, darker blue H1 line (4.4:1) and button (5.0:1), eyebrow accent line, lead capped at 520px, fixed px spacing rhythm, stats with short divider; stronger text fade; bottom padding halfway (clamp(140px,14vw,240px)). Sections 1.37.3.
 - **2.2.2** (2026-10-27): Sky hero: more bottom padding on desktop (clamp(170px,16vw,280px)) so the text has room above the wave. Sections 1.37.2.
 - **2.2.1** (2026-10-27): Sky hero wave redrawn so the layers vary in thickness (each curve has its own rhythm); taller wave. Sections 1.37.1.

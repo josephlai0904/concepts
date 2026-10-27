@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.37.3' );
+define( 'CGS_VERSION', '1.37.4' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -232,7 +232,7 @@ body.cgs-site #lqd-site-content .cgs-hero h1.cgs-hero-h{margin:0;font-family:var
 /* Sky hero (2.1.0): sky background, building + people cutouts on the right, text on a soft white fade. */
 .cgs-hero.cgs-hero-sky{background:#eaf4ff var(--cgs-sky,none) center 30%/cover no-repeat;min-height:clamp(620px,47vw,900px);align-items:center}
 .cgs-hero-sky::after{display:none}
-body .cgs-hero.cgs-hero-sky{padding-bottom:clamp(140px,14vw,240px)}
+body .cgs-hero.cgs-hero-sky{padding-bottom:clamp(130px,13vw,220px)}
 /* Readability (2.2.3): calmer heading tracking, darker blues for contrast, fixed px spacing rhythm, tighter text column. */
 body.cgs-site #lqd-site-content .cgs-hero-sky h1.cgs-hero-h{letter-spacing:-.02em;line-height:1.1}
 .cgs-hero-sky .cgs-hero-h em{color:#0b6fd1}
@@ -459,7 +459,7 @@ add_action( 'vc_before_init', function () {
 			array( 'type' => 'textfield', 'heading' => 'Logo alt text', 'param_name' => 'logo_alt', 'value' => 'Concepts Group, Total HR Solution', 'group' => 'Brand' ),
 			array( 'type' => 'textfield', 'heading' => 'Logo link', 'param_name' => 'logo_url', 'value' => '/', 'group' => 'Brand' ),
 			array( 'type' => 'dropdown', 'heading' => 'Menu (Appearance > Menus)', 'param_name' => 'menu', 'group' => 'Menu', 'value' => cgs_menu_choices(), 'description' => 'Edit items under Appearance > Menus. Sub-items become the dropdown.' ),
-			array( 'type' => 'textfield', 'heading' => 'Button text', 'param_name' => 'btn_text', 'value' => 'Get a quote', 'group' => 'Button' ),
+			array( 'type' => 'textfield', 'heading' => 'Button text', 'param_name' => 'btn_text', 'value' => 'Get in touch', 'group' => 'Button' ),
 			array( 'type' => 'textfield', 'heading' => 'Button link', 'param_name' => 'btn_url', 'value' => '/#contact', 'group' => 'Button' ),
 			array( 'type' => 'textfield', 'heading' => 'Phone label (empty number hides it)', 'param_name' => 'phone_label', 'value' => 'For enquiry', 'group' => 'Button' ),			array( 'type' => 'textfield', 'heading' => 'Phone number', 'param_name' => 'phone', 'value' => '+603-3318 7773', 'group' => 'Button' ),
 		),
@@ -469,7 +469,7 @@ add_action( 'vc_before_init', function () {
 add_shortcode( 'cgs_header', function ( $atts ) {
 	$a = shortcode_atts( array(
 		'logo' => '', 'logo_alt' => 'Concepts Group, Total HR Solution', 'logo_url' => '/', 'menu' => '',
-		'phone_label' => 'For enquiry', 'phone' => '+603-3318 7773', 'btn_text' => 'Get a quote', 'btn_url' => '/#contact',
+		'phone_label' => 'For enquiry', 'phone' => '+603-3318 7773', 'btn_text' => 'Get in touch', 'btn_url' => '/#contact',
 	), $atts, 'cgs_header' );
 
 	$menu = cgs_menu_items( (int) $a['menu'] );
@@ -538,7 +538,7 @@ add_shortcode( 'cgs_header', function ( $atts ) {
  *    Page content: [vc_row full_width="stretch_row" el_class="cgs-row"][vc_column][cgs_hero][/vc_column][/vc_row]
  * ---------------------------------------------------------------- */
 define( 'CGS_HERO_DEF', array(
-	'eyebrow' => 'Workforce · Accommodation · Since 1991',
+	'eyebrow' => 'Workforce · Since 1991',
 	'h1' => 'Powering industry through', 'h2' => 'workforce solutions',
 	'lead' => 'From workforce recruitment to accommodation and workforce management, Concepts Group provides integrated solutions that help businesses build, support and manage a reliable workforce.',
 	'b1' => 'Talk to our team', 'u1' => '/#contact', 'b2' => 'Explore our solutions', 'u2' => '/#services',
