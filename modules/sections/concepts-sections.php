@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.40.0' );
+define( 'CGS_VERSION', '1.40.1' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -140,6 +140,12 @@ html.cgs-menu-open,html.cgs-menu-open body{overflow:hidden}
 .cgs-hd .cgs-dd-menu a{padding:8px 0}
 .cgs-hd .cgs-subt:after{display:none}
 .cgs-hd .cgs-sub-menu{position:static;min-width:0;opacity:1;visibility:visible;transform:none;padding:0 0 0 12px}
+.cgs-hd nav .cgs-dd-menu{padding:2px 0 12px 2px}
+.cgs-hd nav .cgs-dd-menu>a{padding:10px 0;font-size:16px;font-weight:500;color:#3f536d;white-space:normal}
+.cgs-hd nav .cgs-dd-menu a.cgs-subt{padding:14px 0 6px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0b6fd1}
+.cgs-hd nav .cgs-sub-menu{margin:2px 0 6px 2px;padding:0 0 0 14px;border-left:2px solid #e6edf5}
+.cgs-hd nav .cgs-sub-menu a{padding:9px 0;font-size:15px;font-weight:500;color:#3f536d;white-space:normal}
+.cgs-hd nav .cgs-dd-menu a:not(.cgs-btn):hover{background:none;color:var(--cgs-navy,#071A33)}
 }
 CSS;
 }
@@ -2302,13 +2308,10 @@ body.cgs-site #lqd-site-content .cgs-pr h3.cgs-pr-h{margin:0;color:#fff;text-tra
 body.cgs-site #lqd-site-content .cgs-pr h3.cgs-pr-h em{font-style:normal;color:var(--cgs-blue,#91c9e2)}
 .cgs-pr-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,.7vw,10px)}
 .cgs-pr-card{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:clamp(200px,17vw,250px);padding:clamp(22px,2vw,28px) clamp(20px,1.9vw,26px) clamp(24px,2.1vw,30px);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);border-radius:clamp(18px,1.8vw,24px);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .35s,border-color .35s,transform .35s}
-.cgs-pr-card:hover{background:#fff;border-color:#fff;transform:translateY(-6px)}
 .cgs-pr-num{display:grid;place-items:center;width:clamp(48px,4vw,56px);height:clamp(48px,4vw,56px);border-radius:50%;background:var(--cgs-blue,#91c9e2);color:#fff;font:700 clamp(16px,1.2vw,18px) var(--cgs-fh,'Bricolage Grotesque',sans-serif);letter-spacing:-.02em}
 body.cgs-site #lqd-site-content .cgs-pr h4.cgs-pr-t{margin:clamp(22px,2.4vw,34px) 0 8px;color:#fff;transition:color .35s}
 .cgs-pr-card p{margin:0;font-size:clamp(14px,.95vw,15px);line-height:1.55;color:#d4e3f6;transition:color .35s}
-body.cgs-site #lqd-site-content .cgs-pr-card:hover h4.cgs-pr-t{color:var(--cgs-navy,#071A33)}
-.cgs-pr-card:hover p{color:var(--cgs-mute,#5d6d84)}
-.cgs-pr.cgs-js .cgs-rv{opacity:0}
+body.cgs-site #lqd-site-content .cgs-pr.cgs-js .cgs-rv{opacity:0}
 .cgs-pr.cgs-js .cgs-rv.in{opacity:1;animation:cgsRv .8s var(--d,0s) cubic-bezier(.2,.7,.2,1) backwards}
 @media(max-width:1024px){.cgs-pr{}.cgs-pr-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cgs-pr-card{min-height:0}}
 @media(max-width:767px){.cgs-pr-in{padding:0 6vw}body.cgs-site #lqd-site-content .cgs-pr h2.cgs-pr-eb{gap:2.4vw;margin-bottom:3vw}.cgs-pr-grid{grid-template-columns:1fr}body.cgs-site #lqd-site-content .cgs-pr h4.cgs-pr-t{margin-top:18px}}

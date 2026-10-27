@@ -93,6 +93,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.5.1** (2026-10-27): Phone menu hierarchy: group labels small blue caps, pages 15-16px grey with a guide line. Our Approach cards: hover lift/colour change removed. Sections 1.40.1.
 - **2.5.0** (2026-10-27): Phone header: menu toggle left (animates to X), logo centre, round arrow button right (Get in touch link); full-screen white panel slides down from the top behind the header bar, page scroll locked while open, Esc closes. Homepage CLQ buttons link to the matching published property page ("View property"), falling back to Enquire us. Contact band: inner padding inside the panel. Sections 1.40.0.
 - **2.4.2** (2026-10-27): Workers parallax gentler (0.12 of scroll, max 12% of the workers height: ~72px desktop, ~31px phone). Phone hero scene shorter (5/4) with the building sitting on the wave (no empty sky). Sections 1.39.2.
 - **2.4.1** (2026-10-27): CLQ map scroll-wheel zoom OFF (zoom with +/-, double-click, pinch). Homepage contact band: blue-grey (#eef3f9) behind the panel, panel insets to the footer card edges (5vw / 6vw phone) with the same corner radius. Sections 1.39.1, CLQ Sites 1.7.5.
