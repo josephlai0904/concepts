@@ -165,6 +165,12 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'readability: fixed spacing scale (px, not vw) for eyebrow/lead/buttons/stats', false !== strpos( $hc, 'body.cgs-site #lqd-site-content .cgs-hero-sky h2.cgs-hero-eb{margin:0 0 18px' ) && false !== strpos( $hc, '.cgs-hero-sky .cgs-hero-lead{margin:22px 0 32px;max-width:520px' ) && false !== strpos( $hc, '.cgs-hero-sky .cgs-hero-stats{width:fit-content;max-width:100%;margin-top:40px;padding-top:24px;border-top:1px solid' ) );
 		check( 'readability: primary button text passes 4.5:1 (darker blue)', false !== strpos( $hc, '.cgs-hero-sky .cgs-hb1{background:#0b6fd1;border-color:#0b6fd1}' ) );
 		$hdr = call_user_func( $GLOBALS['SC']['cgs_header'], array(), '', 'cgs_header' );
+		// 2.4.3: phone header = toggle left, logo centre, arrow button right; full-screen white panel slides from top.
+		check( 'phone header: arrow button + slide panel in markup', false !== strpos( $hdr, 'class="cgs-mgo"' ) && false !== strpos( $hdr, 'class="cgs-mpanel"' ) );
+		$hcss = cgs_header_css();
+		check( 'phone header: 3-column grid (toggle | logo | arrow)', false !== strpos( $hcss, '.cgs-hd .cgs-bar{display:grid;grid-template-columns:44px 1fr 44px;' ) && false !== strpos( $hcss, '.cgs-hd .cgs-burger{display:grid;grid-column:1;grid-row:1;justify-self:start' ) && false !== strpos( $hcss, '.cgs-hd .cgs-mgo{display:grid;grid-column:3' ) );
+		check( 'phone header: white panel slides down from the top behind the bar', false !== strpos( $hcss, '.cgs-hd .cgs-mpanel{display:block;position:fixed;inset:0;z-index:-1;background:#fff;transform:translateY(-100%)' ) && false !== strpos( $hcss, '.cgs-hd.mo .cgs-mpanel{transform:none' ) );
+		check( 'phone header: script opens/closes panel, locks page scroll, Esc closes', false !== strpos( cgs_header_js(), "h.classList.toggle('mo'" ) && false !== strpos( cgs_header_js(), 'cgs-menu-open' ) && false !== strpos( cgs_header_js(), "'Escape'" ) );
 		check( 'header button default = Get in touch', false !== strpos( $hdr, 'Get in touch' ) && false === strpos( $hdr, 'Get a quote' ) );
 		check( 'hero eyebrow default = Workforce · Since 1991', false !== strpos( $sky, '>Workforce · Since 1991</h2>' ) );
 		// 2.4.2: gentler parallax; phone scene without empty sky under the building.
@@ -216,6 +222,17 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'contact band: panel lines up with the footer card (5vw desktop / 6vw phone)', false !== strpos( $cc, '--cgs-ctx:calc(var(--cgs-ctp,1) * 5vw)' ) && false !== strpos( $cc, '--cgs-ctx:calc(var(--cgs-ctp,1) * 6vw)' ) );
 		check( 'contact band: same corner radius as the footer card', false !== strpos( $cc, '--cgs-ctr:calc(var(--cgs-ctp,1) * clamp(20px,2vw,32px))' ) );
 		check( 'footer: classic style restores old footer', false === strpos( $ftC, 'cgs-ft2' ) && false !== strpos( $ftC, 'cgs-ft-cols' ) );
+	}
+
+	// 2.4.3: homepage CLQ buttons -> property pages; contact band inner padding; phone menu has no card shadow.
+	if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) && empty( $GLOBALS['cg_suite_skipped']['clq-sites'] ) ) {
+		foreach ( get_posts( array( 'post_type' => 'ccq_site', 'post_status' => 'any' ) ) as $sp ) { $sp->post_status = 'publish'; }
+		$cq = call_user_func( $GLOBALS['SC']['cgs_clq'], array(), '', 'cgs_clq' );
+		check( 'home CLQ: each button links to its property page and says "View property"', false !== strpos( $cq, '/x/shah-alam/' ) && false !== strpos( $cq, '/x/jenjarom/' ) && substr_count( $cq, '>View property<' ) >= 4 );
+		$cq2 = call_user_func( $GLOBALS['SC']['cgs_clq'], array( 'locations' => rawurlencode( wp_json_encode( array( array( 'name' => 'Nowhere Town', 'desc' => 'x' ) ) ) ) ), '', 'cgs_clq' );
+		check( 'home CLQ: no matching property page -> falls back to Enquire us / contact', false !== strpos( $cq2, '>Enquire us<' ) && false !== strpos( $cq2, '/contact/' ) );
+		check( 'contact band: inner padding inside the panel', false !== strpos( cgs_cta_css(), '.cgs-ct.cgs-ct-float .cgs-ct-in{padding-left:calc(var(--cgs-ctx) + clamp(20px,4vw,56px));padding-right:calc(var(--cgs-ctx) + clamp(20px,4vw,56px))}' ) );
+		check( 'phone menu: no leftover card radius/shadow', false !== strpos( cgs_header_css(), 'font-size:22px;font-weight:600;overflow-y:auto;opacity:0;transform:translateY(-12px);border-radius:0;box-shadow:none;max-height:none}' ) );
 	}
 
 	// Enquiry endpoint

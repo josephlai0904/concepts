@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.39.2' );
+define( 'CGS_VERSION', '1.40.0' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -87,6 +87,8 @@ body:has(.cgs-hero) #header:has(.cgs-hd){height:0!important;min-height:0!importa
 .cgs-hd .cgs-btn:hover{background:var(--cgs-navy,#071A33);border-color:var(--cgs-navy,#071A33);color:#fff}
 .cgs-hd .cgs-btn:hover:after{transform:translate(5px,0)}
 .cgs-hd .cgs-nm{display:none}
+.cgs-hd .cgs-mpanel,.cgs-hd .cgs-mgo{display:none}
+html.cgs-menu-open,html.cgs-menu-open body{overflow:hidden}
 .cgs-hd .cgs-burger{display:none;justify-self:end;background:#fff;color:var(--cgs-blue-d,#0b6fd1);border:0;width:clamp(38px,3vw,44px);height:clamp(38px,3vw,44px);border-radius:50%;font-size:clamp(15px,1.1vw,18px);cursor:pointer;line-height:1;padding:0}
 .cgs-hd .cgs-dd{position:relative;display:flex;align-items:center}
 .cgs-hd .cgs-ddt{display:inline-flex;align-items:center}
@@ -111,14 +113,25 @@ body:has(.cgs-hero) #header:has(.cgs-hd){height:0!important;min-height:0!importa
 @media(max-width:1024px){.cgs-hd .cgs-bar{width:calc(100% - 12vw)}}
 @media(max-width:1200px){.cgs-hd .cgs-ph{display:none}.cgs-hd nav{gap:18px;font-size:.88rem}}
 @media(max-width:900px){
-.cgs-hd .cgs-bar{display:flex;justify-content:space-between;width:calc(100% - 12vw);padding:0 10px 0 16px}
-.cgs-hd .cgs-lg{order:-1}
+.cgs-hd .cgs-bar{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px;width:calc(100% - 12vw);padding:0 8px}
+.cgs-hd .cgs-lg{order:0;grid-column:2;grid-row:1;justify-self:center}
 .cgs-hd .cgs-hr{display:none}
-.cgs-hd .cgs-burger{display:block}
-.cgs-hd nav{position:absolute;top:calc(100% + 10px);left:0;right:0;background:#fff;color:var(--cgs-navy,#071A33);flex-direction:column;align-items:stretch;justify-content:flex-start;gap:14px;padding:20px;display:none;border-radius:22px;box-shadow:0 20px 40px rgba(7,26,51,.2);font-size:15px;max-height:calc(100vh - var(--cgs-hd-h) - 20px);overflow-y:auto}
-.cgs-hd nav.open{display:flex}
+.cgs-hd .cgs-burger{display:grid;grid-column:1;grid-row:1;justify-self:start;place-items:center;width:40px;height:40px}
+.cgs-hd .cgs-bi{position:relative;display:block;width:16px;height:12px}
+.cgs-hd .cgs-bi i{position:absolute;left:0;width:100%;height:2px;border-radius:2px;background:currentColor;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .2s}
+.cgs-hd .cgs-bi i:nth-child(1){top:0}.cgs-hd .cgs-bi i:nth-child(2){top:5px}.cgs-hd .cgs-bi i:nth-child(3){top:10px}
+.cgs-hd.mo .cgs-bi i:nth-child(1){transform:translateY(5px) rotate(45deg)}.cgs-hd.mo .cgs-bi i:nth-child(2){opacity:0}.cgs-hd.mo .cgs-bi i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+.cgs-hd .cgs-mgo{display:grid;grid-column:3;grid-row:1;justify-self:end;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;color:var(--cgs-blue-d,#0b6fd1);transition:transform .3s}
+.cgs-hd .cgs-mgo:hover{transform:translateX(2px)}
+.cgs-hd .cgs-mpanel{display:block;position:fixed;inset:0;z-index:-1;background:#fff;transform:translateY(-100%);visibility:hidden;transition:transform .55s cubic-bezier(.7,0,.2,1),visibility 0s .55s}
+.cgs-hd.mo .cgs-mpanel{transform:none;visibility:visible;transition:transform .55s cubic-bezier(.7,0,.2,1),visibility 0s}
+.cgs-hd nav{position:fixed;top:calc(var(--cgs-hd-h,72px) + 24px);left:6vw;right:6vw;bottom:24px;background:none;color:var(--cgs-navy,#071A33);flex-direction:column;align-items:stretch;justify-content:flex-start;gap:6px;padding:0;display:none;font-size:22px;font-weight:600;overflow-y:auto;opacity:0;transform:translateY(-12px);border-radius:0;box-shadow:none;max-height:none}
+.cgs-hd nav.open{display:flex;animation:cgsNavIn .45s .2s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes cgsNavIn{to{opacity:1;transform:none}}
+.cgs-hd nav>a:not(.cgs-btn),.cgs-hd nav .cgs-ddt{padding:12px 0;border-bottom:1px solid #e6edf5}
+.cgs-hd nav .cgs-dd-menu{font-size:16px;font-weight:500}
 .cgs-hd nav a:not(.cgs-btn):hover{color:var(--cgs-blue,#1e90ff)}
-.cgs-hd .cgs-nm{display:inline-flex;justify-content:center;margin-top:4px;background:var(--cgs-blue,#1e90ff);color:#fff;border-color:var(--cgs-blue,#1e90ff)}
+.cgs-hd .cgs-nm{display:inline-flex;justify-content:center;margin-top:18px;padding:15px 22px;font-size:16px;background:var(--cgs-blue-d,#0b6fd1);color:#fff;border-color:var(--cgs-blue-d,#0b6fd1)}
 .cgs-hd .cgs-dd{flex-direction:column;align-items:stretch}
 .cgs-hd .cgs-dd-menu{position:static;min-width:0;opacity:1;visibility:visible;transform:none;filter:none;padding:6px 0 0 12px;display:none}
 .cgs-hd .cgs-dd.open .cgs-dd-menu,.cgs-hd .cgs-dd.open:hover .cgs-dd-menu{display:block}
@@ -415,9 +428,12 @@ function cgs_header_js() {
 (function(){var h=document.getElementById('cgs-hd');if(!h||h.dataset.init)return;h.dataset.init=1;
 var n=h.querySelector('nav'),b=h.querySelector('.cgs-burger'),m=function(){return matchMedia('(max-width:900px)').matches};
 function s(){h.classList.toggle('s',scrollY>60)}addEventListener('scroll',s,{passive:true});s();
-b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o)});
+function set(o){n.classList.toggle('open',o);h.classList.toggle('mo',o);document.documentElement.classList.toggle('cgs-menu-open',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Close menu':'Menu')}
+b.addEventListener('click',function(){set(!h.classList.contains('mo'))});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&h.classList.contains('mo'))set(false)});
+addEventListener('resize',function(){if(!m()&&h.classList.contains('mo'))set(false)});
 h.querySelectorAll('.cgs-ddt').forEach(function(a){a.addEventListener('click',function(e){if(m()){e.preventDefault();a.parentNode.classList.toggle('open')}})});
-h.querySelectorAll('nav a:not(.cgs-ddt)').forEach(function(a){a.addEventListener('click',function(){n.classList.remove('open')})});})();
+h.querySelectorAll('nav a:not(.cgs-ddt)').forEach(function(a){a.addEventListener('click',function(){set(false)})});})();
 JS;
 }
 
@@ -531,7 +547,7 @@ add_shortcode( 'cgs_header', function ( $atts ) {
 	wp_enqueue_script( 'cgs-header' );
 
 	ob_start(); ?>
-<div class="cgs-hd" id="cgs-hd"><div class="cgs-bar">
+<div class="cgs-hd" id="cgs-hd"><div class="cgs-mpanel" aria-hidden="true"></div><div class="cgs-bar">
 <nav id="cgs-nav" aria-label="Primary">
 <?php foreach ( $menu as $it ) :
 	$label = isset( $it['label'] ) ? $it['label'] : '';
@@ -573,7 +589,8 @@ add_shortcode( 'cgs_header', function ( $atts ) {
 <?php if ( '' !== trim( (string) $a['phone'] ) ) : ?><a class="cgs-ph" href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $a['phone'] ) ); ?>"><small><?php echo esc_html( $a['phone_label'] ); ?></small><b><?php echo esc_html( $a['phone'] ); ?></b></a><?php endif; ?>
 <a class="cgs-btn" href="<?php echo $u( $a['btn_url'] ); ?>"><?php echo esc_html( $a['btn_text'] ); ?></a>
 </div>
-<button class="cgs-burger" type="button" aria-label="Menu" aria-controls="cgs-nav" aria-expanded="false">&#9776;</button>
+<button class="cgs-burger" type="button" aria-label="Menu" aria-controls="cgs-nav" aria-expanded="false"><span class="cgs-bi" aria-hidden="true"><i></i><i></i><i></i></span></button>
+<a class="cgs-mgo" href="<?php echo $u( $a['btn_url'] ); ?>" aria-label="<?php echo esc_attr( $a['btn_text'] ); ?>"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </div></div>
 	<?php
 	return ob_get_clean();
@@ -2195,6 +2212,15 @@ add_action( 'vc_before_init', function () {
 	) );
 } );
 
+/* Published CLQ property page whose slug matches a location name ("Shah Alam" -> /properties/shah-alam/), or ''. */
+function cgs_clq_site_url( $name ) {
+	if ( ! function_exists( 'ccq_get' ) ) {
+		return '';
+	}
+	$p = get_page_by_path( sanitize_title( (string) $name ), OBJECT, 'ccq_site' );
+	return ( $p && 'publish' === $p->post_status ) ? (string) get_permalink( $p ) : '';
+}
+
 add_shortcode( 'cgs_clq', function ( $atts ) {
 	$d    = cgs_clq_defaults();
 	$a    = shortcode_atts( $d, $atts, 'cgs_clq' );
@@ -2239,7 +2265,7 @@ add_shortcode( 'cgs_clq', function ( $atts ) {
 	$img = cgs_media_url( isset( $l['image'] ) ? $l['image'] : '', $fallback_img ); ?>
 <div class="cgs-cq-item<?php echo 0 === $i ? ' on' : ''; ?>">
 <button type="button" class="cgs-cq-hd" id="cgs-cq-t<?php echo (int) $i; ?>" aria-controls="cgs-cq-p<?php echo (int) $i; ?>" aria-expanded="<?php echo 0 === $i ? 'true' : 'false'; ?>"><span><?php echo esc_html( $l['name'] ); ?></span><i aria-hidden="true"></i></button>
-<div class="cgs-cq-pn" id="cgs-cq-p<?php echo (int) $i; ?>" role="region" aria-labelledby="cgs-cq-t<?php echo (int) $i; ?>"><div class="cgs-cq-pi"><div class="cgs-cq-tx"><p><?php echo esc_html( isset( $l['desc'] ) ? $l['desc'] : '' ); ?></p><a class="cgs-cq-btn" href="<?php echo $u( ! empty( $l['url'] ) ? $l['url'] : $a['btn_url'] ); ?>"><?php echo esc_html( $a['btn_text'] ); ?><b style="--cgs-ic:url('<?php echo esc_url( $icon ); ?>')"><span></span></b></a></div><div class="cgs-cq-th" style="--cgs-img:url('<?php echo esc_url( $img ); ?>')"></div></div></div>
+<div class="cgs-cq-pn" id="cgs-cq-p<?php echo (int) $i; ?>" role="region" aria-labelledby="cgs-cq-t<?php echo (int) $i; ?>"><div class="cgs-cq-pi"><div class="cgs-cq-tx"><p><?php echo esc_html( isset( $l['desc'] ) ? $l['desc'] : '' ); ?></p><?php $site_url = empty( $l['url'] ) ? cgs_clq_site_url( $l['name'] ) : ''; ?><a class="cgs-cq-btn" href="<?php echo $site_url ? esc_url( $site_url ) : $u( ! empty( $l['url'] ) ? $l['url'] : $a['btn_url'] ); ?>"><?php echo esc_html( $site_url ? 'View property' : $a['btn_text'] ); ?><b style="--cgs-ic:url('<?php echo esc_url( $icon ); ?>')"><span></span></b></a></div><div class="cgs-cq-th" style="--cgs-img:url('<?php echo esc_url( $img ); ?>')"></div></div></div>
 </div>
 <?php endforeach; ?>
 </div>
@@ -2558,6 +2584,7 @@ function cgs_cta_css() {
 .cgs-ct.cgs-ct-float{background:#eef3f9;--cgs-ctx:calc(var(--cgs-ctp,1) * 5vw);--cgs-ctr:calc(var(--cgs-ctp,1) * clamp(20px,2vw,32px))}
 .cgs-ct.cgs-ct-float .cgs-ct-bg,.cgs-ct.cgs-ct-float:before{left:var(--cgs-ctx);right:var(--cgs-ctx);border-radius:var(--cgs-ctr)}
 .cgs-ct.cgs-ct-float:after{left:var(--cgs-ctx);right:var(--cgs-ctx);border-radius:0 0 var(--cgs-ctr) var(--cgs-ctr)}
+.cgs-ct.cgs-ct-float .cgs-ct-in{padding-left:calc(var(--cgs-ctx) + clamp(20px,4vw,56px));padding-right:calc(var(--cgs-ctx) + clamp(20px,4vw,56px))}
 @media(max-width:767px){.cgs-ct.cgs-ct-float{--cgs-ctx:calc(var(--cgs-ctp,1) * 6vw)}}
 .cgs-ct-bg{position:absolute;inset:0;z-index:0;background:var(--cgs-img) center 18%/cover no-repeat fixed}
 .cgs-ct:before{content:"";position:absolute;inset:0;z-index:1;background:var(--cgs-ov,rgba(16,26,74,.78))}
