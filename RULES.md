@@ -75,6 +75,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.0.3** (2026-10-27): Header bar matches the content width on tablets too (901–1024px). Sections 1.35.10.
 - **2.0.2** (2026-10-27): Header bar now spans the same width as the page content (removed the 1360px cap). Sections 1.35.9.
 - **2.0.1** (2026-10-27): New white "since 1991" logo in header and footer (`CGS_LOGO_BRAND`); old white logos swap to it automatically. Sections 1.35.8.
 - **2.0.0** (2026-10-27): Combined Concepts Group Sections 1.35.7, Concepts Articles 1.2.1 and Concepts CLQ Sites 1.7.2 into one plugin. The old plugins are switched off automatically on activation.

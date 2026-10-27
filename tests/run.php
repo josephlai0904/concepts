@@ -132,6 +132,7 @@ if ( 'activate-request' !== $SCEN ) {
 		$bar = $bar ? $bar[0] : '';
 		check( 'header bar spans content width (calc(100% - 10vw))', false !== strpos( $bar, 'width:calc(100% - 10vw)' ) );
 		check( 'header bar has no px max-width cap', ! preg_match( '/max-width:\d+px/', $bar ) );
+		check( 'header bar uses 6vw gutter at <=1024px like the content', false !== strpos( cgs_header_css(), '@media(max-width:1024px){.cgs-hd .cgs-bar{width:calc(100% - 12vw)}}' ) );
 	}
 
 	// Enquiry endpoint

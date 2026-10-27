@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.35.9' );
+define( 'CGS_VERSION', '1.35.10' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -106,6 +106,7 @@ body:has(.cgs-hero) #header:has(.cgs-hd){height:0!important;min-height:0!importa
 .cgs-hd .cgs-sub-menu>:first-child{border-radius:20px 20px 0 0}
 .cgs-hd .cgs-sub-menu>:last-child{border-radius:0 0 20px 20px}
 .cgs-hd .cgs-sub-menu>:only-child{border-radius:20px}
+@media(max-width:1024px){.cgs-hd .cgs-bar{width:calc(100% - 12vw)}}
 @media(max-width:1200px){.cgs-hd .cgs-ph{display:none}.cgs-hd nav{gap:18px;font-size:.88rem}}
 @media(max-width:900px){
 .cgs-hd .cgs-bar{display:flex;justify-content:space-between;width:calc(100% - 12vw);padding:0 10px 0 16px}
