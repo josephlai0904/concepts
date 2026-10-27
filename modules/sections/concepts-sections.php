@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.41.1' );
+define( 'CGS_VERSION', '1.42.0' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -16,6 +16,21 @@ define( 'CGS_LOGO_HDW', 'https://concepts.manyproject.my/wp-content/uploads/2026
 /* Current white brand logo, used in the header and footer. Change it here only. */
 /* Colour logo for light backgrounds (footer card). */
 define( 'CGS_LOGO_DARK', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo-since-1991.webp' );
+
+/* Layered wave at the top of the dark bands, same shapes as the homepage hero wave (2.7.2).
+ * $top = colour of the section above (it fills the space above the curves). */
+function cgs_ct_wave( $top = '#fff' ) {
+	static $n = 0;
+	$n++;
+	$g = 'cgsCtWaveG' . $n;
+	$m = 'matrix(1 0 0 -1 0 200)';
+	return '<svg class="cgs-ct-wave" style="--cgs-wv-top:' . esc_attr( $top ) . '" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">'
+		. '<defs><linearGradient id="' . $g . '" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#0b5fc4"/><stop offset=".55" stop-color="#1e90ff"/><stop offset="1" stop-color="#7cc0ff"/></linearGradient></defs>'
+		. '<path transform="' . $m . '" d="M0 200V18C210 6 430 40 640 92S1080 176 1260 118C1340 92 1400 52 1440 34V200Z" fill="url(#' . $g . ')"/>'
+		. '<path transform="' . $m . '" d="M0 200V70C250 52 480 88 700 132S1120 182 1290 150C1360 136 1410 112 1440 96V200Z" fill="#cfe6ff" fill-opacity=".95"/>'
+		. '<path class="cgs-ct-wave-top" transform="' . $m . '" d="M0 200V118C260 92 500 120 730 150S1140 192 1310 172C1370 165 1415 150 1440 138V200Z"/>'
+		. '</svg>';
+}
 define( 'CGS_LOGO_BRAND', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo-since-1991-white.webp' );
 
 /**
@@ -1354,7 +1369,7 @@ add_shortcode( 'cgs_fwr_cta', function ( $atts ) {
 .cgs-cts .cgs-hero-eb{margin:0 0 clamp(14px,1.4vw,20px)}
 </style>
 	<?php } ?>
-<section class="cgs-ct cgs-cts" id="recruitment-support" style="--cgs-img:url('<?php echo esc_url( cgs_media_url( $a['bg'], $d['bg'] ) ); ?>');--cgs-ov:<?php echo esc_attr( $ov ); ?>"><div class="cgs-ct-bg"></div><i class="cgs-ct-wv a" style="--c:#1e90ff"></i><i class="cgs-ct-wv" style="--c:#eaf4ff"></i><div class="cgs-ct-in">
+<section class="cgs-ct cgs-cts" id="recruitment-support" style="--cgs-img:url('<?php echo esc_url( cgs_media_url( $a['bg'], $d['bg'] ) ); ?>');--cgs-ov:<?php echo esc_attr( $ov ); ?>"><div class="cgs-ct-bg"></div><?php echo cgs_ct_wave( '#eaf4ff' ); ?><div class="cgs-ct-in">
 <h2 class="cgs-hero-eb cgs-rv"><?php echo esc_html( $a['h2'] ); ?></h2>
 <h3 class="cgs-ct-h cgs-rv"><?php echo $h3; ?></h3>
 <p class="cgs-rv" style="--d:.1s"><?php echo esc_html( $a['p'] ); ?></p>
@@ -1504,7 +1519,7 @@ add_shortcode( 'cgs_story_cta', function ( $atts ) {
 	$u = esc_url( ( 0 === strpos( $u, '/' ) && 0 !== strpos( $u, '//' ) ) ? home_url( $u ) : $u, array( 'http', 'https', 'tel', 'mailto' ) );
 	$ext = 0 === strpos( trim( (string) $a['url'] ), 'http' ) ? ' target="_blank" rel="noopener"' : '';
 	ob_start(); ?>
-<section class="cgs-ct cgs-ct2" id="future" style="--cgs-ov:transparent"><i class="cgs-ct-wv a" style="--c:#1e90ff"></i><i class="cgs-ct-wv" style="--c:#fff"></i><div class="cgs-ct-in">
+<section class="cgs-ct cgs-ct2" id="future" style="--cgs-ov:transparent"><?php echo cgs_ct_wave( '#fff' ); ?><div class="cgs-ct-in">
 <div class="cgs-ct2-txt">
 <h3 class="cgs-ct-h"><?php echo str_replace( esc_html( $a['h3e'] ), '<em>' . esc_html( $a['h3e'] ) . '</em>', esc_html( $a['h3'] ) ); ?></h3>
 <p><?php echo esc_html( $a['p'] ); ?></p>
@@ -1659,7 +1674,7 @@ add_shortcode( 'cgs_story_commit', function ( $atts ) {
 	$u   = esc_url( ( 0 === strpos( $u, '/' ) && 0 !== strpos( $u, '//' ) ) ? home_url( $u ) : $u, array( 'http', 'https', 'tel', 'mailto' ) );
 	$ext = 0 === strpos( trim( (string) $a['url'] ), 'http' ) ? ' target="_blank" rel="noopener"' : '';
 	ob_start(); ?>
-<section class="cgs-ct cgs-ct2 cgs-cm" id="commitment" style="--cgs-ov:transparent"><i class="cgs-ct-wv a" style="--c:#1e90ff"></i><i class="cgs-ct-wv" style="--c:#fff"></i><div class="cgs-ct-in">
+<section class="cgs-ct cgs-ct2 cgs-cm" id="commitment" style="--cgs-ov:transparent"><?php echo cgs_ct_wave( '#fff' ); ?><div class="cgs-ct-in">
 <div class="cgs-ct2-txt">
 <h2 class="cgs-hero-eb"><?php echo esc_html( $a['h2'] ); ?></h2>
 <h3 class="cgs-ct-h"><?php echo str_replace( esc_html( $a['h3e'] ), '<em>' . esc_html( $a['h3e'] ) . '</em>', esc_html( $a['h3'] ) ); ?></h3>
@@ -2598,8 +2613,10 @@ function cgs_cta_css() {
 .cgs-ct:before{content:"";position:absolute;inset:0;z-index:1;background:var(--cgs-ov,rgba(16,26,74,.78))}
 .cgs-ct:after{content:"";position:absolute;left:0;right:0;bottom:0;height:clamp(160px,24vw,320px);z-index:2;background:linear-gradient(180deg,rgba(7,26,51,0) 0%,rgba(7,26,51,.55) 55%,var(--cgs-navy,#071A33) 96%);pointer-events:none}
 .cgs-ct-wv{position:absolute;left:0;right:0;top:-1px;height:64px;background:var(--c);pointer-events:none;z-index:3;transform:scaleX(-1);-webkit-mask:{$wave} center/100% 100% no-repeat;mask:{$wave} center/100% 100% no-repeat}
-/* 2.7.1: the wave's top colour follows a light-blue FAQ section placed just above it. */
-.vc_row:has(.cgs-fq)+.vc_row .cgs-ct-wv:not(.a){--c:#eaf4ff!important}
+/* 2.7.2: layered hero-style wave; its top colour follows a light-blue FAQ section placed just above it. */
+.cgs-ct-wave{position:absolute;left:0;top:-1px;width:100%;height:clamp(80px,9vw,160px);z-index:3;display:block;pointer-events:none}
+.cgs-ct-wave-top{fill:var(--cgs-wv-top,#fff)}
+.vc_row:has(.cgs-fq)+.vc_row .cgs-ct-wave{--cgs-wv-top:#eaf4ff!important}
 .cgs-ct-wv.a{height:94px;z-index:2;-webkit-mask-image:{$wavea};mask-image:{$wavea}}
 .cgs-ct-in{position:relative;z-index:4;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;padding:clamp(140px,13.5vw,190px) 5vw clamp(64px,6vw,96px)}
 body.cgs-site #lqd-site-content .cgs-ct h3.cgs-ct-h{margin:0;color:#fff;text-transform:capitalize}
@@ -2618,7 +2635,7 @@ body.cgs-site #lqd-site-content .cgs-ct h3.cgs-ct-h em{font-style:normal;color:#
 .cgs-ct.cgs-js .cgs-rv{opacity:0}
 .cgs-ct.cgs-js .cgs-rv.in{opacity:1;animation:cgsRv .8s var(--d,0s) cubic-bezier(.2,.7,.2,1) backwards}
 @media(max-width:1024px){.cgs-ct-in>p{max-width:min(620px,80%)}}
-@media(max-width:767px){.cgs-ct{min-height:clamp(480px,120vw,560px)}.cgs-ct-bg{background-position:center center}.cgs-ct-wv{height:36px}.cgs-ct-wv.a{height:52px}.cgs-ct-in{padding:128px 6vw 56px}.cgs-ct-in>p{max-width:none}.cgs-ct-btns{width:100%;flex-direction:column}.cgs-ct .cgs-ct-b{justify-content:center;width:100%}}
+@media(max-width:767px){.cgs-ct{min-height:clamp(480px,120vw,560px)}.cgs-ct-bg{background-position:center center}.cgs-ct-wave{height:64px}.cgs-ct-in{padding:128px 6vw 56px}.cgs-ct-in>p{max-width:none}.cgs-ct-btns{width:100%;flex-direction:column}.cgs-ct .cgs-ct-b{justify-content:center;width:100%}}
 @media(prefers-reduced-motion:reduce){.cgs-ct.cgs-js .cgs-rv{opacity:1}.cgs-ct.cgs-js .cgs-rv.in{animation:none}}
 CSS;
 }

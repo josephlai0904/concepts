@@ -95,6 +95,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.7.2** (2026-10-27): Dark bands (Recruitment support, Transport/Story CTA, Commitment) use the homepage hero's layered wave (light, pale blue, blue gradient) instead of the flat two-line wave. `cgs_ct_wave()`. Sections 1.42.0.
 - **2.7.1** (2026-10-27): The wave at the top of a dark section now takes the FAQ's light-blue colour when an FAQ sits right above it (no white strip). Sections 1.41.1.
 - **2.7.0** (2026-10-27): Employer FAQ (6 questions, FAQPage schema) on the /properties/ hub, filterable with `ccq_hub_faq`. Transport licence wording updated from SPAD to APAD (SPAD was replaced in 2018). Default homepage FAQ says "Since 1991" instead of "31 years". Sections 1.41.0, CLQ Sites 1.8.0.
 - **2.6.2** (2026-10-27): FAQPage schema also for the Recruitment FAQ, and for property FAQs once a site is no longer marked sample. Sections 1.40.4, CLQ Sites 1.7.7.
