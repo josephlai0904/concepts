@@ -55,6 +55,7 @@ function wp_parse_url( $u, $c = -1 ) { return parse_url( $u, $c ); }
 function wp_http_validate_url( $u ) { return filter_var( $u, FILTER_VALIDATE_URL ) ? $u : false; }
 function number_format_i18n( $n, $d = 0 ) { return number_format( $n, $d ); }
 function date_i18n( $f, $ts = false ) { return gmdate( $f, $ts ?: time() ); }
+function wp_date( $f, $ts = null ) { return gmdate( $f, $ts ?? time() ); }
 function current_time( $t ) { return gmdate( 'Y-m-d H:i:s' ); }
 function wp_list_pluck( $l, $f ) { return array_map( function ( $x ) use ( $f ) { return is_object( $x ) ? $x->$f : $x[ $f ]; }, (array) $l ); }
 function selected( $a, $b = true, $e = true ) { $r = (string) $a === (string) $b ? ' selected' : ''; if ( $e ) echo $r; return $r; }

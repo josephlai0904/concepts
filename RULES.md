@@ -93,6 +93,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.3.0** (2026-10-27): Modern footer (default): logo + tagline, big "Do you have any questions?" heading with pill button, 5 link columns (Back to top, Main Pages, Solutions, Contact, Follow us), full-width "Concepts Group" wordmark (auto-fit), bottom bar with copyright + "Website by Many Project". Copyright "CONCEPTS ATC SDN BHD (Reg. No.: 199501034798 / 364000-P) © {year} All Rights Reserved." with automatic year. Restore: WPBakery > Concepts Footer > Layout > Style = Classic. Sections 1.38.0.
 - **2.2.6** (2026-10-27): CLQ contact box background darker navy #071A33. CLQ Sites 1.7.4.
 - **2.2.5** (2026-10-27): CLQ property page: "Get a quote" / "Get a written quote" -> "Talk to a specialist"; middle Surroundings photo 22% taller. Home Sky hero text ~10% smaller on desktop/tablet (H1 max 46px). Sections 1.37.5, CLQ Sites 1.7.3.
 - **2.2.4** (2026-10-27): Hero eyebrow default "Workforce · Since 1991"; header button default "Get in touch"; Sky hero bottom padding slightly shorter (clamp(130px,13vw,220px)). Sections 1.37.4.

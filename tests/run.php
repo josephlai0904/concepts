@@ -182,6 +182,23 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'Home hero text slightly smaller on desktop/tablet (H1 max 46px, lead, buttons, stats)', false !== strpos( $hc2, '@media(min-width:768px){body.cgs-site #lqd-site-content .cgs-hero-sky h1.cgs-hero-h{font-size:max(24px,min(5.4cqw,46px))}' ) && false !== strpos( $hc2, '.cgs-hero-sky .cgs-hero-stats b{font-size:clamp(24px,1.8vw,30px)}' ) );
 	}
 
+	// 2.3.0: modern footer (reference style), auto year, company reg. no., classic restore.
+	if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) {
+		$yr  = gmdate( 'Y' );
+		$ft2 = call_user_func( $GLOBALS['SC']['cgs_footer'], array(), '', 'cgs_footer' );
+		$ftO = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'copy' => '© 2026 CONCEPTS ATC SDN BHD. All Rights Reserved.' ), '', 'cgs_footer' );
+		$ftC = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'style' => 'classic' ), '', 'cgs_footer' );
+		$want = 'CONCEPTS ATC SDN BHD (Reg. No.: 199501034798 / 364000-P) © ' . $yr . ' All Rights Reserved.';
+		check( 'footer: new copyright line with current year', false !== strpos( $ft2, esc_html( $want ) ) );
+		check( 'footer: old saved copyright text upgrades to the new line', false !== strpos( $ftO, esc_html( $want ) ) );
+		check( 'footer: year is automatic (custom text with an old year is updated)', false !== strpos( call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'copy' => 'ACME © 2019 All rights.' ), '', 'cgs_footer' ), 'ACME © ' . $yr . ' All rights.' ) );
+		check( 'footer: modern layout has CTA, columns, wordmark, credit', false !== strpos( $ft2, 'cgs-ft2' ) && false !== strpos( $ft2, 'cgs-ft-cta' ) && false !== strpos( $ft2, 'cgs-ft-mark' ) && false !== strpos( $ft2, 'Back to top' ) && false !== strpos( $ft2, 'Many Project' ) );
+		check( 'footer: heading breaks after the question mark', false !== strpos( $ft2, 'questions?<br>Talk to our team' ) );
+		do_action( 'wp_enqueue_scripts' );
+		check( 'footer: wordmark fit-to-width script registered', false !== strpos( implode( "\n", (array) ( $GLOBALS['INLINE']['cgs-footer'] ?? array() ) ), '.cgs-ft-mark' ) );
+		check( 'footer: classic style restores old footer', false === strpos( $ftC, 'cgs-ft2' ) && false !== strpos( $ftC, 'cgs-ft-cols' ) );
+	}
+
 	// Enquiry endpoint
 	$r = ccq_enquiry( new WP_REST_Request( array( 'site' => $site[0]->ID, 'company' => 'ACME', 'workers' => 30, 'email' => 'x@y.com', 'message' => 'hi' ) ) );
 	check( 'enquiry accepted + 2 emails', is_array( $r ) && ! empty( $r['ok'] ) && 2 === count( $GLOBALS['MAIL'] ?? array() ) );

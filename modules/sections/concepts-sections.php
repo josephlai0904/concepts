@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.37.5' );
+define( 'CGS_VERSION', '1.38.0' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -153,6 +153,29 @@ function cgs_footer_css() {
 .cgs-ft .cgs-ft-col a:hover{color:#5db4ff;transform:translateX(4px)}
 .cgs-ft .cgs-ft-bar{margin-top:3.9vw;padding:1.8vw 0 2.1vw;border-top:1px solid rgba(255,255,255,.22);font-size:clamp(12px,.85vw,14px);color:#e6eefa}
 @media(max-width:1024px){.cgs-ft .cgs-ft-cols{gap:3.5vw}}
+/* Modern footer (2.3.0): CTA row, link columns, giant wordmark, bottom bar. */
+.cgs-ft.cgs-ft2{position:relative;overflow:hidden;padding-top:clamp(48px,5vw,88px);color:#c9d6e8}
+.cgs-ft2 .cgs-ft-cta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:clamp(28px,5vw,96px);align-items:start;padding-bottom:clamp(36px,4vw,64px);border-bottom:1px solid rgba(255,255,255,.14)}
+.cgs-ft2 .cgs-ft-id img.cgs-ft-logo{height:var(--cgs-ft-lh,34px);width:auto;display:block}
+.cgs-ft2 .cgs-ft-id p{max-width:22em;margin:14px 0 0;font-size:14px;line-height:1.55;color:#9fb3cf}
+body.cgs-site .cgs-ft2 h3.cgs-ft-h{margin:0;max-width:16em;font:600 clamp(28px,3.2vw,52px)/1.08 var(--cgs-fh,'Bricolage Grotesque',sans-serif);letter-spacing:-.025em;color:#fff;text-transform:none}
+.cgs-ft2 .cgs-ft-pill{display:inline-flex;align-items:center;gap:6px;margin-top:clamp(20px,2vw,30px);color:var(--cgs-navy,#071A33)}
+.cgs-ft2 .cgs-ft-pill span{padding:12px 22px;border-radius:50px;background:#fff;font:600 15px Inter,sans-serif;transition:background .3s,color .3s}
+.cgs-ft2 .cgs-ft-pill i{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);color:#fff;transition:transform .35s,background .3s,border-color .3s}
+.cgs-ft2 .cgs-ft-pill:hover span{background:var(--cgs-blue,#1e90ff);color:#fff}
+.cgs-ft2 .cgs-ft-pill:hover i{transform:translateX(4px) rotate(-45deg);background:var(--cgs-blue,#1e90ff);border-color:var(--cgs-blue,#1e90ff)}
+.cgs-ft2 .cgs-ft-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(20px,2.4vw,40px);padding:clamp(28px,3vw,48px) 0 0}
+.cgs-ft2 .cgs-ft-c h4{margin:0 0 10px;font:600 14px Inter,sans-serif;letter-spacing:0;color:#fff;text-transform:none}
+.cgs-ft2 .cgs-ft-c a{display:block;width:fit-content;padding:3px 0;font-size:14px;color:#9fb3cf;transition:color .25s}
+.cgs-ft2 .cgs-ft-c a:hover{color:#fff}
+.cgs-ft2 .cgs-ft-up{color:#9fb3cf}
+.cgs-ft2 .cgs-ft-mark span{display:inline-block}
+.cgs-ft2 .cgs-ft-mark{margin:clamp(24px,3vw,56px) 0 clamp(8px,1vw,16px);font:700 clamp(48px,14vw,340px)/.82 var(--cgs-fh,'Bricolage Grotesque',sans-serif);letter-spacing:-.055em;white-space:nowrap;color:rgba(201,214,232,.16);user-select:none;pointer-events:none}
+.cgs-ft2 .cgs-ft-bar2{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 0 22px;font-size:13px;color:#9fb3cf}
+.cgs-ft2 .cgs-ft-bar2 a{color:#9fb3cf;transition:color .25s}
+.cgs-ft2 .cgs-ft-bar2 a:hover{color:#fff}
+@media(max-width:1024px){.cgs-ft2 .cgs-ft-cta{grid-template-columns:1fr}.cgs-ft2 .cgs-ft-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:767px){.cgs-ft2 .cgs-ft-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px}.cgs-ft2 .cgs-ft-grid .cgs-ft-c:first-child{grid-column:1/-1}.cgs-ft2 .cgs-ft-bar2{flex-direction:column;gap:6px}}
 @media(max-width:767px){.cgs-ft{padding-top:10vw}.cgs-ft .cgs-ft-in{padding:0 6vw}.cgs-ft .cgs-ft-top{gap:8vw}.cgs-ft .cgs-ft-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 20px;width:100%}.cgs-ft .cgs-ft-col:nth-child(3){grid-column:1/-1}.cgs-ft .cgs-ft-soc{margin-top:22px}.cgs-ft .cgs-ft-bar{margin-top:8vw;padding:20px 0 28px}}
 CSS;
 }
@@ -1605,6 +1628,9 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_register_script( 'cgs-hero', false, array(), CGS_VERSION, true );
 	wp_add_inline_script( 'cgs-hero', "(function(){var els=document.querySelectorAll('.cgs-hero-stats b');if(!els.length||matchMedia('(prefers-reduced-motion:reduce)').matches)return;els.forEach(function(el){var t=el.dataset.n,m=t.match(/^([\\d,]+)(.*)$/);if(!m)return;var end=+m[1].replace(/,/g,''),suf=m[2],big=m[1].indexOf(',')>-1,t0=performance.now()+600;el.textContent='0'+suf;(function k(n){var p=Math.min(Math.max((n-t0)/1600,0),1),v=Math.round(end*(1-Math.pow(1-p,3)));el.textContent=(big?v.toLocaleString('en-US'):v)+suf;if(p<1)requestAnimationFrame(k)})(t0)})})();" );
 	wp_add_inline_script( 'cgs-hero', "(function(){var h=document.querySelector('.cgs-hero:not(.cgs-hero-story)');if(!h)return;var ar=h.querySelector('.cgs-hero-arch'),hd=h.querySelector('.cgs-hero-head'),wk=h.querySelector('.cgs-hero-work'),vs=h.querySelector('.cgs-hero-vis');if(!ar||!hd||!wk)return;function fit(){var a=ar.offsetHeight,w=wk.offsetHeight;if(!a||!w)return;var c=w>a?Math.min(100,(w-a+26)/w*100):0;hd.style.clipPath='inset(0 0 '+(100-c).toFixed(1)+'% 0)'}[wk,hd].forEach(function(i){if(i.complete)fit();else i.addEventListener('load',fit)});addEventListener('resize',fit);fit();if(matchMedia('(prefers-reduced-motion:reduce)').matches||!('translate' in document.documentElement.style))return;var t=0;function p(){t=0;var r=h.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var y=Math.min(90,Math.max(0,-r.top*.22)).toFixed(1)+'px';ar.style.translate='0 '+y;hd.style.translate='0 '+y;if(vs)vs.style.setProperty('--cgs-pb',parseFloat(y).toFixed(1)+'px')}addEventListener('scroll',function(){if(!t)t=requestAnimationFrame(p)},{passive:true});p()})();" );
+	/* Footer wordmark: scale the font so the word fills the content width exactly. */
+	wp_register_script( 'cgs-footer', false, array(), CGS_VERSION, true );
+	wp_add_inline_script( 'cgs-footer', "(function(){var m=document.querySelector('.cgs-ft2 .cgs-ft-mark');if(!m)return;var s=m.firstElementChild;function fit(){m.style.fontSize='';var w=m.clientWidth,t=s.offsetWidth;if(w&&t)m.style.fontSize=(parseFloat(getComputedStyle(m).fontSize)*w/t).toFixed(2)+'px'}fit();addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit)})();" );
 	/* Sky hero: workers drift down as the page scrolls (parallax). Off for reduced motion. */
 	wp_add_inline_script( 'cgs-hero', "(function(){var h=document.querySelector('.cgs-hero-sky');if(!h)return;var w=h.querySelector('.cgs-sky-team');if(!w||matchMedia('(prefers-reduced-motion:reduce)').matches||!('translate' in document.documentElement.style))return;var k=0;function p(){k=0;var r=h.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var y=Math.min(r.height*.25,Math.max(0,-r.top*.35));w.style.translate='0 '+y.toFixed(1)+'px'}addEventListener('scroll',function(){if(!k)k=requestAnimationFrame(p)},{passive:true});addEventListener('resize',p);p()})();" );
 }, 31 );
@@ -1634,18 +1660,40 @@ add_action( 'vc_before_init', function () {
 			array( 'type' => 'textfield', 'heading' => 'Solutions title', 'param_name' => 't2', 'value' => 'Solutions', 'group' => 'Menus' ),
 			array( 'type' => 'textfield', 'heading' => 'Contact title', 'param_name' => 't3', 'value' => 'Contact', 'group' => 'Contact' ),
 			array( 'type' => 'textfield', 'heading' => 'Phone', 'param_name' => 'phone', 'value' => '+60 17-887 3361', 'group' => 'Contact' ),
-			array( 'type' => 'textfield', 'heading' => 'Copyright', 'param_name' => 'copy', 'value' => '© 2026 CONCEPTS ATC SDN BHD. All Rights Reserved.', 'group' => 'Contact' ),
+			array( 'type' => 'textfield', 'heading' => 'Copyright', 'param_name' => 'copy', 'value' => CGS_FT_COPY, 'description' => 'Write {year} for the current year. Any "© 2024"-style year is also updated automatically.', 'group' => 'Contact' ),
+			array( 'type' => 'dropdown', 'heading' => 'Style', 'param_name' => 'style', 'value' => array( 'Modern (big wordmark)' => 'modern', 'Classic (previous footer)' => 'classic' ), 'std' => 'modern', 'admin_label' => true, 'group' => 'Layout' ),
+			array( 'type' => 'textfield', 'heading' => 'Tagline (under the logo)', 'param_name' => 'tagline', 'value' => 'Workforce, accommodation and HR solutions since 1991', 'group' => 'Layout' ),
+			array( 'type' => 'textfield', 'heading' => 'Big heading', 'param_name' => 'cta_h', 'value' => 'Do you have any questions? Talk to our team', 'group' => 'Layout' ),
+			array( 'type' => 'textfield', 'heading' => 'Button text', 'param_name' => 'cta_b', 'value' => 'Get in touch', 'group' => 'Layout' ),
+			array( 'type' => 'textfield', 'heading' => 'Button link', 'param_name' => 'cta_u', 'value' => '/contact/', 'group' => 'Layout' ),
+			array( 'type' => 'textfield', 'heading' => 'Big wordmark', 'param_name' => 'mark', 'value' => 'Concepts Group', 'group' => 'Layout' ),
+			array( 'type' => 'textfield', 'heading' => 'Credit (empty = hide)', 'param_name' => 'credit', 'value' => 'Website by Many Project', 'group' => 'Layout' ),
 		),
 	) );
 } );
 
+/* Footer copyright: {year} = current year; any "© 2019"-style year is kept current too. */
+define( 'CGS_FT_COPY', 'CONCEPTS ATC SDN BHD (Reg. No.: 199501034798 / 364000-P) © {year} All Rights Reserved.' );
+function cgs_footer_copy( $c ) {
+	$c = trim( (string) $c );
+	if ( '' === $c || '© 2026 CONCEPTS ATC SDN BHD. All Rights Reserved.' === $c ) {
+		$c = CGS_FT_COPY; // Old default saved in WPBakery -> new wording.
+	}
+	$y = function_exists( 'wp_date' ) ? wp_date( 'Y' ) : gmdate( 'Y' );
+	$c = str_replace( '{year}', $y, $c );
+	return preg_replace( '/(©|&copy;|\(c\))\s*(19|20)\d{2}/iu', '$1 ' . $y, $c );
+}
+
 add_shortcode( 'cgs_footer', function ( $atts ) {
 	$a = shortcode_atts( array(
+		'style' => 'modern', 'tagline' => 'Workforce, accommodation and HR solutions since 1991', 'cta_h' => 'Do you have any questions? Talk to our team',
+		'cta_b' => 'Get in touch', 'cta_u' => '/contact/', 'mark' => 'Concepts Group', 'credit' => 'Website by Many Project',
 		'logo' => '', 'logo_h' => '34', 'fb' => 'https://www.facebook.com/conceptsgroup.my', 'email' => 'support@concepts-groups.com',
 		'wa' => 'https://api.whatsapp.com/send?phone=60178873361&text=Hello%20there,%20I%20would%20like%20to%20know%20about%20your%20services',
 		'menu' => '', 't1' => 'Main Pages', 't2' => 'Solutions', 't3' => 'Contact', 'phone' => '+60 17-887 3361',
-		'copy' => '© 2026 CONCEPTS ATC SDN BHD. All Rights Reserved.',
+		'copy' => CGS_FT_COPY,
 	), $atts, 'cgs_footer' );
+	$copy = cgs_footer_copy( $a['copy'] );
 
 	$logo = $a['logo'] ? wp_get_attachment_image_url( (int) $a['logo'], 'full' ) : '';
 	$logo = cgs_brand_logo( $logo );
@@ -1672,6 +1720,28 @@ add_shortcode( 'cgs_footer', function ( $atts ) {
 		array( $a['wa'], 'whatsapp.svg', 'WhatsApp', true ),
 	);
 
+	if ( 'classic' !== strtolower( trim( (string) $a['style'] ) ) ) {
+		$soc_txt = array( array( $a['fb'], 'Facebook', true ), array( $a['wa'], 'WhatsApp', true ), array( 'mailto:' . $a['email'], 'Email', false ) );
+		ob_start(); ?>
+<footer class="cgs-ft cgs-ft2" style="--cgs-ft-lh:<?php echo (int) max( 16, min( 120, (int) $a['logo_h'] ) ); ?>px"><div class="cgs-ft-in">
+<div class="cgs-ft-cta">
+<div class="cgs-ft-id"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img class="cgs-ft-logo" src="<?php echo esc_url( $logo ); ?>" alt="Concepts Group, Total HR Solution" width="204" height="50"></a><?php if ( '' !== trim( $a['tagline'] ) ) : ?><p><?php echo esc_html( $a['tagline'] ); ?></p><?php endif; ?></div>
+<div class="cgs-ft-ask"><h3 class="cgs-ft-h"><?php echo preg_replace( '/\?\s+/', '?<br>', esc_html( $a['cta_h'] ), 1 ); ?></h3><a class="cgs-ft-pill" href="<?php echo $u( $a['cta_u'] ); ?>"><span><?php echo esc_html( $a['cta_b'] ); ?></span><i aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></i></a></div>
+</div>
+<div class="cgs-ft-grid">
+<div class="cgs-ft-c"><a class="cgs-ft-up" href="#top">Back to top ↑</a></div>
+<nav class="cgs-ft-c" aria-label="<?php echo esc_attr( $a['t1'] ); ?>"><h4><?php echo esc_html( $a['t1'] ); ?></h4><?php foreach ( $menu as $it ) : ?><a href="<?php echo $u( $it['url'] ); ?>"><?php echo esc_html( $it['label'] ); ?></a><?php endforeach; ?></nav>
+<nav class="cgs-ft-c" aria-label="<?php echo esc_attr( $a['t2'] ); ?>"><h4><?php echo esc_html( $a['t2'] ); ?></h4><?php foreach ( $sol as $s ) : ?><a href="<?php echo $u( $s[1] ); ?>"><?php echo esc_html( $s[0] ); ?></a><?php endforeach; ?></nav>
+<div class="cgs-ft-c"><h4><?php echo esc_html( $a['t3'] ); ?></h4><a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $a['phone'] ) ); ?>"><?php echo esc_html( $a['phone'] ); ?></a><a href="mailto:<?php echo esc_attr( $a['email'] ); ?>"><?php echo esc_html( $a['email'] ); ?></a></div>
+<div class="cgs-ft-c"><h4>Follow us</h4><?php foreach ( $soc_txt as $s ) : ?><a href="<?php echo esc_url( $s[0], array( 'http', 'https', 'mailto' ) ); ?>"<?php echo $s[2] ? ' target="_blank" rel="noopener"' : ''; ?>><?php echo esc_html( $s[1] ); ?></a><?php endforeach; ?></div>
+</div>
+<?php if ( '' !== trim( $a['mark'] ) ) : wp_enqueue_script( 'cgs-footer' ); ?><div class="cgs-ft-mark" aria-hidden="true"><span><?php echo esc_html( $a['mark'] ); ?></span></div><?php endif; ?>
+<div class="cgs-ft-bar2"><span><?php echo esc_html( $copy ); ?></span><?php if ( '' !== trim( $a['credit'] ) ) : ?><a href="https://manyproject.my" target="_blank" rel="noopener"><?php echo esc_html( $a['credit'] ); ?></a><?php endif; ?></div>
+</div></footer>
+		<?php
+		return ob_get_clean();
+	}
+
 	ob_start(); ?>
 <footer class="cgs-ft" style="--cgs-ft-lh:<?php echo (int) max( 16, min( 120, (int) $a['logo_h'] ) ); ?>px"><div class="cgs-ft-in">
 <div class="cgs-ft-top">
@@ -1696,7 +1766,7 @@ add_shortcode( 'cgs_footer', function ( $atts ) {
 </div>
 </div>
 </div>
-<div class="cgs-ft-bar"><?php echo esc_html( $a['copy'] ); ?></div>
+<div class="cgs-ft-bar"><?php echo esc_html( $copy ); ?></div>
 </div></footer>
 	<?php
 	return ob_get_clean();
