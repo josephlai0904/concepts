@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.40.2' );
+define( 'CGS_VERSION', '1.40.3' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -2538,6 +2538,8 @@ add_shortcode( 'cgs_faq', function ( $atts ) {
 	$items = array_values( array_filter( $items, function ( $i ) {
 		return is_array( $i ) && ! empty( $i['q'] );
 	} ) );
+	/* Questions shown on this page, for the FAQPage structured data (SEO module). */
+	$GLOBALS['cgs_faq_seen'] = array_merge( isset( $GLOBALS['cgs_faq_seen'] ) ? (array) $GLOBALS['cgs_faq_seen'] : array(), $items );
 	$h3  = esc_html( $a['h3'] );
 	$em  = esc_html( $a['h3e'] );
 	$pos = '' !== $em ? strpos( $h3, $em ) : false;

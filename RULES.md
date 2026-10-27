@@ -20,6 +20,7 @@ Every edit needs a new version number, even a one-line CSS fix. If you skip it, 
 | Sections  | `modules/sections/concepts-sections.php` | `CGS_VERSION` |
 | Articles  | `modules/articles/concepts-articles.php` | `CGA_VERSION` |
 | CLQ Sites | `modules/clq-sites/concepts-clq-sites.php` | `CCQ_VERSION` |
+| SEO       | `modules/seo/concepts-seo.php`           | `CGSEO_VERSION` |
 
 **Which number to change:**
 - `2.0.0 → 2.0.1` for a fix or a small tweak
@@ -86,13 +87,15 @@ concepts-group-suite/
 └── modules/
     ├── sections/   ← global CSS, header, hero, footer, all WPBakery sections
     ├── articles/   ← blog post + blog list templates
-    └── clq-sites/  ← property pages, /properties/ hub, enquiry form
+    ├── clq-sites/  ← property pages, /properties/ hub, enquiry form
+    └── seo/        ← page titles + descriptions, social tags, schema, sitemap
 ```
 
 ---
 
 ## Changelog
 
+- **2.6.0** (2026-10-27): New SEO module 1.0.0: a title and description for every page (editable in the "SEO (Google & AI)" box on each page), Facebook/WhatsApp/X share tags on all pages, posts and properties, company structured data (legal name, reg. no., founded 1991, phone), WebSite/WebPage/breadcrumb schema, FAQPage schema from the visible FAQ, blog and category descriptions, and a cleaner sitemap (no theme layout posts, author pages or sample properties). Steps aside if Yoast, Rank Math, AIOSEO or SEOPress is installed. Sections 1.40.3 (FAQ hand-off).
 - **2.5.3** (2026-10-27): Removed the round dot icon before small labels (blog, posts, property pages). CLQ page titles and descriptions lead with "CLQ"; sample sites show no unverified bed figures; properties hub title "CLQ & Worker Accommodation in Klang Valley", default H1 "Centralised Labour Quarters in Klang Valley". Articles 1.2.2, CLQ Sites 1.7.6.
 - **2.5.2** (2026-10-27): Phone menu: white sheet only as tall as the menu (slides from top, rounded bottom), dark overlay behind (tap to close). Footer credit removed (field kept, empty = hidden). Homepage contact band photo: Candid-hostel-conversation-by-the-bunks.webp. Sections 1.40.2.
 - **2.5.1** (2026-10-27): Phone menu hierarchy: group labels small blue caps, pages 15-16px grey with a guide line. Our Approach cards: hover lift/colour change removed. Sections 1.40.1.

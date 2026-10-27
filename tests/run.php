@@ -266,14 +266,17 @@ if ( 'activate-request' !== $SCEN ) {
 		$bad = array();
 		foreach ( $d as $k => $td ) { if ( mb_strlen( $td[0] ) > 62 || mb_strlen( $td[1] ) < 70 || mb_strlen( $td[1] ) > 160 ) { $bad[] = $k . ' (' . mb_strlen( $td[0] ) . '/' . mb_strlen( $td[1] ) . ')'; } }
 		check( 'SEO: every default title <= 62 chars, description 70-160 chars' . ( $bad ? ' FAIL: ' . implode( ', ', $bad ) : '' ), ! $bad );
+		if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) {
 		$GLOBALS['Q'] = array( 'is_front_page' => true ); call_user_func( $GLOBALS['SC']['cgs_faq'], array(), '', 'cgs_faq' ); ob_start(); do_action( 'wp_footer' ); $f = ob_get_clean();
 		$fi = cgs_faq_items_default();
 		check( 'AEO: FAQPage schema built from the visible FAQ', false !== strpos( $f, '"@type":"FAQPage"' ) && false !== strpos( $f, wp_json_encode( $fi[0]['q'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) ) );
+		}
 		$pt = apply_filters( 'wp_sitemaps_post_types', array( 'post' => 1, 'page' => 1, 'liquid-header' => 1, 'liquid-footer' => 1 ) );
 		check( 'Sitemap: theme header/footer posts removed', ! isset( $pt['liquid-header'] ) && ! isset( $pt['liquid-footer'] ) && isset( $pt['page'] ) );
 		check( 'Sitemap: author pages removed', false === apply_filters( 'wp_sitemaps_add_provider', 'provider', 'users' ) && 'p' === apply_filters( 'wp_sitemaps_add_provider', 'p', 'posts' ) );
 		$qa = apply_filters( 'wp_sitemaps_posts_query_args', array(), 'ccq_site' );
-		check( 'Sitemap: sample CLQ sites excluded', ! empty( $qa['post__not_in'] ) );
+		$has_sample = function_exists( 'ccq_get' ) && array_filter( get_posts( array( 'post_type' => 'ccq_site', 'post_status' => 'publish', 'numberposts' => 200, 'fields' => 'ids' ) ), function ( $id ) { return ! empty( ccq_get( $id )['sample'] ); } );
+		check( 'Sitemap: sample CLQ sites excluded', ! $has_sample || ! empty( $qa['post__not_in'] ) );
 		check( 'SEO: page SEO fields registered for REST/editing', isset( $GLOBALS['REGMETA']['page']['_cgs_seo_title'], $GLOBALS['REGMETA']['page']['_cgs_seo_desc'] ) );
 	}
 	if ( empty( $GLOBALS['cg_suite_skipped']['clq-sites'] ) ) {
