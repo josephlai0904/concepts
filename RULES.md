@@ -75,6 +75,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.0.4** (2026-10-27): Homepage hero H1 smaller: max(24px, min(6cqw, 52px)), was 62px max. Sections 1.35.11.
 - **2.0.3** (2026-10-27): Header bar matches the content width on tablets too (901–1024px). Sections 1.35.10.
 - **2.0.2** (2026-10-27): Header bar now spans the same width as the page content (removed the 1360px cap). Sections 1.35.9.
 - **2.0.1** (2026-10-27): New white "since 1991" logo in header and footer (`CGS_LOGO_BRAND`); old white logos swap to it automatically. Sections 1.35.8.
