@@ -7,6 +7,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      test_rollback:
+        description: "Fail the health check on purpose to prove the rollback works (restores the same files)"
+        type: boolean
+        default: false
 
 concurrency:
   group: deploy-concepts
@@ -59,60 +64,99 @@ jobs:
 
       - name: Upload to staging folder on server
         run: |
-          rsync -az --delete --exclude '.git' --exclude '.github' --exclude 'tests' \
-            -e "ssh -i $HOME/.ssh/deploy -p $SSH_PORT -o BatchMode=yes" \
-            ./ "$SSH_USER@$SSH_HOST:cgs-incoming/"
+          for i in 1 2 3 4; do
+            rsync -az --delete --exclude '.git' --exclude '.github' --exclude 'tests' \
+              -e "ssh -i $HOME/.ssh/deploy -p $SSH_PORT -o BatchMode=yes" \
+              ./ "$SSH_USER@$SSH_HOST:cgs-incoming/" && exit 0
+            echo "Upload attempt $i failed, retrying"; sleep $((i * 5))
+          done
+          exit 1
 
-      - name: Install, health check, roll back on failure
+      - name: Install on server (lint, backup, swap, confirm version)
         run: |
           VERSION=$(grep -oP "CG_SUITE_VERSION', '\K[0-9.]+" concepts-group-suite.php)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           $SSH "bash -s" -- "$VERSION" "$SITE_HOST" "$PLUGIN" <<'REMOTE'
-          set -euo pipefail
+          set -uo pipefail
           VERSION="$1"; HOST="$2"; PLUGIN="$3"
+          # Shared hosting caps processes: retry anything that may hit "fork: Resource temporarily unavailable".
+          r() { local i; for i in 1 2 3 4 5 6; do "$@" && return 0; sleep $((i * 2)); done; return 1; }
 
           # Find this site's WordPress folder.
           WP=""
           for c in ~/domains/"$HOST"/public_html ~/domains/*/public_html ~/domains/*/public_html/*; do
             [ -f "$c/wp-config.php" ] || continue
-            u=$(wp option get siteurl --path="$c" --skip-plugins --skip-themes 2>/dev/null || true)
+            u=$(r wp option get siteurl --path="$c" --skip-plugins --skip-themes 2>/dev/null || true)
             case "$u" in *"$HOST"*) WP="$c"; break ;; esac
           done
-          [ -n "$WP" ] || { echo "WordPress for $HOST not found"; exit 1; }
+          [ -n "$WP" ] || { echo "::error::WordPress for $HOST not found"; exit 1; }
           DEST="$WP/wp-content/plugins/$PLUGIN"
           echo "WordPress: $WP"
 
-          # Lint with the server's own PHP before touching the live folder.
-          find ~/cgs-incoming -name '*.php' -print0 | xargs -0 -n1 php -l | grep -v 'No syntax errors' && { echo "Lint failed on server"; exit 1; } || true
+          # Lint with the server's own PHP. Fails closed: any file that cannot be checked counts as a failure.
+          bad=0; n=0
+          while IFS= read -r -d '' f; do
+            n=$((n + 1))
+            r php -l "$f" >/dev/null 2>&1 || { echo "::error::Lint failed or could not run: ${f#$HOME/}"; bad=1; }
+          done < <(find ~/cgs-incoming -name '*.php' -print0)
+          [ "$n" -gt 0 ] || { echo "::error::No PHP files found to lint"; exit 1; }
+          [ "$bad" -eq 0 ] || exit 1
+          echo "Lint OK on server ($n files)"
 
-          # Back up the live copy (keep the last 10).
+          # Back up the live copy (keep the last 10) and remember where, for rollback.
           BK=~/cgs-backups/$(date +%Y%m%d-%H%M%S)
           mkdir -p ~/cgs-backups
-          [ -d "$DEST" ] && cp -a "$DEST" "$BK"
+          if [ -d "$DEST" ]; then r cp -a "$DEST" "$BK" || { echo "::error::Backup failed, nothing changed"; exit 1; }; fi
+          printf 'WP=%q\nDEST=%q\nBK=%q\n' "$WP" "$DEST" "$BK" > ~/cgs-last-deploy
           ls -1dt ~/cgs-backups/* 2>/dev/null | tail -n +11 | xargs -r rm -rf
-
-          rollback() {
-            echo "::error::Health check failed. Restoring previous version."
-            if [ -d "$BK" ]; then rsync -a --delete "$BK/" "$DEST/"; fi
-            wp litespeed-purge all --path="$WP" >/dev/null 2>&1 || true
-            exit 1
-          }
 
           # Swap files in (all at once at the end of the transfer).
           mkdir -p "$DEST"
-          rsync -a --delete --delay-updates ~/cgs-incoming/ "$DEST/"
+          r rsync -a --delete --delay-updates ~/cgs-incoming/ "$DEST/" || { echo "::error::File swap failed"; exit 1; }
 
-          # 1. WordPress loads with the new code and reports the new version (catches fatal errors).
-          GOT=$(wp eval 'echo defined("CG_SUITE_VERSION") ? CG_SUITE_VERSION : "not-loaded";' --path="$WP" 2>/dev/null | tail -n1 || true)
-          echo "Loaded version: $GOT (expected $VERSION)"
-          [ "$GOT" = "$VERSION" ] || rollback
-
-          # 2. Clear the page cache, then check live pages.
-          wp litespeed-purge all --path="$WP" >/dev/null 2>&1 || true
-          for p in / /properties/; do
-            code=$(curl -s -o /tmp/cgs_body -w '%{http_code}' "https://$HOST$p?cgs_deploy=$VERSION" || echo 000)
-            echo "$p -> $code"
-            [ "$code" = "200" ] || rollback
-            if grep -qi 'critical error\|Fatal error' /tmp/cgs_body; then rollback; fi
+          # WordPress loads with the new code and reports the new version (catches fatal errors).
+          GOT=""
+          for i in 1 2 3 4 5; do
+            GOT=$(wp eval 'echo defined("CG_SUITE_VERSION") ? CG_SUITE_VERSION : "not-loaded";' --path="$WP" 2>/dev/null | tail -n1 || true)
+            [ "$GOT" = "$VERSION" ] && break
+            sleep $((i * 2))
           done
+          echo "Loaded version: $GOT (expected $VERSION)"
+          [ "$GOT" = "$VERSION" ] || exit 1
+          r wp litespeed-purge all --path="$WP" >/dev/null 2>&1 || echo "Cache purge skipped"
+          echo "Installed $PLUGIN $VERSION"
+          REMOTE
+
+      - name: Health check live pages (from GitHub, retried)
+        run: |
+          fail=0
+          for p in / /properties/; do
+            ok=0
+            for i in 1 2 3 4; do
+              code=$(curl -sL -o /tmp/body -w '%{http_code}' --max-time 30 "$SITE_URL$p?cgs_deploy=$VERSION-$i" || echo 000)
+              if [ "$code" = "200" ] && ! grep -qi 'critical error\|Fatal error' /tmp/body; then ok=1; break; fi
+              sleep $((i * 5))
+            done
+            echo "$p -> $code (ok=$ok)"
+            [ "$ok" = 1 ] || fail=1
+          done
+          if [ "${{ inputs.test_rollback }}" = "true" ]; then echo "::warning::test_rollback: failing on purpose"; fail=1; fi
+          [ "$fail" = 0 ] || { echo "::error::Live pages failed the health check"; exit 1; }
           echo "Deployed $PLUGIN $VERSION"
+
+      - name: Roll back on failure
+        if: failure()
+        run: |
+          [ -n "${SSH:-}" ] || { echo "No SSH connection was set up; nothing on the server was changed."; exit 0; }
+          $SSH "bash -s" <<'REMOTE'
+          set -uo pipefail
+          r() { local i; for i in 1 2 3 4 5 6 7 8; do "$@" && return 0; sleep $((i * 3)); done; return 1; }
+          [ -f ~/cgs-last-deploy ] || { echo "No deploy record; nothing to roll back."; exit 0; }
+          . ~/cgs-last-deploy
+          if [ -n "${BK:-}" ] && [ -d "$BK" ]; then
+            r rsync -a --delete "$BK/" "$DEST/" && echo "Restored previous version from $BK" || { echo "::error::ROLLBACK FAILED. Restore manually: rsync -a --delete $BK/ $DEST/"; exit 1; }
+            r wp litespeed-purge all --path="$WP" >/dev/null 2>&1 || true
+          else
+            echo "No backup to restore (first install)."
+          fi
           REMOTE

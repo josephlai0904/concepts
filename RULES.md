@@ -50,6 +50,24 @@ Also update `Stable tag` in `readme.txt` and add a line to the Changelog at the 
 
 ---
 
+## 2b. How deploying works (automatic)
+
+The plugin lives in GitHub: `josephlai0904/concepts`. Every push to `main` runs **Test and deploy** (GitHub → Actions):
+
+1. Tests: PHP lint, version numbers must match, smoke tests.
+2. Upload to the server over SSH (key in the GitHub secret `SSH_KEY`).
+3. On the server: lint again with the server's PHP, back up the live plugin to `~/cgs-backups/`, swap the files in, then confirm WordPress loads the new version.
+4. Check the homepage and `/properties/` from outside.
+5. If anything fails, it **rolls back automatically** to the backup.
+
+Hostinger limits how many processes can run at once, so every server step retries. Any check that cannot run counts as a failure, never as a pass.
+
+To test the rollback: Actions → Test and deploy → Run workflow → tick `test_rollback`. It restores the same files, so the site does not change.
+
+Manual rollback (SSH): `rsync -a --delete ~/cgs-backups/<date>/ <wp>/wp-content/plugins/concepts-group-suite/`
+
+---
+
 ## 3. Credit and ownership
 
 - `Author` stays as **Many Project (Web App Marketing Sdn Bhd)**.
