@@ -152,12 +152,12 @@
 /* 5. SURROUNDINGS — three positions, items rotate through them */
 /* Surroundings strip, as the reference: photos top-aligned, captions under each.
  * Left = medium landscape, middle = large near-square, right = small square thumbnail. */
-#ccq-page.ccq .ccq-car{container-type:inline-size;--hm:min(40cqw,50vh,460px);position:relative;height:calc(var(--hm) + 118px);margin-top:20px;overflow:hidden}
+#ccq-page.ccq .ccq-car{container-type:inline-size;--hm:min(40cqw,50vh,460px);position:relative;height:calc(var(--hm) * 1.22 + 118px);margin-top:20px;overflow:hidden}
 #ccq-page.ccq .ccq-surr{padding-top:clamp(36px,3.6vw,56px);padding-bottom:clamp(36px,3.6vw,56px)}
 #ccq-page.ccq .ccq-surr .ccq-row-head{align-items:center}
 #ccq-page.ccq .ccq-car-i{--h:var(--hm);position:absolute;top:0;cursor:pointer;transition:left .9s cubic-bezier(.65,0,.35,1),width .9s cubic-bezier(.65,0,.35,1),opacity .6s}
 #ccq-page.ccq .ccq-car-i[data-pos=l]{left:0;width:34%;--h:calc(var(--hm) * .74)}
-#ccq-page.ccq .ccq-car-i[data-pos=m]{left:37%;width:45%;--h:var(--hm)}
+#ccq-page.ccq .ccq-car-i[data-pos=m]{left:37%;width:45%;--h:calc(var(--hm) * 1.22)}
 #ccq-page.ccq .ccq-car-i[data-pos=r]{left:85%;width:15%;--h:15cqw}
 #ccq-page.ccq .ccq-car-i[data-pos=x]{left:100%;width:15%;--h:15cqw;opacity:0;visibility:hidden;pointer-events:none}
 #ccq-page.ccq .ccq-car-ph{height:var(--h);overflow:hidden;border-radius:clamp(12px,1vw,18px);background:var(--soft);transition:height .9s cubic-bezier(.65,0,.35,1)}

@@ -169,6 +169,18 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'header bar uses 6vw gutter at <=1024px like the content', false !== strpos( cgs_header_css(), '@media(max-width:1024px){.cgs-hd .cgs-bar{width:calc(100% - 12vw)}}' ) );
 	}
 
+	// 2.2.5: CLQ page wording + taller middle Surroundings photo; smaller homepage hero text.
+	if ( empty( $GLOBALS['cg_suite_skipped']['clq-sites'] ) ) {
+		$pg = ccq_render( $site[0] );
+		check( 'CLQ: quote buttons now say "Talk to a specialist"', 2 === substr_count( $pg, '>Talk to a specialist</a>' ) && false === strpos( $pg, 'Get a quote' ) && false === strpos( $pg, 'Get a written quote' ) );
+		$ccss = file_get_contents( CCQ_DIR . 'assets/site.css' );
+		check( 'CLQ: middle Surroundings photo 22% taller, carousel grows to fit', false !== strpos( $ccss, '.ccq-car-i[data-pos=m]{left:37%;width:45%;--h:calc(var(--hm) * 1.22)}' ) && false !== strpos( $ccss, 'height:calc(var(--hm) * 1.22 + 118px)' ) );
+	}
+	if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) {
+		$hc2 = cgs_hero_css();
+		check( 'Home hero text slightly smaller on desktop/tablet (H1 max 46px, lead, buttons, stats)', false !== strpos( $hc2, '@media(min-width:768px){body.cgs-site #lqd-site-content .cgs-hero-sky h1.cgs-hero-h{font-size:max(24px,min(5.4cqw,46px))}' ) && false !== strpos( $hc2, '.cgs-hero-sky .cgs-hero-stats b{font-size:clamp(24px,1.8vw,30px)}' ) );
+	}
+
 	// Enquiry endpoint
 	$r = ccq_enquiry( new WP_REST_Request( array( 'site' => $site[0]->ID, 'company' => 'ACME', 'workers' => 30, 'email' => 'x@y.com', 'message' => 'hi' ) ) );
 	check( 'enquiry accepted + 2 emails', is_array( $r ) && ! empty( $r['ok'] ) && 2 === count( $GLOBALS['MAIL'] ?? array() ) );

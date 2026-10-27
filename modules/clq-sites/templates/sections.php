@@ -78,7 +78,7 @@ $slides   = array_slice( $photos, 0, 9 );
 		<nav class="ccq-bc" aria-label="Breadcrumb"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a><span aria-hidden="true">›</span><a href="<?php echo esc_url( $hub ); ?>">Properties</a><span aria-hidden="true">›</span><span aria-current="page"><?php echo esc_html( $r['area'] ); ?></span></nav>
 		<h1 id="ccq-h1" class="ccq-h1"><?php echo esc_html( $r['area'] . ' workers accommodation' ); ?><br><?php echo esc_html( 'and hostel' ); ?></h1>
 		<p class="ccq-lead"><?php echo esc_html( $r['fit'] ? $r['fit'] : $r['story'] ); ?></p>
-		<a class="ccq-btn" href="#ccq-contact" data-ccq-ev="quote_click">Get a quote</a>
+		<a class="ccq-btn" href="#ccq-contact" data-ccq-ev="quote_click">Talk to a specialist</a>
 	</div>
 	<div class="ccq-hero-vis">
 		<div class="ccq-slides" aria-roledescription="carousel" aria-label="<?php echo esc_attr( $r['site_name'] . ' photos' ); ?>">
@@ -199,7 +199,7 @@ $slides   = array_slice( $photos, 0, 9 );
 			</div>
 			<?php $k++; endforeach; ?>
 		</div>
-		<div class="ccq-center"><a class="ccq-btn" href="#ccq-contact" data-ccq-ev="quote_click">Get a written quote</a></div>
+		<div class="ccq-center"><a class="ccq-btn" href="#ccq-contact" data-ccq-ev="quote_click">Talk to a specialist</a></div>
 	</div>
 </section>
 
