@@ -93,6 +93,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.5.3** (2026-10-27): Removed the round dot icon before small labels (blog, posts, property pages). CLQ page titles and descriptions lead with "CLQ"; sample sites show no unverified bed figures; properties hub title "CLQ & Worker Accommodation in Klang Valley", default H1 "Centralised Labour Quarters in Klang Valley". Articles 1.2.2, CLQ Sites 1.7.6.
 - **2.5.2** (2026-10-27): Phone menu: white sheet only as tall as the menu (slides from top, rounded bottom), dark overlay behind (tap to close). Footer credit removed (field kept, empty = hidden). Homepage contact band photo: Candid-hostel-conversation-by-the-bunks.webp. Sections 1.40.2.
 - **2.5.1** (2026-10-27): Phone menu hierarchy: group labels small blue caps, pages 15-16px grey with a guide line. Our Approach cards: hover lift/colour change removed. Sections 1.40.1.
 - **2.5.0** (2026-10-27): Phone header: menu toggle left (animates to X), logo centre, round arrow button right (Get in touch link); full-screen white panel slides down from the top behind the header bar, page scroll locked while open, Esc closes. Homepage CLQ buttons link to the matching published property page ("View property"), falling back to Enquire us. Contact band: inner padding inside the panel. Sections 1.40.0.

@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CCQ_VERSION', '1.7.5' );
+define( 'CCQ_VERSION', '1.7.6' );
 define( 'CCQ_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CCQ_URL', plugin_dir_url( __FILE__ ) );
 define( 'CCQ_FOUNDED', 1991 );
@@ -468,7 +468,7 @@ function ccq_sites( $exclude = 0 ) {
 function ccq_hub() {
 	$h = get_option( 'ccq_hub', array() );
 	return array(
-		'title' => ! empty( $h['title'] ) ? $h['title'] : 'Concepts worker accommodation properties',
+		'title' => ! empty( $h['title'] ) ? $h['title'] : 'Centralised Labour Quarters in Klang Valley',
 		'intro' => ! empty( $h['intro'] ) ? $h['intro'] : 'Every site has its own fact sheet: beds, address, nearby estates and the date we last checked each figure.',
 	);
 }
@@ -608,18 +608,28 @@ add_filter( 'pre_get_document_title', function ( $t ) {
 		return ccq_page_title( ccq_get()['area'] );
 	}
 	if ( is_post_type_archive( 'ccq_site' ) && ! ccq_seo_plugin() ) {
-		return 'Worker Accommodation Properties in Klang Valley | Concepts Group';
+		return 'CLQ & Worker Accommodation in Klang Valley | Concepts Group';
 	}
 	return $t;
 }, 20 );
 
-/* Page title: "Workers Accommodation & Hostel in {Area} | Concepts Group", shortened for long area names (Google shows ~60 characters). */
+/* Page title: "CLQ & Worker Accommodation in {Area} | Concepts Group", shortened for long area names (Google shows ~60 characters). */
 function ccq_page_title( $area ) {
-	$t = 'Workers Accommodation & Hostel in ' . $area . ' | Concepts Group';
-	return mb_strlen( $t ) > 62 ? 'Workers Accommodation in ' . $area . ' | Concepts Group' : $t;
+	foreach ( array( 'CLQ & Worker Accommodation in ', 'CLQ & Worker Hostel in ', 'CLQ in ' ) as $lead ) {
+		$t = $lead . $area . ' | Concepts Group';
+		if ( mb_strlen( $t ) <= 62 ) {
+			return $t;
+		}
+	}
+	return $t;
 }
 
 function ccq_description( $r ) {
+	if ( ! empty( $r['sample'] ) ) {
+		/* Draft figures are not verified yet, so the description names no numbers. */
+		$d = 'Centralised labour quarters (CLQ) and worker accommodation in ' . $r['area'] . ' by Concepts Group. See rooms, rent inclusions and request a quote.';
+		return mb_strlen( $d ) > 160 ? 'CLQ worker accommodation in ' . $r['area'] . ' by Concepts Group. See rooms, rent inclusions and request a quote.' : $d;
+	}
 	$facts = array();
 	$b     = ccq_beds_label( $r );
 	$near  = ccq_nearby( $r );
@@ -629,8 +639,8 @@ function ccq_description( $r ) {
 	if ( $near['estate'] ) {
 		$facts[] = $near['estate'][0]['min'] . ' min from ' . $near['estate'][0]['name'];
 	}
-	$d = 'Workers accommodation and hostel in ' . $r['area'] . ( $facts ? ': ' . implode( ', ', $facts ) : '' ) . '. See rooms, rent inclusions and get a written quote.';
-	return mb_strlen( $d ) > 160 ? 'Workers accommodation and hostel in ' . $r['area'] . ' by Concepts Group. See rooms, rent inclusions and get a written quote.' : $d;
+	$d = 'CLQ worker accommodation in ' . $r['area'] . ( $facts ? ': ' . implode( ', ', $facts ) : '' ) . '. See rooms, rent inclusions and get a written quote.';
+	return mb_strlen( $d ) > 160 ? 'CLQ worker accommodation in ' . $r['area'] . ' by Concepts Group. See rooms, rent inclusions and get a written quote.' : $d;
 }
 
 add_action( 'wp_head', function () {
@@ -646,7 +656,7 @@ add_action( 'wp_head', function () {
 		if ( ccq_seo_plugin() ) {
 			return;
 		}
-		echo '<meta name="description" content="' . esc_attr( 'Concepts Group worker accommodation sites across Klang Valley: beds, addresses, nearby estates and the date each figure was last checked.' ) . '">' . "\n";
+		echo '<meta name="description" content="' . esc_attr( 'Centralised labour quarters (CLQ) and worker accommodation in Klang Valley, Selangor: compare Concepts Group sites, rooms, rent inclusions and request a quote.' ) . '">' . "\n";
 		$g = array( $org, array( '@type' => 'CollectionPage', '@id' => $hub . '#webpage', 'url' => $hub, 'name' => 'Worker accommodation properties', 'isPartOf' => array( '@id' => $home . '#website' ), 'about' => array( '@id' => $home . '#organization' ) ) );
 	} else {
 		$r   = ccq_get();

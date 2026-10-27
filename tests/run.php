@@ -239,6 +239,51 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'phone menu sheet: rounded bottom corners only, soft shadow', false !== strpos( cgs_header_css(), 'border-radius:0 0 28px 28px;box-shadow:0 24px 48px -20px rgba(7,26,51,.45)' ) );
 	}
 
+	// 2.6.0 SEO / GEO / AEO module.
+	if ( empty( $GLOBALS['cg_suite_skipped']['seo'] ) && function_exists( 'cgseo_defaults' ) ) {
+		$seo_html = function ( $q, $cur ) { $GLOBALS['Q'] = $q; $GLOBALS['CUR'] = $cur; $GLOBALS['post'] = get_post( $cur ); ob_start(); do_action( 'wp_head' ); $h = ob_get_clean(); return array( apply_filters( 'pre_get_document_title', '' ), $h ); };
+		$front = wp_insert_post( array( 'post_type' => 'page', 'post_title' => 'Home', 'post_name' => 'home', 'post_content' => '[cgs_hero]' ) );
+		$cpage = wp_insert_post( array( 'post_type' => 'page', 'post_title' => 'Contact', 'post_name' => 'contact', 'post_content' => 'Talk to us.' ) );
+		$xpage = wp_insert_post( array( 'post_type' => 'page', 'post_title' => 'Careers', 'post_name' => 'careers', 'post_content' => 'We are hiring site supervisors and drivers across Klang Valley. Apply today with your CV and we will reply within a week.' ) );
+		$d = cgseo_defaults();
+		list( $t, $h ) = $seo_html( array( 'is_front_page' => true, 'is_singular' => array( 'page' ), 'is_page' => true ), $front );
+		check( 'SEO: homepage title', esc_html( $d['front'][0] ) === $t );
+		check( 'SEO: homepage meta description', false !== strpos( $h, '<meta name="description" content="' . esc_attr( $d['front'][1] ) . '">' ) );
+		check( 'SEO: social tags (og + twitter) with image', false !== strpos( $h, 'property="og:title"' ) && false !== strpos( $h, 'property="og:image"' ) && false !== strpos( $h, 'name="twitter:card" content="summary_large_image"' ) );
+		check( 'SEO: Organization schema (legal name, reg. no., founded 1991, phone)', false !== strpos( $h, '"legalName":"CONCEPTS ATC SDN BHD"' ) && false !== strpos( $h, '199501034798' ) && false !== strpos( $h, '"foundingDate":"1991"' ) && false !== strpos( $h, '+603-3318 7773' ) );
+		check( 'SEO: WebSite + WebPage schema', false !== strpos( $h, '"@type":"WebSite"' ) && false !== strpos( $h, '"@type":"WebPage"' ) );
+		list( $t, $h ) = $seo_html( array( 'is_singular' => array( 'page' ), 'is_page' => true ), $cpage );
+		check( 'SEO: contact page title + description', esc_html( $d['contact'][0] ) === $t && false !== strpos( $h, esc_attr( $d['contact'][1] ) ) );
+		check( 'SEO: page breadcrumb schema', false !== strpos( $h, '"@type":"BreadcrumbList"' ) );
+		update_post_meta( $cpage, '_cgs_seo_title', 'Custom contact title' );
+		update_post_meta( $cpage, '_cgs_seo_desc', 'Custom contact description written by the team for this page only.' );
+		list( $t, $h ) = $seo_html( array( 'is_singular' => array( 'page' ), 'is_page' => true ), $cpage );
+		check( 'SEO: SEO box override wins', 'Custom contact title' === $t && false !== strpos( $h, 'Custom contact description written by the team' ) );
+		list( $t, $h ) = $seo_html( array( 'is_singular' => array( 'page' ), 'is_page' => true ), $xpage );
+		check( 'SEO: unknown page falls back to "Title | Concepts Group" + text excerpt', 'Careers | Concepts Group' === $t && false !== strpos( $h, 'We are hiring site supervisors' ) );
+		list( $t, $h ) = $seo_html( array( 'is_home' => true ), 0 );
+		check( 'SEO: blog listing gets a description', false !== strpos( $h, esc_attr( $d['blog'][1] ) ) );
+		$bad = array();
+		foreach ( $d as $k => $td ) { if ( mb_strlen( $td[0] ) > 62 || mb_strlen( $td[1] ) < 70 || mb_strlen( $td[1] ) > 160 ) { $bad[] = $k . ' (' . mb_strlen( $td[0] ) . '/' . mb_strlen( $td[1] ) . ')'; } }
+		check( 'SEO: every default title <= 62 chars, description 70-160 chars' . ( $bad ? ' FAIL: ' . implode( ', ', $bad ) : '' ), ! $bad );
+		$GLOBALS['Q'] = array( 'is_front_page' => true ); call_user_func( $GLOBALS['SC']['cgs_faq'], array(), '', 'cgs_faq' ); ob_start(); do_action( 'wp_footer' ); $f = ob_get_clean();
+		$fi = cgs_faq_items_default();
+		check( 'AEO: FAQPage schema built from the visible FAQ', false !== strpos( $f, '"@type":"FAQPage"' ) && false !== strpos( $f, wp_json_encode( $fi[0]['q'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) ) );
+		$pt = apply_filters( 'wp_sitemaps_post_types', array( 'post' => 1, 'page' => 1, 'liquid-header' => 1, 'liquid-footer' => 1 ) );
+		check( 'Sitemap: theme header/footer posts removed', ! isset( $pt['liquid-header'] ) && ! isset( $pt['liquid-footer'] ) && isset( $pt['page'] ) );
+		check( 'Sitemap: author pages removed', false === apply_filters( 'wp_sitemaps_add_provider', 'provider', 'users' ) && 'p' === apply_filters( 'wp_sitemaps_add_provider', 'p', 'posts' ) );
+		$qa = apply_filters( 'wp_sitemaps_posts_query_args', array(), 'ccq_site' );
+		check( 'Sitemap: sample CLQ sites excluded', ! empty( $qa['post__not_in'] ) );
+		check( 'SEO: page SEO fields registered for REST/editing', isset( $GLOBALS['REGMETA']['page']['_cgs_seo_title'], $GLOBALS['REGMETA']['page']['_cgs_seo_desc'] ) );
+	}
+	if ( empty( $GLOBALS['cg_suite_skipped']['clq-sites'] ) ) {
+		check( 'CLQ title: "CLQ & Worker Accommodation in Shah Alam | Concepts Group"', 'CLQ & Worker Accommodation in Shah Alam | Concepts Group' === ccq_page_title( 'Shah Alam' ) );
+		check( 'CLQ title long area shortened to <= 62 chars', 'CLQ & Worker Hostel in Telok Panglima Garang | Concepts Group' === ccq_page_title( 'Telok Panglima Garang' ) );
+		$r0 = ccq_get( $site[0] ); $r0['sample'] = '1';
+		check( 'CLQ description: no unverified bed figures while sample', ! preg_match( '/\d[\d,]* beds/', ccq_description( $r0 ) ) && false !== strpos( ccq_description( $r0 ), 'CLQ' ) );
+		check( 'CLQ hub H1 default: Centralised Labour Quarters in Klang Valley', 'Centralised Labour Quarters in Klang Valley' === ccq_hub()['title'] );
+	}
+
 	// Enquiry endpoint
 	$r = ccq_enquiry( new WP_REST_Request( array( 'site' => $site[0]->ID, 'company' => 'ACME', 'workers' => 30, 'email' => 'x@y.com', 'message' => 'hi' ) ) );
 	check( 'enquiry accepted + 2 emails', is_array( $r ) && ! empty( $r['ok'] ) && 2 === count( $GLOBALS['MAIL'] ?? array() ) );

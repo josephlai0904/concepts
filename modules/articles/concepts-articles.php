@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGA_VERSION', '1.2.1' );
+define( 'CGA_VERSION', '1.2.2' );
 define( 'CGA_URL', plugin_dir_url( __FILE__ ) );
 require_once __DIR__ . '/parts.php';
 

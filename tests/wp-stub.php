@@ -156,7 +156,7 @@ function add_submenu_page( ...$a ) { return 'hook'; }
 
 /* conditional tags (set per test) */
 $GLOBALS['Q'] = array();
-foreach ( array( 'is_singular', 'is_home', 'is_front_page', 'is_category', 'is_post_type_archive' ) as $fn ) {
+foreach ( array( 'is_singular', 'is_home', 'is_front_page', 'is_category', 'is_post_type_archive', 'is_page', 'is_404', 'is_search' ) as $fn ) {
 	eval( 'function ' . $fn . '( $t = null ) { $v = $GLOBALS["Q"]["' . $fn . '"] ?? false; return is_array( $v ) ? ( null === $t || in_array( $t, $v, true ) ) : (bool) $v; }' );
 }
 /* The Loop: one post. */
@@ -186,3 +186,12 @@ function vc_param_group_parse_atts( $s ) { $d = json_decode( urldecode( $s ), tr
 
 class WP_REST_Request { private $p; function __construct( $p ) { $this->p = $p; } function get_param( $k ) { return $this->p[ $k ] ?? null; } }
 class WP_REST_Response { public $data; public $status; function __construct( $d, $s ) { $this->data = $d; $this->status = $s; } }
+/* SEO helpers */
+function register_post_meta( $t, $k, $a ) { $GLOBALS['REGMETA'][ $t ][ $k ] = $a; return true; }
+function get_queried_object() { return get_post( $GLOBALS['CUR'] ?? 0 ); }
+function get_post_thumbnail_id( $p = null ) { return 0; }
+function get_bloginfo( $k = '' ) { return 'name' === $k ? 'Concepts Group' : ''; }
+function strip_shortcodes( $c ) { return preg_replace( '/\[[^\]]*\]/', '', (string) $c ); }
+function get_term_link( $t ) { return home_url( '/category/news/' ); }
+function single_term_title( $p = '', $d = true ) { return 'News'; }
+function term_description() { return ''; }
