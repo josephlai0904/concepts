@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.37.0' );
+define( 'CGS_VERSION', '1.37.1' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -247,7 +247,7 @@ body.cgs-site #lqd-site-content .cgs-hero h1.cgs-hero-h{margin:0;font-family:var
 .cgs-hero-sky .cgs-hero-enq small{font-size:.78rem}
 .cgs-hero-sky .cgs-hero-enq b{display:inline-block;margin-top:2px;font-size:1.02rem}
 @keyframes cgsEnqUp{from{opacity:0;translate:0 90px}to{opacity:1;translate:0 0}}
-.cgs-hero-sky .cgs-wave3{height:clamp(80px,8.4vw,150px)}
+.cgs-hero-sky .cgs-wave3{height:clamp(96px,11vw,200px)}
 .cgs-hero-sky .cgs-wave-back{z-index:1}
 .cgs-hero-sky .cgs-sky-team{will-change:translate}
 @media(prefers-reduced-motion:reduce){.cgs-hero-sky .cgs-hero-enq{animation:none;transition:none}}
@@ -608,8 +608,8 @@ add_shortcode( 'cgs_hero', function ( $atts ) {
 </div>
 <?php endif; ?>
 <?php if ( $sky ) : ?>
-<svg class="cgs-hero-wave cgs-wave3 cgs-wave-back" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="cgsWaveG" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#0b5fc4"/><stop offset="1" stop-color="#1e90ff"/></linearGradient></defs><path class="cgs-wave-l1" d="M0 140V40C260 4 520-2 760 28s460 54 680 0V140Z" fill="#cfe6ff" fill-opacity=".85"/><path class="cgs-wave-l2" d="M0 140V64C240 26 480 18 720 48s480 50 720 6V140Z" fill="url(#cgsWaveG)"/></svg>
-<svg class="cgs-hero-wave cgs-wave3 cgs-wave-front" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true"><path class="cgs-wave-l3" d="M0 140V78C240 40 480 32 720 62s480 50 720 6V140Z" fill="#fff"/></svg>
+<svg class="cgs-hero-wave cgs-wave3 cgs-wave-back" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="cgsWaveG" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#0b5fc4"/><stop offset=".55" stop-color="#1e90ff"/><stop offset="1" stop-color="#7cc0ff"/></linearGradient></defs><path class="cgs-wave-l1" d="M0 200V18C210 6 430 40 640 92S1080 176 1260 118C1340 92 1400 52 1440 34V200Z" fill="#e3f0ff" fill-opacity=".9"/><path class="cgs-wave-l2" d="M0 200V70C250 52 480 88 700 132S1120 182 1290 150C1360 136 1410 112 1440 96V200Z" fill="url(#cgsWaveG)"/></svg>
+<svg class="cgs-hero-wave cgs-wave3 cgs-wave-front" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><path class="cgs-wave-l3" d="M0 200V118C260 92 500 120 730 150S1140 192 1310 172C1370 165 1415 150 1440 138V200Z" fill="#fff"/></svg>
 <?php else : ?>
 <svg class="cgs-hero-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100V46C240 8 480 0 720 34s480 44 720 4V100Z" fill="#fff"/></svg>
 <?php endif; ?>
