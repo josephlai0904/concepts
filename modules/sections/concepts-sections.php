@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.40.1' );
+define( 'CGS_VERSION', '1.40.2' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -123,11 +123,11 @@ html.cgs-menu-open,html.cgs-menu-open body{overflow:hidden}
 .cgs-hd.mo .cgs-bi i:nth-child(1){transform:translateY(5px) rotate(45deg)}.cgs-hd.mo .cgs-bi i:nth-child(2){opacity:0}.cgs-hd.mo .cgs-bi i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
 .cgs-hd .cgs-mgo{display:grid;grid-column:3;grid-row:1;justify-self:end;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;color:var(--cgs-blue-d,#0b6fd1);transition:transform .3s}
 .cgs-hd .cgs-mgo:hover{transform:translateX(2px)}
-.cgs-hd .cgs-mpanel{display:block;position:fixed;inset:0;z-index:-1;background:#fff;transform:translateY(-100%);visibility:hidden;transition:transform .55s cubic-bezier(.7,0,.2,1),visibility 0s .55s}
-.cgs-hd.mo .cgs-mpanel{transform:none;visibility:visible;transition:transform .55s cubic-bezier(.7,0,.2,1),visibility 0s}
-.cgs-hd nav{position:fixed;top:calc(var(--cgs-hd-h,72px) + 24px);left:6vw;right:6vw;bottom:24px;background:none;color:var(--cgs-navy,#071A33);flex-direction:column;align-items:stretch;justify-content:flex-start;gap:6px;padding:0;display:none;font-size:22px;font-weight:600;overflow-y:auto;opacity:0;transform:translateY(-12px);border-radius:0;box-shadow:none;max-height:none}
-.cgs-hd nav.open{display:flex;animation:cgsNavIn .45s .2s cubic-bezier(.2,.7,.2,1) forwards}
-@keyframes cgsNavIn{to{opacity:1;transform:none}}
+.cgs-hd .cgs-mpanel{display:block;position:fixed;inset:0;z-index:-2;background:rgba(7,26,51,.55);opacity:0;visibility:hidden;transition:opacity .4s,visibility 0s .4s}
+.cgs-hd.mo .cgs-mpanel{opacity:1;visibility:visible;transition:opacity .4s,visibility 0s}
+.cgs-hd nav{position:fixed;top:0;left:0;right:0;bottom:auto;z-index:-1;display:flex;visibility:hidden;transform:translateY(-100%);transition:transform .5s cubic-bezier(.7,0,.2,1),visibility 0s .5s;background:#fff;color:var(--cgs-navy,#071A33);flex-direction:column;align-items:stretch;justify-content:flex-start;gap:6px;padding:96px 6vw 28px;font-size:22px;font-weight:600;max-height:100vh;max-height:100dvh;overflow-y:auto;opacity:1;border-radius:0 0 28px 28px;box-shadow:0 24px 48px -20px rgba(7,26,51,.45)}
+.cgs-hd nav.open{visibility:visible;transform:none;transition:transform .5s cubic-bezier(.7,0,.2,1),visibility 0s}
+.admin-bar .cgs-hd nav{padding-top:142px}
 .cgs-hd nav>a:not(.cgs-btn),.cgs-hd nav .cgs-ddt{padding:12px 0;border-bottom:1px solid #e6edf5}
 .cgs-hd nav .cgs-dd-menu{font-size:16px;font-weight:500}
 .cgs-hd nav a:not(.cgs-btn):hover{color:var(--cgs-blue,#1e90ff)}
@@ -437,6 +437,7 @@ function s(){h.classList.toggle('s',scrollY>60)}addEventListener('scroll',s,{pas
 function set(o){n.classList.toggle('open',o);h.classList.toggle('mo',o);document.documentElement.classList.toggle('cgs-menu-open',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Close menu':'Menu')}
 b.addEventListener('click',function(){set(!h.classList.contains('mo'))});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&h.classList.contains('mo'))set(false)});
+h.querySelector('.cgs-mpanel').addEventListener('click',function(){set(false)});
 addEventListener('resize',function(){if(!m()&&h.classList.contains('mo'))set(false)});
 h.querySelectorAll('.cgs-ddt').forEach(function(a){a.addEventListener('click',function(e){if(m()){e.preventDefault();a.parentNode.classList.toggle('open')}})});
 h.querySelectorAll('nav a:not(.cgs-ddt)').forEach(function(a){a.addEventListener('click',function(){set(false)})});})();
@@ -1713,7 +1714,7 @@ add_action( 'vc_before_init', function () {
 			array( 'type' => 'textfield', 'heading' => 'Button text', 'param_name' => 'cta_b', 'value' => 'Get in touch', 'group' => 'Layout' ),
 			array( 'type' => 'textfield', 'heading' => 'Button link', 'param_name' => 'cta_u', 'value' => '/contact/', 'group' => 'Layout' ),
 			array( 'type' => 'textfield', 'heading' => 'Big wordmark', 'param_name' => 'mark', 'value' => 'Concepts Group', 'group' => 'Layout' ),
-			array( 'type' => 'textfield', 'heading' => 'Credit (empty = hide)', 'param_name' => 'credit', 'value' => 'Website by Many Project', 'group' => 'Layout' ),
+			array( 'type' => 'textfield', 'heading' => 'Credit (empty = hide)', 'param_name' => 'credit', 'value' => '', 'group' => 'Layout' ),
 		),
 	) );
 } );
@@ -1733,7 +1734,7 @@ function cgs_footer_copy( $c ) {
 add_shortcode( 'cgs_footer', function ( $atts ) {
 	$a = shortcode_atts( array(
 		'style' => 'card', 'logo_dark' => '', 'tagline' => 'Workforce, accommodation and HR solutions since 1991', 'cta_h' => 'Do you have any questions? Talk to our team',
-		'cta_b' => 'Get in touch', 'cta_u' => '/contact/', 'mark' => 'Concepts Group', 'credit' => 'Website by Many Project',
+		'cta_b' => 'Get in touch', 'cta_u' => '/contact/', 'mark' => 'Concepts Group', 'credit' => '',
 		'logo' => '', 'logo_h' => '34', 'fb' => 'https://www.facebook.com/conceptsgroup.my', 'email' => 'support@concepts-groups.com',
 		'wa' => 'https://api.whatsapp.com/send?phone=60178873361&text=Hello%20there,%20I%20would%20like%20to%20know%20about%20your%20services',
 		'menu' => '', 't1' => 'Main Pages', 't2' => 'Solutions', 't3' => 'Contact', 'phone' => '+60 17-887 3361',
@@ -2627,7 +2628,7 @@ function cgs_cta_defaults() {
 		'h3' => 'Let us support your workforce needs',
 		'h3e' => 'workforce needs',
 		'p' => 'Whether you need reliable manpower, workforce management support or accommodation for your employees, Concepts Group can help you build a workforce solution around your business.',
-		'bg' => $b . 'Concepts-Group_e41orq.webp',
+		'bg' => $b . 'Candid-hostel-conversation-by-the-bunks.webp',
 		'b1' => 'WhatsApp us',
 		'u1' => 'https://api.whatsapp.com/send?phone=60178873361&text=Hello%20there,%20I%20would%20like%20to%20know%20about%20your%20services',
 		'i1' => $b . 'Black-Right-Arrow.svg',

@@ -169,7 +169,8 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'phone header: arrow button + slide panel in markup', false !== strpos( $hdr, 'class="cgs-mgo"' ) && false !== strpos( $hdr, 'class="cgs-mpanel"' ) );
 		$hcss = cgs_header_css();
 		check( 'phone header: 3-column grid (toggle | logo | arrow)', false !== strpos( $hcss, '.cgs-hd .cgs-bar{display:grid;grid-template-columns:44px 1fr 44px;' ) && false !== strpos( $hcss, '.cgs-hd .cgs-burger{display:grid;grid-column:1;grid-row:1;justify-self:start' ) && false !== strpos( $hcss, '.cgs-hd .cgs-mgo{display:grid;grid-column:3' ) );
-		check( 'phone header: white panel slides down from the top behind the bar', false !== strpos( $hcss, '.cgs-hd .cgs-mpanel{display:block;position:fixed;inset:0;z-index:-1;background:#fff;transform:translateY(-100%)' ) && false !== strpos( $hcss, '.cgs-hd.mo .cgs-mpanel{transform:none' ) );
+		check( 'phone menu: white sheet only as tall as the menu, slides from top', false !== strpos( $hcss, '.cgs-hd nav{position:fixed;top:0;left:0;right:0;bottom:auto;z-index:-1;display:flex;visibility:hidden;transform:translateY(-100%);' ) && false !== strpos( $hcss, '.cgs-hd nav.open{visibility:visible;transform:none;' ) && false === strpos( $hcss, 'bottom:24px;background:none' ) );
+		check( 'phone menu: dark overlay behind, tap overlay closes', false !== strpos( $hcss, '.cgs-hd .cgs-mpanel{display:block;position:fixed;inset:0;z-index:-2;background:rgba(7,26,51,.55);opacity:0;' ) && false !== strpos( cgs_header_js(), "querySelector('.cgs-mpanel').addEventListener('click'" ) );
 		check( 'phone header: script opens/closes panel, locks page scroll, Esc closes', false !== strpos( cgs_header_js(), "h.classList.toggle('mo'" ) && false !== strpos( cgs_header_js(), 'cgs-menu-open' ) && false !== strpos( cgs_header_js(), "'Escape'" ) );
 		check( 'phone menu: clear hierarchy (group label small blue caps, pages grey with guide line)', false !== strpos( $hcss, '.cgs-hd nav .cgs-dd-menu a.cgs-subt{padding:14px 0 6px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0b6fd1}' ) && false !== strpos( $hcss, '.cgs-hd nav .cgs-sub-menu{margin:2px 0 6px 2px;padding:0 0 0 14px;border-left:2px solid #e6edf5}' ) );
 		check( 'Our Approach cards: no hover lift / colour change', false === strpos( cgs_process_css(), '.cgs-pr-card:hover' ) );
@@ -208,14 +209,14 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'footer: new copyright line with current year', false !== strpos( $ft2, esc_html( $want ) ) );
 		check( 'footer: old saved copyright text upgrades to the new line', false !== strpos( $ftO, esc_html( $want ) ) );
 		check( 'footer: year is automatic (custom text with an old year is updated)', false !== strpos( call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'copy' => 'ACME © 2019 All rights.' ), '', 'cgs_footer' ), 'ACME © ' . $yr . ' All rights.' ) );
-		check( 'footer: modern layout has CTA, columns, wordmark, credit', false !== strpos( $ft2, 'cgs-ft2' ) && false !== strpos( $ft2, 'cgs-ft-cta' ) && false !== strpos( $ft2, 'cgs-ft-mark' ) && false !== strpos( $ft2, 'Back to top' ) && false !== strpos( $ft2, 'Many Project' ) );
+		check( 'footer: modern layout has CTA, columns, wordmark, no credit', false !== strpos( $ft2, 'cgs-ft2' ) && false !== strpos( $ft2, 'cgs-ft-cta' ) && false !== strpos( $ft2, 'cgs-ft-mark' ) && false !== strpos( $ft2, 'Back to top' ) && false === strpos( $ft2, 'Many Project' ) );
 		check( 'footer: heading breaks after the question mark', false !== strpos( $ft2, 'questions?<br>Talk to our team' ) );
 		do_action( 'wp_enqueue_scripts' );
 		check( 'footer: wordmark fit-to-width script registered', false !== strpos( implode( "\n", (array) ( $GLOBALS['INLINE']['cgs-footer'] ?? array() ) ), '.cgs-ft-mark' ) );
 		// 2.4.0: card footer (default) + floating contact band.
 		$ft3 = call_user_func( $GLOBALS['SC']['cgs_footer'], array(), '', 'cgs_footer' );
 		check( 'footer: default is the light card style', false !== strpos( $ft3, 'cgs-ft cgs-ft3' ) && false !== strpos( $ft3, 'cgs-ft-card' ) && false !== strpos( $ft3, 'cgs-ft-mark' ) );
-		check( 'footer card: dark logo, socials, columns, copyright, back to top, credit', false !== strpos( $ft3, 'Concepts-Group-Logo-since-1991.webp' ) && false !== strpos( $ft3, 'cgs-ft-soc3' ) && 2 === substr_count( $ft3, '<nav class="cgs-ft-c' ) && false !== strpos( $ft3, esc_html( $want ) ) && false !== strpos( $ft3, 'Back to top' ) && false !== strpos( $ft3, 'Many Project' ) );
+		check( 'footer card: dark logo, socials, columns, copyright, back to top, no credit', false !== strpos( $ft3, 'Concepts-Group-Logo-since-1991.webp' ) && false !== strpos( $ft3, 'cgs-ft-soc3' ) && 2 === substr_count( $ft3, '<nav class="cgs-ft-c' ) && false !== strpos( $ft3, esc_html( $want ) ) && false !== strpos( $ft3, 'Back to top' ) && false === strpos( $ft3, 'Many Project' ) );
 		check( 'footer card: no CTA heading (contact band above does that job)', false === strpos( $ft3, 'cgs-ft-cta' ) );
 		$cta = call_user_func( $GLOBALS['SC']['cgs_cta'], array(), '', 'cgs_cta' );
 		check( 'contact band: floating (narrower + rounded on scroll) class and script', false !== strpos( $cta, 'cgs-ct-float' ) && false !== strpos( implode( "\n", (array) ( $GLOBALS['INLINE']['cgs-cta'] ?? array() ) ), 'cgs-ct-float' ) );
@@ -233,8 +234,9 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'home CLQ: each button links to its property page and says "View property"', false !== strpos( $cq, '/x/shah-alam/' ) && false !== strpos( $cq, '/x/jenjarom/' ) && substr_count( $cq, '>View property<' ) >= 4 );
 		$cq2 = call_user_func( $GLOBALS['SC']['cgs_clq'], array( 'locations' => rawurlencode( wp_json_encode( array( array( 'name' => 'Nowhere Town', 'desc' => 'x' ) ) ) ) ), '', 'cgs_clq' );
 		check( 'home CLQ: no matching property page -> falls back to Enquire us / contact', false !== strpos( $cq2, '>Enquire us<' ) && false !== strpos( $cq2, '/contact/' ) );
+		check( 'contact band: background photo = candid hostel conversation', false !== strpos( $cta, 'Candid-hostel-conversation-by-the-bunks.webp' ) );
 		check( 'contact band: inner padding inside the panel', false !== strpos( cgs_cta_css(), '.cgs-ct.cgs-ct-float .cgs-ct-in{padding-left:calc(var(--cgs-ctx) + clamp(20px,4vw,56px));padding-right:calc(var(--cgs-ctx) + clamp(20px,4vw,56px))}' ) );
-		check( 'phone menu: no leftover card radius/shadow', false !== strpos( cgs_header_css(), 'font-size:22px;font-weight:600;overflow-y:auto;opacity:0;transform:translateY(-12px);border-radius:0;box-shadow:none;max-height:none}' ) );
+		check( 'phone menu sheet: rounded bottom corners only, soft shadow', false !== strpos( cgs_header_css(), 'border-radius:0 0 28px 28px;box-shadow:0 24px 48px -20px rgba(7,26,51,.45)' ) );
 	}
 
 	// Enquiry endpoint
