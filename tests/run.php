@@ -174,6 +174,7 @@ if ( 'activate-request' !== $SCEN ) {
 		$pg = ccq_render( $site[0] );
 		check( 'CLQ: quote buttons now say "Talk to a specialist"', 2 === substr_count( $pg, '>Talk to a specialist</a>' ) && false === strpos( $pg, 'Get a quote' ) && false === strpos( $pg, 'Get a written quote' ) );
 		$ccss = file_get_contents( CCQ_DIR . 'assets/site.css' );
+		check( 'CLQ: contact box background is darker navy #071A33', false !== strpos( $ccss, '#ccq-page.ccq .ccq-black{display:flex;flex-direction:column;justify-content:space-between;gap:40px;padding:clamp(20px,2.2vw,32px);border-radius:clamp(18px,1.9vw,26px);background:#071A33;' ) );
 		check( 'CLQ: middle Surroundings photo 22% taller, carousel grows to fit', false !== strpos( $ccss, '.ccq-car-i[data-pos=m]{left:37%;width:45%;--h:calc(var(--hm) * 1.22)}' ) && false !== strpos( $ccss, 'height:calc(var(--hm) * 1.22 + 118px)' ) );
 	}
 	if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) {

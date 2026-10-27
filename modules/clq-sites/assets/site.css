@@ -198,7 +198,7 @@
 #ccq-page.ccq .ccq-contact-in{display:grid;grid-template-columns:1.2fr 1.9fr 2.2fr;gap:clamp(16px,2vw,28px);align-items:stretch}
 #ccq-page.ccq .ccq-contact-l{display:flex;flex-direction:column;gap:8px}
 #ccq-page.ccq .ccq-contact-l .ccq-xl{margin-bottom:22px}
-#ccq-page.ccq .ccq-black{display:flex;flex-direction:column;justify-content:space-between;gap:40px;padding:clamp(20px,2.2vw,32px);border-radius:clamp(18px,1.9vw,26px);background:var(--black);color:#fff;font-style:normal}
+#ccq-page.ccq .ccq-black{display:flex;flex-direction:column;justify-content:space-between;gap:40px;padding:clamp(20px,2.2vw,32px);border-radius:clamp(18px,1.9vw,26px);background:#071A33;color:#fff;font-style:normal}
 #ccq-page.ccq .ccq-black span{display:block;margin-bottom:6px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ec6f3}
 #ccq-page.ccq .ccq-black a{display:inline-flex;align-items:center;min-height:30px;font-size:13px;transition:color .2s}
 #ccq-page.ccq .ccq-black a:hover{color:var(--sky)}

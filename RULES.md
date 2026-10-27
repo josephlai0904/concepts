@@ -93,6 +93,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.2.6** (2026-10-27): CLQ contact box background darker navy #071A33. CLQ Sites 1.7.4.
 - **2.2.5** (2026-10-27): CLQ property page: "Get a quote" / "Get a written quote" -> "Talk to a specialist"; middle Surroundings photo 22% taller. Home Sky hero text ~10% smaller on desktop/tablet (H1 max 46px). Sections 1.37.5, CLQ Sites 1.7.3.
 - **2.2.4** (2026-10-27): Hero eyebrow default "Workforce · Since 1991"; header button default "Get in touch"; Sky hero bottom padding slightly shorter (clamp(130px,13vw,220px)). Sections 1.37.4.
 - **2.2.3** (2026-10-27): Sky hero readability: H1 tracking -.02em / line-height 1.1, darker blue H1 line (4.4:1) and button (5.0:1), eyebrow accent line, lead capped at 520px, fixed px spacing rhythm, stats with short divider; stronger text fade; bottom padding halfway (clamp(140px,14vw,240px)). Sections 1.37.3.
