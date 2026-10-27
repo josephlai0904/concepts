@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.37.2' );
+define( 'CGS_VERSION', '1.37.3' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -232,11 +232,24 @@ body.cgs-site #lqd-site-content .cgs-hero h1.cgs-hero-h{margin:0;font-family:var
 /* Sky hero (2.1.0): sky background, building + people cutouts on the right, text on a soft white fade. */
 .cgs-hero.cgs-hero-sky{background:#eaf4ff var(--cgs-sky,none) center 30%/cover no-repeat;min-height:clamp(620px,47vw,900px);align-items:center}
 .cgs-hero-sky::after{display:none}
-body .cgs-hero.cgs-hero-sky{padding-bottom:clamp(170px,16vw,280px)}
-.cgs-hero-sky::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.7) 30%,rgba(255,255,255,.15) 50%,rgba(255,255,255,0) 60%)}
+body .cgs-hero.cgs-hero-sky{padding-bottom:clamp(140px,14vw,240px)}
+/* Readability (2.2.3): calmer heading tracking, darker blues for contrast, fixed px spacing rhythm, tighter text column. */
+body.cgs-site #lqd-site-content .cgs-hero-sky h1.cgs-hero-h{letter-spacing:-.02em;line-height:1.1}
+.cgs-hero-sky .cgs-hero-h em{color:#0b6fd1}
+body.cgs-site #lqd-site-content .cgs-hero-sky h2.cgs-hero-eb{margin:0 0 18px;gap:12px;letter-spacing:.14em;font-size:13px}
+body.cgs-site #lqd-site-content .cgs-hero-sky h2.cgs-hero-eb::before{content:"";flex:none;width:28px;height:2px;border-radius:2px;background:currentColor}
+.cgs-hero-sky .cgs-hero-txt{max-width:min(46vw,700px)}
+.cgs-hero-sky .cgs-hero-lead{margin:22px 0 32px;max-width:520px;font-size:clamp(16px,1.05vw,18px);line-height:1.65;color:#2f4258}
+.cgs-hero-sky .cgs-hero-cta{gap:12px}
+.cgs-hero-sky .cgs-hb1{background:#0b6fd1;border-color:#0b6fd1}
+.cgs-hero-sky .cgs-hb1:hover{background:#fff;color:#0b6fd1;border-color:#0b6fd1}
+.cgs-hero-sky .cgs-hero-stats{width:fit-content;max-width:100%;margin-top:40px;padding-top:24px;border-top:1px solid rgba(11,63,130,.14);gap:clamp(24px,3.2vw,56px)}
+.cgs-hero-sky .cgs-hero-stats b{font-size:clamp(28px,2.1vw,36px)}
+.cgs-hero-sky .cgs-hero-stats span{display:block;margin-top:6px;font-size:14px;color:#3f536d}
+.cgs-hero-sky::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.88) 30%,rgba(255,255,255,.5) 44%,rgba(255,255,255,0) 58%)}
 .cgs-hero-sky .cgs-hero-in{grid-template-columns:1fr}
 .cgs-hero-sky .cgs-hero-txt{max-width:min(48vw,820px)}
-.cgs-hero-sky .cgs-hero-lead{max-width:min(40vw,640px)}
+.cgs-hero-sky .cgs-hero-lead{max-width:520px}
 .cgs-hero-sky .cgs-sky-scene{position:absolute;right:0;bottom:0;width:62vw;height:100%;z-index:2;pointer-events:none}
 .cgs-hero-sky .cgs-sky-bld{position:absolute;right:-7vw;bottom:clamp(24px,2.4vw,48px);width:59vw;max-width:none;height:auto;display:block;filter:drop-shadow(0 30px 40px rgba(7,26,51,.18))}
 .cgs-hero-sky .cgs-sky-team{position:absolute;right:9vw;bottom:0;height:83%;width:auto;max-width:none;display:block;filter:drop-shadow(0 24px 30px rgba(7,26,51,.28))}
