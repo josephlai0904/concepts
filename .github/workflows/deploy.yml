@@ -81,6 +81,8 @@ jobs:
           VERSION="$1"; HOST="$2"; PLUGIN="$3"
           # Shared hosting caps processes: retry anything that may hit "fork: Resource temporarily unavailable".
           r() { local i; for i in 1 2 3 4 5 6; do "$@" && return 0; sleep $((i * 2)); done; return 1; }
+          # A rollback may only use a backup taken by THIS deploy.
+          rm -f ~/cgs-last-deploy
 
           # Find this site's WordPress folder.
           WP=""
@@ -94,11 +96,13 @@ jobs:
           echo "WordPress: $WP"
 
           # Lint with the server's own PHP. Fails closed: any file that cannot be checked counts as a failure.
+          # (No process substitution: this host's jailed shell has no /dev/fd.)
+          r find ~/cgs-incoming -name '*.php' > ~/cgs-lint-list || { echo "::error::Could not list files"; exit 1; }
           bad=0; n=0
-          while IFS= read -r -d '' f; do
+          while IFS= read -r f; do
             n=$((n + 1))
             r php -l "$f" >/dev/null 2>&1 || { echo "::error::Lint failed or could not run: ${f#$HOME/}"; bad=1; }
-          done < <(find ~/cgs-incoming -name '*.php' -print0)
+          done < ~/cgs-lint-list
           [ "$n" -gt 0 ] || { echo "::error::No PHP files found to lint"; exit 1; }
           [ "$bad" -eq 0 ] || exit 1
           echo "Lint OK on server ($n files)"
