@@ -277,6 +277,10 @@ if ( 'activate-request' !== $SCEN ) {
 		$qa = apply_filters( 'wp_sitemaps_posts_query_args', array(), 'ccq_site' );
 		$has_sample = function_exists( 'ccq_get' ) && array_filter( get_posts( array( 'post_type' => 'ccq_site', 'post_status' => 'publish', 'numberposts' => 200, 'fields' => 'ids' ) ), function ( $id ) { return ! empty( ccq_get( $id )['sample'] ); } );
 		check( 'Sitemap: sample CLQ sites excluded', ! $has_sample || ! empty( $qa['post__not_in'] ) );
+		$GLOBALS['Q'] = array( 'is_singular' => array( 'page' ), 'is_page' => true ); $GLOBALS['CUR'] = $xpage;
+		check( 'SEO: Rank Math gets our default when it has none', 'Careers | Concepts Group' === apply_filters( 'rank_math/frontend/title', 'Careers - Concepts Group' ) );
+		update_post_meta( $xpage, 'rank_math_title', 'Set in Rank Math' );
+		check( 'SEO: Rank Math own value is kept', 'Set in Rank Math' === apply_filters( 'rank_math/frontend/title', 'Set in Rank Math' ) );
 		check( 'SEO: page SEO fields registered for REST/editing', isset( $GLOBALS['REGMETA']['page']['_cgs_seo_title'], $GLOBALS['REGMETA']['page']['_cgs_seo_desc'] ) );
 	}
 	if ( empty( $GLOBALS['cg_suite_skipped']['clq-sites'] ) ) {

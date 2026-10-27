@@ -95,6 +95,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.6.1** (2026-10-27): Works with Rank Math (now installed): any page, property or the blog without its own Rank Math title/description uses the built-in defaults. FAQPage schema stays on with SEO plugins. SEO 1.1.0.
 - **2.6.0** (2026-10-27): New SEO module 1.0.0: a title and description for every page (editable in the "SEO (Google & AI)" box on each page), Facebook/WhatsApp/X share tags on all pages, posts and properties, company structured data (legal name, reg. no., founded 1991, phone), WebSite/WebPage/breadcrumb schema, FAQPage schema from the visible FAQ, blog and category descriptions, and a cleaner sitemap (no theme layout posts, author pages or sample properties). Steps aside if Yoast, Rank Math, AIOSEO or SEOPress is installed. Sections 1.40.3 (FAQ hand-off).
 - **2.5.3** (2026-10-27): Removed the round dot icon before small labels (blog, posts, property pages). CLQ page titles and descriptions lead with "CLQ"; sample sites show no unverified bed figures; properties hub title "CLQ & Worker Accommodation in Klang Valley", default H1 "Centralised Labour Quarters in Klang Valley". Articles 1.2.2, CLQ Sites 1.7.6.
 - **2.5.2** (2026-10-27): Phone menu: white sheet only as tall as the menu (slides from top, rounded bottom), dark overlay behind (tap to close). Footer credit removed (field kept, empty = hidden). Homepage contact band photo: Candid-hostel-conversation-by-the-bunks.webp. Sections 1.40.2.

@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGSEO_VERSION', '1.0.0' );
+define( 'CGSEO_VERSION', '1.1.0' );
 
 /**
  * Default title and description per page slug ('front' = homepage).
@@ -204,7 +204,8 @@ add_action( 'wp_head', function () {
 
 /* AEO: the FAQ questions shown on the page, as FAQPage structured data. */
 add_action( 'wp_footer', function () {
-	if ( cgseo_off() || empty( $GLOBALS['cgs_faq_seen'] ) ) {
+	/* Runs with SEO plugins too: none of them reads the [cgs_faq] section. */
+	if ( empty( $GLOBALS['cgs_faq_seen'] ) ) {
 		return;
 	}
 	$qa   = array();
@@ -299,3 +300,38 @@ add_action( 'save_post_page', function ( $id ) {
 		}
 	}
 } );
+
+/*
+ * Rank Math: when a page, property or the blog has no title/description of its own in
+ * Rank Math, use the defaults above, so the site is never left with "Page – Concepts Group".
+ */
+function cgseo_rm_fallback( $kind ) {
+	$i  = 'title' === $kind ? 0 : 1;
+	$id = cgseo_page_id();
+	if ( $id ) {
+		return '' === trim( (string) get_post_meta( $id, 'rank_math_' . $kind, true ) ) ? cgseo_page_meta( $id )[ $i ] : '';
+	}
+	if ( is_singular( 'ccq_site' ) && function_exists( 'ccq_get' ) ) {
+		$pid = get_queried_object_id();
+		if ( '' !== trim( (string) get_post_meta( $pid, 'rank_math_' . $kind, true ) ) ) {
+			return '';
+		}
+		$r = ccq_get( $pid );
+		return 'title' === $kind ? ccq_page_title( $r['area'] ) : ccq_description( $r );
+	}
+	if ( is_post_type_archive( 'ccq_site' ) ) {
+		return 'title' === $kind ? 'CLQ & Worker Accommodation in Klang Valley | Concepts Group' : 'Centralised labour quarters (CLQ) and worker accommodation in Klang Valley, Selangor: compare Concepts Group sites, rooms, rent inclusions and request a quote.';
+	}
+	if ( is_home() && ! is_front_page() ) {
+		return cgseo_defaults()['blog'][ $i ];
+	}
+	return '';
+}
+add_filter( 'rank_math/frontend/title', function ( $t ) {
+	$f = cgseo_rm_fallback( 'title' );
+	return '' !== $f ? $f : $t;
+}, 20 );
+add_filter( 'rank_math/frontend/description', function ( $d ) {
+	$f = cgseo_rm_fallback( 'description' );
+	return '' !== $f ? $f : $d;
+}, 20 );
