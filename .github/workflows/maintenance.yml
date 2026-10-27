@@ -29,12 +29,12 @@ jobs:
             ssh -i ~/.ssh/deploy -p "$SSH_PORT" -o BatchMode=yes "$SSH_USER@$SSH_HOST" "bash -s" -- "$SITE_HOST" "$TARGET" <<'REMOTE' && exit 0
           set -eu
           HOST="$1"; T="$2"; WP=""
-          for c in ~/domains/"$HOST"/public_html ~/domains/*/public_html; do
+          for c in ~/domains/"$HOST"/public_html ~/domains/*/public_html ~/domains/*/public_html/*; do
             [ -f "$c/wp-config.php" ] || continue
             u=$(wp option get siteurl --path="$c" --skip-plugins --skip-themes 2>/dev/null || true)
             case "$u" in *"$HOST"*) WP="$c"; break ;; esac
           done
-          [ -n "$WP" ] || exit 1
+          [ -n "$WP" ] || { echo "WordPress for $HOST not found"; exit 1; }
           wp plugin deactivate "$T" --path="$WP"
           wp litespeed-purge all --path="$WP" >/dev/null 2>&1 || true
           wp plugin list --status=active --field=name --path="$WP"
