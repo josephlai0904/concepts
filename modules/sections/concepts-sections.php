@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.41.0' );
+define( 'CGS_VERSION', '1.41.1' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -2598,6 +2598,8 @@ function cgs_cta_css() {
 .cgs-ct:before{content:"";position:absolute;inset:0;z-index:1;background:var(--cgs-ov,rgba(16,26,74,.78))}
 .cgs-ct:after{content:"";position:absolute;left:0;right:0;bottom:0;height:clamp(160px,24vw,320px);z-index:2;background:linear-gradient(180deg,rgba(7,26,51,0) 0%,rgba(7,26,51,.55) 55%,var(--cgs-navy,#071A33) 96%);pointer-events:none}
 .cgs-ct-wv{position:absolute;left:0;right:0;top:-1px;height:64px;background:var(--c);pointer-events:none;z-index:3;transform:scaleX(-1);-webkit-mask:{$wave} center/100% 100% no-repeat;mask:{$wave} center/100% 100% no-repeat}
+/* 2.7.1: the wave's top colour follows a light-blue FAQ section placed just above it. */
+.vc_row:has(.cgs-fq)+.vc_row .cgs-ct-wv:not(.a){--c:#eaf4ff!important}
 .cgs-ct-wv.a{height:94px;z-index:2;-webkit-mask-image:{$wavea};mask-image:{$wavea}}
 .cgs-ct-in{position:relative;z-index:4;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;padding:clamp(140px,13.5vw,190px) 5vw clamp(64px,6vw,96px)}
 body.cgs-site #lqd-site-content .cgs-ct h3.cgs-ct-h{margin:0;color:#fff;text-transform:capitalize}

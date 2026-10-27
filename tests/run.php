@@ -298,6 +298,7 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'CLQ hub FAQ: at least 5 employer questions with answers', count( $hf ) >= 5 && ! array_filter( $hf, function ( $i ) { return empty( $i['q'] ) || empty( $i['a'] ); } ) );
 		check( 'CLQ hub FAQ: no unverified figures', ! preg_match( '/\d[\d,]* (beds|days|workers)/', wp_json_encode( $hf ) ) );
 		check( 'CLQ hub template shows the FAQ', false !== strpos( file_get_contents( $SUITE . '/modules/clq-sites/templates/hub.php' ), 'ccq_hub_faq()' ) );
+		check( 'Wave after an FAQ section matches the FAQ background', false !== strpos( file_get_contents( $SUITE . '/modules/sections/concepts-sections.php' ), '.vc_row:has(.cgs-fq)+.vc_row .cgs-ct-wv:not(.a){--c:#eaf4ff!important}' ) );
 		check( 'CLQ hub H1 default: Centralised Labour Quarters in Klang Valley', 'Centralised Labour Quarters in Klang Valley' === ccq_hub()['title'] );
 	}
 
