@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.39.0' );
+define( 'CGS_VERSION', '1.39.1' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -2555,8 +2555,10 @@ function cgs_cta_css() {
 .cgs-ct{position:relative;overflow:hidden;display:flex;align-items:center;min-height:clamp(460px,44vw,620px);background:var(--cgs-navy,#071A33);color:#fff;font-family:var(--cgs-fb,Inter,sans-serif);--cgs-ct-ph:{$phone}}
 .cgs-ct *{box-sizing:border-box}
 /* Contact band (2.4.0): narrows to a centred rounded panel as it scrolls into view (--cgs-ctp 0 -> 1 set by script). */
-.cgs-ct.cgs-ct-float{clip-path:inset(0 calc(var(--cgs-ctp,1) * 4vw) round calc(var(--cgs-ctp,1) * 32px));will-change:clip-path}
-@media(max-width:767px){.cgs-ct.cgs-ct-float{clip-path:inset(0 calc(var(--cgs-ctp,1) * 3vw) round calc(var(--cgs-ctp,1) * 22px))}}
+.cgs-ct.cgs-ct-float{background:#eef3f9;--cgs-ctx:calc(var(--cgs-ctp,1) * 5vw);--cgs-ctr:calc(var(--cgs-ctp,1) * clamp(20px,2vw,32px))}
+.cgs-ct.cgs-ct-float .cgs-ct-bg,.cgs-ct.cgs-ct-float:before{left:var(--cgs-ctx);right:var(--cgs-ctx);border-radius:var(--cgs-ctr)}
+.cgs-ct.cgs-ct-float:after{left:var(--cgs-ctx);right:var(--cgs-ctx);border-radius:0 0 var(--cgs-ctr) var(--cgs-ctr)}
+@media(max-width:767px){.cgs-ct.cgs-ct-float{--cgs-ctx:calc(var(--cgs-ctp,1) * 6vw)}}
 .cgs-ct-bg{position:absolute;inset:0;z-index:0;background:var(--cgs-img) center 18%/cover no-repeat fixed}
 .cgs-ct:before{content:"";position:absolute;inset:0;z-index:1;background:var(--cgs-ov,rgba(16,26,74,.78))}
 .cgs-ct:after{content:"";position:absolute;left:0;right:0;bottom:0;height:clamp(160px,24vw,320px);z-index:2;background:linear-gradient(180deg,rgba(7,26,51,0) 0%,rgba(7,26,51,.55) 55%,var(--cgs-navy,#071A33) 96%);pointer-events:none}

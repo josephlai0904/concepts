@@ -122,7 +122,8 @@
     } else play();
   })();
 
-  /* 8. Map: an interactive OpenStreetMap (Leaflet) that zooms with the scroll wheel, pinch and +/-.
+  /* 8. Map: an interactive OpenStreetMap (Leaflet). Zoom with the +/- buttons, double-click or pinch;
+     the scroll wheel scrolls the page, not the map.
      Leaflet loads only when the visitor gets near the map; if it can't load, the plain embed is used. */
   (function () {
     var map = $('.ccq-map');
@@ -142,7 +143,7 @@
       box.setAttribute('aria-label', 'Map of ' + area + ' site');
       map.insertBefore(box, map.firstChild);
       var touch = matchMedia('(pointer: coarse)').matches;
-      var m = L.map(box, { center: [la, ln], zoom: 15, scrollWheelZoom: true, dragging: !touch, tap: false, zoomControl: true, attributionControl: true });
+      var m = L.map(box, { center: [la, ln], zoom: 15, scrollWheelZoom: false, dragging: !touch, tap: false, zoomControl: true, attributionControl: true });
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(m);
       L.marker([la, ln], { icon: L.divIcon({ className: 'ccq-lf-pin', html: '<i></i>', iconSize: [26, 26], iconAnchor: [13, 30] }), keyboard: false }).addTo(m);
       m.zoomControl.setPosition('bottomright');

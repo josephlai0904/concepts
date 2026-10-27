@@ -174,6 +174,8 @@ if ( 'activate-request' !== $SCEN ) {
 	// 2.2.5: CLQ page wording + taller middle Surroundings photo; smaller homepage hero text.
 	if ( empty( $GLOBALS['cg_suite_skipped']['clq-sites'] ) ) {
 		$pg = ccq_render( $site[0] );
+		$sjs = file_get_contents( CCQ_DIR . 'assets/site.js' );
+		check( 'CLQ map: scroll-wheel zoom is OFF (page scrolls past the map)', false !== strpos( $sjs, 'scrollWheelZoom: false' ) && false === strpos( $sjs, 'scrollWheelZoom: true' ) );
 		check( 'CLQ: quote buttons now say "Talk to a specialist"', 2 === substr_count( $pg, '>Talk to a specialist</a>' ) && false === strpos( $pg, 'Get a quote' ) && false === strpos( $pg, 'Get a written quote' ) );
 		$ccss = file_get_contents( CCQ_DIR . 'assets/site.css' );
 		check( 'CLQ: contact box background is darker navy #071A33', false !== strpos( $ccss, '#ccq-page.ccq .ccq-black{display:flex;flex-direction:column;justify-content:space-between;gap:40px;padding:clamp(20px,2.2vw,32px);border-radius:clamp(18px,1.9vw,26px);background:#071A33;' ) );
@@ -206,7 +208,10 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'footer card: no CTA heading (contact band above does that job)', false === strpos( $ft3, 'cgs-ft-cta' ) );
 		$cta = call_user_func( $GLOBALS['SC']['cgs_cta'], array(), '', 'cgs_cta' );
 		check( 'contact band: floating (narrower + rounded on scroll) class and script', false !== strpos( $cta, 'cgs-ct-float' ) && false !== strpos( implode( "\n", (array) ( $GLOBALS['INLINE']['cgs-cta'] ?? array() ) ), 'cgs-ct-float' ) );
-		check( 'contact band: clip-path driven by scroll progress, static for reduced motion', false !== strpos( cgs_cta_css(), '.cgs-ct.cgs-ct-float{clip-path:inset(0 calc(var(--cgs-ctp,1) * 4vw) round calc(var(--cgs-ctp,1) * 32px))' ) );
+		$cc = cgs_cta_css();
+		check( 'contact band: area behind the panel matches the footer (#eef3f9)', false !== strpos( $cc, '.cgs-ct.cgs-ct-float{background:#eef3f9' ) );
+		check( 'contact band: panel lines up with the footer card (5vw desktop / 6vw phone)', false !== strpos( $cc, '--cgs-ctx:calc(var(--cgs-ctp,1) * 5vw)' ) && false !== strpos( $cc, '--cgs-ctx:calc(var(--cgs-ctp,1) * 6vw)' ) );
+		check( 'contact band: same corner radius as the footer card', false !== strpos( $cc, '--cgs-ctr:calc(var(--cgs-ctp,1) * clamp(20px,2vw,32px))' ) );
 		check( 'footer: classic style restores old footer', false === strpos( $ftC, 'cgs-ft2' ) && false !== strpos( $ftC, 'cgs-ft-cols' ) );
 	}
 
