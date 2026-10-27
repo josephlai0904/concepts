@@ -1,0 +1,118 @@
+# Concepts Group Suite: test, then deploy to concepts.manyproject.my over SSH.
+# Made by Many Project (Web App Marketing Sdn Bhd).
+# Any failure stops the deploy; a failed health check restores the previous version.
+name: Test and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-concepts
+  cancel-in-progress: false
+
+env:
+  SITE_URL: https://concepts.manyproject.my
+  SITE_HOST: concepts.manyproject.my
+  SSH_HOST: 45.80.183.180
+  SSH_PORT: "65002"
+  SSH_USER: u110137743
+  PLUGIN: concepts-group-suite
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP lint
+        run: find . -name '*.php' -not -path './tests/*' -print0 | xargs -0 -n1 php -l | grep -v 'No syntax errors' && exit 1 || true
+      - name: Version numbers match
+        run: |
+          H=$(grep -oP '^\s*\*\s*Version:\s*\K[0-9.]+' concepts-group-suite.php)
+          C=$(grep -oP "CG_SUITE_VERSION', '\K[0-9.]+" concepts-group-suite.php)
+          T=$(grep -oP 'Stable tag:\s*\K[0-9.]+' readme.txt)
+          echo "header=$H constant=$C readme=$T"
+          [ "$H" = "$C" ] && [ "$H" = "$T" ]
+      - name: Smoke tests (fresh, old plugins active, partial, activation)
+        working-directory: tests
+        run: |
+          for s in fresh legacy-all legacy-sections activate-request; do
+            php -d error_reporting=-1 run.php .. fixtures/legacy "$s"
+          done
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SSH setup
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          [ -n "$SSH_KEY" ] || { echo "::error::Secret SSH_KEY is not set"; exit 1; }
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          echo "SSH=ssh -i $HOME/.ssh/deploy -p $SSH_PORT -o BatchMode=yes $SSH_USER@$SSH_HOST" >> "$GITHUB_ENV"
+
+      - name: Upload to staging folder on server
+        run: |
+          rsync -az --delete --exclude '.git' --exclude '.github' --exclude 'tests' \
+            -e "ssh -i $HOME/.ssh/deploy -p $SSH_PORT -o BatchMode=yes" \
+            ./ "$SSH_USER@$SSH_HOST:cgs-incoming/"
+
+      - name: Install, health check, roll back on failure
+        run: |
+          VERSION=$(grep -oP "CG_SUITE_VERSION', '\K[0-9.]+" concepts-group-suite.php)
+          $SSH "bash -s" -- "$VERSION" "$SITE_HOST" "$PLUGIN" <<'REMOTE'
+          set -euo pipefail
+          VERSION="$1"; HOST="$2"; PLUGIN="$3"
+
+          # Find this site's WordPress folder.
+          WP=""
+          for c in ~/domains/"$HOST"/public_html ~/domains/*/public_html ~/domains/*/public_html/*; do
+            [ -f "$c/wp-config.php" ] || continue
+            u=$(wp option get siteurl --path="$c" --skip-plugins --skip-themes 2>/dev/null || true)
+            case "$u" in *"$HOST"*) WP="$c"; break ;; esac
+          done
+          [ -n "$WP" ] || { echo "WordPress for $HOST not found"; exit 1; }
+          DEST="$WP/wp-content/plugins/$PLUGIN"
+          echo "WordPress: $WP"
+
+          # Lint with the server's own PHP before touching the live folder.
+          find ~/cgs-incoming -name '*.php' -print0 | xargs -0 -n1 php -l | grep -v 'No syntax errors' && { echo "Lint failed on server"; exit 1; } || true
+
+          # Back up the live copy (keep the last 10).
+          BK=~/cgs-backups/$(date +%Y%m%d-%H%M%S)
+          mkdir -p ~/cgs-backups
+          [ -d "$DEST" ] && cp -a "$DEST" "$BK"
+          ls -1dt ~/cgs-backups/* 2>/dev/null | tail -n +11 | xargs -r rm -rf
+
+          rollback() {
+            echo "::error::Health check failed. Restoring previous version."
+            if [ -d "$BK" ]; then rsync -a --delete "$BK/" "$DEST/"; fi
+            wp litespeed-purge all --path="$WP" >/dev/null 2>&1 || true
+            exit 1
+          }
+
+          # Swap files in (all at once at the end of the transfer).
+          mkdir -p "$DEST"
+          rsync -a --delete --delay-updates ~/cgs-incoming/ "$DEST/"
+
+          # 1. WordPress loads with the new code and reports the new version (catches fatal errors).
+          GOT=$(wp eval 'echo defined("CG_SUITE_VERSION") ? CG_SUITE_VERSION : "not-loaded";' --path="$WP" 2>/dev/null | tail -n1 || true)
+          echo "Loaded version: $GOT (expected $VERSION)"
+          [ "$GOT" = "$VERSION" ] || rollback
+
+          # 2. Clear the page cache, then check live pages.
+          wp litespeed-purge all --path="$WP" >/dev/null 2>&1 || true
+          for p in / /properties/; do
+            code=$(curl -s -o /tmp/cgs_body -w '%{http_code}' "https://$HOST$p?cgs_deploy=$VERSION" || echo 000)
+            echo "$p -> $code"
+            [ "$code" = "200" ] || rollback
+            if grep -qi 'critical error\|Fatal error' /tmp/cgs_body; then rollback; fi
+          done
+          echo "Deployed $PLUGIN $VERSION"
+          REMOTE
