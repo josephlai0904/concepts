@@ -93,6 +93,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.2.2** (2026-10-27): Sky hero: more bottom padding on desktop (clamp(170px,16vw,280px)) so the text has room above the wave. Sections 1.37.2.
 - **2.2.1** (2026-10-27): Sky hero wave redrawn so the layers vary in thickness (each curve has its own rhythm); taller wave. Sections 1.37.1.
 - **2.2.0** (2026-10-27): Sky hero: 3-layer wave (light + blue band behind the people, white in front), 3D enquiry card with icon and slide-up entry, workers parallax on scroll (off for reduced motion), workers bigger and further left, building further right. Sections 1.37.0.
 - **2.1.2** (2026-10-27): Sky hero images: hostel with the full left wing (Concept-Group-Hostel-and-accommodation.webp, building 59vw) and new people photo (foreign-workers.webp); people scaled for tablet/phone. Sections 1.36.2.

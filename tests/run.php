@@ -156,6 +156,7 @@ if ( 'activate-request' !== $SCEN ) {
 		$js = implode( "\n", (array) ( $GLOBALS['INLINE']['cgs-hero'] ?? array() ) );
 		check( 'workers parallax script present (respects reduced motion)', false !== strpos( $js, '.cgs-sky-team' ) && false !== strpos( $js, "cgs-hero-sky" ) && substr_count( $js, 'prefers-reduced-motion' ) >= 2 );
 		check( 'workers bigger (83%) and further left (9vw); building further right (-7vw)', false !== strpos( cgs_hero_css(), '.cgs-hero-sky .cgs-sky-team{position:absolute;right:9vw;bottom:0;height:83%;' ) && false !== strpos( cgs_hero_css(), '.cgs-sky-bld{position:absolute;right:-7vw;' ) );
+		check( 'sky hero has extra bottom padding above the wave (2.2.2)', false !== strpos( cgs_hero_css(), 'body .cgs-hero.cgs-hero-sky{padding-bottom:clamp(170px,16vw,280px)}' ) && strpos( cgs_hero_css(), 'body .cgs-hero.cgs-hero-sky{padding-bottom:clamp(170px,16vw,280px)}' ) < strpos( cgs_hero_css(), '@media(max-width:1024px){body .cgs-hero.cgs-hero-sky{' ) );
 		check( 'homepage hero H1 = max(24px,min(6cqw,52px))', (bool) preg_match( '/\.cgs-hero h1\.cgs-hero-h\{margin:0;[^}]*font-size:max\(24px,min\(6cqw,52px\)\)\}/', cgs_hero_css() ) );
 		check( 'header bar uses 6vw gutter at <=1024px like the content', false !== strpos( cgs_header_css(), '@media(max-width:1024px){.cgs-hd .cgs-bar{width:calc(100% - 12vw)}}' ) );
 	}

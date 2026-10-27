@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.37.1' );
+define( 'CGS_VERSION', '1.37.2' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -232,6 +232,7 @@ body.cgs-site #lqd-site-content .cgs-hero h1.cgs-hero-h{margin:0;font-family:var
 /* Sky hero (2.1.0): sky background, building + people cutouts on the right, text on a soft white fade. */
 .cgs-hero.cgs-hero-sky{background:#eaf4ff var(--cgs-sky,none) center 30%/cover no-repeat;min-height:clamp(620px,47vw,900px);align-items:center}
 .cgs-hero-sky::after{display:none}
+body .cgs-hero.cgs-hero-sky{padding-bottom:clamp(170px,16vw,280px)}
 .cgs-hero-sky::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.7) 30%,rgba(255,255,255,.15) 50%,rgba(255,255,255,0) 60%)}
 .cgs-hero-sky .cgs-hero-in{grid-template-columns:1fr}
 .cgs-hero-sky .cgs-hero-txt{max-width:min(48vw,820px)}
