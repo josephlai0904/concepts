@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.39.1' );
+define( 'CGS_VERSION', '1.39.2' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -314,7 +314,7 @@ body.cgs-site #lqd-site-content .cgs-hero-sky h2.cgs-hero-eb::before{content:"";
 @media(min-width:1025px) and (max-width:1320px){.cgs-hero-sky .cgs-sky-team{height:78%;right:6vw}.cgs-hero-sky .cgs-hero-txt{max-width:46vw}}
 .cgs-hero-sky .cgs-hb2{border-color:#d6e4f5;box-shadow:0 12px 28px -14px rgba(7,26,51,.35)}
 @media(max-width:1024px){body .cgs-hero.cgs-hero-sky{min-height:0;flex-direction:column;align-items:stretch;padding-bottom:0}.cgs-hero-sky::before{background:linear-gradient(180deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.7) 45%,rgba(255,255,255,0) 70%)}.cgs-hero-sky .cgs-hero-txt,.cgs-hero-sky .cgs-hero-lead{max-width:none}.cgs-hero-sky .cgs-sky-scene{position:relative;width:100%;height:auto;aspect-ratio:5/4;margin-top:clamp(24px,5vw,40px)}.cgs-hero-sky .cgs-sky-bld{right:-6%;bottom:14%;width:84%}.cgs-hero-sky .cgs-sky-team{right:auto;left:2%;bottom:0;width:52%;height:auto}.cgs-hero-sky .cgs-hero-enq{left:auto;right:4%;bottom:auto;top:8%}}
-@media(max-width:767px){.cgs-hero-sky .cgs-hero-enq{display:none}.cgs-hero-sky .cgs-sky-scene{aspect-ratio:1/1}.cgs-hero-sky .cgs-sky-team{width:66%;left:0}.cgs-hero-sky .cgs-sky-bld{width:96%;right:-12%;bottom:22%}}
+@media(max-width:767px){.cgs-hero-sky .cgs-hero-enq{display:none}.cgs-hero-sky .cgs-sky-scene{aspect-ratio:5/4}.cgs-hero-sky .cgs-sky-team{width:66%;left:0}.cgs-hero-sky .cgs-sky-bld{width:96%;right:-12%;bottom:6%}}
 @media(max-width:1024px){.cgs-hero-story .cgs-hero-in{grid-template-columns:1fr}.cgs-hero-story .cgs-hero-txt{padding:clamp(48px,8vw,72px) 6vw clamp(12px,2.5vw,20px)}.cgs-hero-story .cgs-hero-vis{margin:clamp(12px,2vw,20px) 6vw 0;min-height:0}.cgs-hero-story .cgs-hero-work{position:static;height:auto;aspect-ratio:3/2}}
 @media(min-width:768px) and (max-width:1024px){.cgs-hero-story .cgs-hero-work{aspect-ratio:2.2/1}}
 @media(max-width:767px){body.page-id-488 .cgs-hero-story .cgs-hero-h .cgs-ln{display:block;white-space:nowrap}body.page-id-488 .cgs-hero-story .cgs-hero-h .cgs-ln+.cgs-ln{margin-left:0}}
@@ -1654,7 +1654,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_register_script( 'cgs-footer', false, array(), CGS_VERSION, true );
 	wp_add_inline_script( 'cgs-footer', "(function(){var m=document.querySelector('.cgs-ft .cgs-ft-mark');if(!m)return;var s=m.firstElementChild;function fit(){m.style.fontSize='';var w=m.clientWidth,t=s.offsetWidth;if(w&&t)m.style.fontSize=(parseFloat(getComputedStyle(m).fontSize)*w/t).toFixed(2)+'px'}fit();addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit)})();" );
 	/* Sky hero: workers drift down as the page scrolls (parallax). Off for reduced motion. */
-	wp_add_inline_script( 'cgs-hero', "(function(){var h=document.querySelector('.cgs-hero-sky');if(!h)return;var w=h.querySelector('.cgs-sky-team');if(!w||matchMedia('(prefers-reduced-motion:reduce)').matches||!('translate' in document.documentElement.style))return;var k=0;function p(){k=0;var r=h.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var y=Math.min(r.height*.25,Math.max(0,-r.top*.35));w.style.translate='0 '+y.toFixed(1)+'px'}addEventListener('scroll',function(){if(!k)k=requestAnimationFrame(p)},{passive:true});addEventListener('resize',p);p()})();" );
+	wp_add_inline_script( 'cgs-hero', "(function(){var h=document.querySelector('.cgs-hero-sky');if(!h)return;var w=h.querySelector('.cgs-sky-team');if(!w||matchMedia('(prefers-reduced-motion:reduce)').matches||!('translate' in document.documentElement.style))return;var k=0;function p(){k=0;var r=h.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;var y=Math.min(w.offsetHeight*.12,Math.max(0,-r.top*.12));w.style.translate='0 '+y.toFixed(1)+'px'}addEventListener('scroll',function(){if(!k)k=requestAnimationFrame(p)},{passive:true});addEventListener('resize',p);p()})();" );
 }, 31 );
 
 /* ------------------------------------------------------------------

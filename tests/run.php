@@ -167,6 +167,9 @@ if ( 'activate-request' !== $SCEN ) {
 		$hdr = call_user_func( $GLOBALS['SC']['cgs_header'], array(), '', 'cgs_header' );
 		check( 'header button default = Get in touch', false !== strpos( $hdr, 'Get in touch' ) && false === strpos( $hdr, 'Get a quote' ) );
 		check( 'hero eyebrow default = Workforce · Since 1991', false !== strpos( $sky, '>Workforce · Since 1991</h2>' ) );
+		// 2.4.2: gentler parallax; phone scene without empty sky under the building.
+		check( 'parallax gentler: 0.12 of scroll, max 12% of the workers height', false !== strpos( $js, 'Math.min(w.offsetHeight*.12,Math.max(0,-r.top*.12))' ) );
+		check( 'phone scene shorter and building sits low (no empty sky above the wave)', false !== strpos( cgs_hero_css(), '.cgs-hero-sky .cgs-sky-scene{aspect-ratio:5/4}' ) && false !== strpos( cgs_hero_css(), '.cgs-hero-sky .cgs-sky-bld{width:96%;right:-12%;bottom:6%}' ) );
 		check( 'homepage hero H1 = max(24px,min(6cqw,52px))', (bool) preg_match( '/\.cgs-hero h1\.cgs-hero-h\{margin:0;[^}]*font-size:max\(24px,min\(6cqw,52px\)\)\}/', cgs_hero_css() ) );
 		check( 'header bar uses 6vw gutter at <=1024px like the content', false !== strpos( cgs_header_css(), '@media(max-width:1024px){.cgs-hd .cgs-bar{width:calc(100% - 12vw)}}' ) );
 	}

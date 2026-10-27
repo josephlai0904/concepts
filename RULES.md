@@ -93,6 +93,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.4.2** (2026-10-27): Workers parallax gentler (0.12 of scroll, max 12% of the workers height: ~72px desktop, ~31px phone). Phone hero scene shorter (5/4) with the building sitting on the wave (no empty sky). Sections 1.39.2.
 - **2.4.1** (2026-10-27): CLQ map scroll-wheel zoom OFF (zoom with +/-, double-click, pinch). Homepage contact band: blue-grey (#eef3f9) behind the panel, panel insets to the footer card edges (5vw / 6vw phone) with the same corner radius. Sections 1.39.1, CLQ Sites 1.7.5.
 - **2.4.0** (2026-10-27): Footer default is now the light "Card" style (white floating card: colour logo, tagline, social icons, Main Pages / Solutions / Contact, bottom bar with copyright, Back to top, credit; faint wordmark behind). Styles: Card / Modern / Classic. New field "Logo (dark, card style)". Homepage contact band narrows to a centred rounded panel as it scrolls into view (static for reduced motion). Sections 1.39.0.
 - **2.3.1** (2026-10-27): Home hero buttons padding 14px 26px (halfway between 2.2.4 and 2.2.5). Sections 1.38.1.
