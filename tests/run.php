@@ -118,11 +118,13 @@ if ( 'activate-request' !== $SCEN ) {
 
 	// Brand logo (2.0.1)
 	$hd = call_user_func( $GLOBALS['SC']['cgs_header'], array(), '', 'cgs_header' );
-	$ft = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'logo' => '999' ), '', 'cgs_footer' );
-	$cu = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'logo' => '42' ), '', 'cgs_footer' );
+	$ft = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'style' => 'modern', 'logo' => '999' ), '', 'cgs_footer' );
+	$cu = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'style' => 'modern', 'logo' => '42' ), '', 'cgs_footer' );
+	$cd = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'logo_dark' => '43' ), '', 'cgs_footer' );
 	if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) { // only when the suite's own Sections module is loaded
 		check( 'header default logo = since-1991 white', false !== strpos( $hd, 'Concepts-Group-Logo-since-1991-white.webp' ) );
 		check( 'old white logo picked in WPBakery swaps to new', false !== strpos( $ft, 'Concepts-Group-Logo-since-1991-white.webp' ) && false === strpos( $ft, 'Concepts-Group-White-Logo.webp' ) );
+		check( 'card footer: dark logo picked in WPBakery is used', false !== strpos( $cd, 'i43.jpg' ) );
 		check( 'custom logo picked in WPBakery is kept', false !== strpos( $cu, 'i42.jpg' ) );
 	}
 
@@ -186,8 +188,8 @@ if ( 'activate-request' !== $SCEN ) {
 	// 2.3.0: modern footer (reference style), auto year, company reg. no., classic restore.
 	if ( empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) {
 		$yr  = gmdate( 'Y' );
-		$ft2 = call_user_func( $GLOBALS['SC']['cgs_footer'], array(), '', 'cgs_footer' );
-		$ftO = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'copy' => '© 2026 CONCEPTS ATC SDN BHD. All Rights Reserved.' ), '', 'cgs_footer' );
+		$ft2 = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'style' => 'modern' ), '', 'cgs_footer' );
+		$ftO = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'style' => 'modern', 'copy' => '© 2026 CONCEPTS ATC SDN BHD. All Rights Reserved.' ), '', 'cgs_footer' );
 		$ftC = call_user_func( $GLOBALS['SC']['cgs_footer'], array( 'style' => 'classic' ), '', 'cgs_footer' );
 		$want = 'CONCEPTS ATC SDN BHD (Reg. No.: 199501034798 / 364000-P) © ' . $yr . ' All Rights Reserved.';
 		check( 'footer: new copyright line with current year', false !== strpos( $ft2, esc_html( $want ) ) );
@@ -197,6 +199,14 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'footer: heading breaks after the question mark', false !== strpos( $ft2, 'questions?<br>Talk to our team' ) );
 		do_action( 'wp_enqueue_scripts' );
 		check( 'footer: wordmark fit-to-width script registered', false !== strpos( implode( "\n", (array) ( $GLOBALS['INLINE']['cgs-footer'] ?? array() ) ), '.cgs-ft-mark' ) );
+		// 2.4.0: card footer (default) + floating contact band.
+		$ft3 = call_user_func( $GLOBALS['SC']['cgs_footer'], array(), '', 'cgs_footer' );
+		check( 'footer: default is the light card style', false !== strpos( $ft3, 'cgs-ft cgs-ft3' ) && false !== strpos( $ft3, 'cgs-ft-card' ) && false !== strpos( $ft3, 'cgs-ft-mark' ) );
+		check( 'footer card: dark logo, socials, columns, copyright, back to top, credit', false !== strpos( $ft3, 'Concepts-Group-Logo-since-1991.webp' ) && false !== strpos( $ft3, 'cgs-ft-soc3' ) && 2 === substr_count( $ft3, '<nav class="cgs-ft-c' ) && false !== strpos( $ft3, esc_html( $want ) ) && false !== strpos( $ft3, 'Back to top' ) && false !== strpos( $ft3, 'Many Project' ) );
+		check( 'footer card: no CTA heading (contact band above does that job)', false === strpos( $ft3, 'cgs-ft-cta' ) );
+		$cta = call_user_func( $GLOBALS['SC']['cgs_cta'], array(), '', 'cgs_cta' );
+		check( 'contact band: floating (narrower + rounded on scroll) class and script', false !== strpos( $cta, 'cgs-ct-float' ) && false !== strpos( implode( "\n", (array) ( $GLOBALS['INLINE']['cgs-cta'] ?? array() ) ), 'cgs-ct-float' ) );
+		check( 'contact band: clip-path driven by scroll progress, static for reduced motion', false !== strpos( cgs_cta_css(), '.cgs-ct.cgs-ct-float{clip-path:inset(0 calc(var(--cgs-ctp,1) * 4vw) round calc(var(--cgs-ctp,1) * 32px))' ) );
 		check( 'footer: classic style restores old footer', false === strpos( $ftC, 'cgs-ft2' ) && false !== strpos( $ftC, 'cgs-ft-cols' ) );
 	}
 

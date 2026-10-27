@@ -93,6 +93,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.4.0** (2026-10-27): Footer default is now the light "Card" style (white floating card: colour logo, tagline, social icons, Main Pages / Solutions / Contact, bottom bar with copyright, Back to top, credit; faint wordmark behind). Styles: Card / Modern / Classic. New field "Logo (dark, card style)". Homepage contact band narrows to a centred rounded panel as it scrolls into view (static for reduced motion). Sections 1.39.0.
 - **2.3.1** (2026-10-27): Home hero buttons padding 14px 26px (halfway between 2.2.4 and 2.2.5). Sections 1.38.1.
 - **2.3.0** (2026-10-27): Modern footer (default): logo + tagline, big "Do you have any questions?" heading with pill button, 5 link columns (Back to top, Main Pages, Solutions, Contact, Follow us), full-width "Concepts Group" wordmark (auto-fit), bottom bar with copyright + "Website by Many Project". Copyright "CONCEPTS ATC SDN BHD (Reg. No.: 199501034798 / 364000-P) © {year} All Rights Reserved." with automatic year. Restore: WPBakery > Concepts Footer > Layout > Style = Classic. Sections 1.38.0.
 - **2.2.6** (2026-10-27): CLQ contact box background darker navy #071A33. CLQ Sites 1.7.4.
