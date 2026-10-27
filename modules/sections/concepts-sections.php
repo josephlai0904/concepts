@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.40.4' );
+define( 'CGS_VERSION', '1.41.0' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -2474,7 +2474,7 @@ function cgs_faq_items_default() {
 		array( 'q' => 'What is our role as a worker supply agency in Malaysia?', 'a' => 'A Manpower Agency is a Total HR Provider that recruits and manages general workers on behalf of employers. Manpower agencies provide you with a wide range of workers that are suitable for your business production while saving on cost and time.' ),
 		array( 'q' => 'Why is it important to plan on your manpower intake?', 'a' => 'To meet the eligibility of quota application, for instance, by planning how many workers would you require in order to achieve your targeted output to save on the cost which ranges from (workers’ hostel, transport, salary etc).' ),
 		array( 'q' => 'How to recruit through manpower supplier in Malaysia?', 'a' => 'Firstly, employers must undergo a quota application assessment to check their eligibility for foreign workers recruitment. Followed by quota application and coordination with Source Countries partners pertaining to documentation. For more information on these procedures, contact us.' ),
-		array( 'q' => 'Why should you choose us as your worker supply & management agency?', 'a' => 'We hold 31 years of expertise in manpower recruitment for factories and provide job opportunities for global citizens making us one of the most reliable manpower agency in Malaysia. We have partners at Source Countries which contribute to our high success rate in recruitment.' ),
+		array( 'q' => 'Why should you choose us as your worker supply & management agency?', 'a' => 'Since 1991, we have built expertise in manpower recruitment for factories and provide job opportunities for global citizens making us one of the most reliable manpower agency in Malaysia. We have partners at Source Countries which contribute to our high success rate in recruitment.' ),
 		array( 'q' => 'Which industries do you support?', 'a' => 'We support businesses across manufacturing, semiconductor, automotive, healthcare, plantation, construction, services and other labour-intensive industries.' ),
 	);
 }
@@ -3001,7 +3001,7 @@ function cgs_transport_defaults() {
 	return array(
 		'h2' => 'Transport Solutions', 'h3' => 'Reliable Daily Transport', 'h3e' => 'Daily Transport',
 		'p1' => 'We have our own buses and vans, which covers all routes and connects to major industrial areas, throughout Peninsular Malaysia and our team obtained driver\'s license from:',
-		'lic' => "National Land Public Transport Commission (SPAD)\nApproved Service Route from State Regulators (SPAD)\nApproved Roadworthy Vehicles with License & Regulatory permits from both Road Transport Department (JPJ) and SPAD.",
+		'lic' => "Land Public Transport Agency (APAD, formerly SPAD)\nApproved Service Route from State Regulators (APAD)\nApproved Roadworthy Vehicles with License & Regulatory permits from both Road Transport Department (JPJ) and APAD.",
 		'p2' => 'Our team of 50 over competent professional drivers ensures workers travel to work safely on time. Our vehicles undergo regular maintenance which to ensure that it is safe for workers to travel in.',
 		'slides' => $s,
 	);

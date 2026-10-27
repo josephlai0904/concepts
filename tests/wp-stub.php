@@ -33,7 +33,8 @@ function register_activation_hook( $f, $cb ) { $GLOBALS['ACT'][] = $cb; }
 function register_deactivation_hook( $f, $cb ) { $GLOBALS['DEACT'][] = $cb; }
 function add_shortcode( $t, $cb ) { $GLOBALS['SC'][ $t ] = $cb; }
 function shortcode_atts( $d, $a, $s = '' ) { $a = (array) $a; $o = array(); foreach ( $d as $k => $v ) $o[ $k ] = array_key_exists( $k, $a ) ? $a[ $k ] : $v; return $o; }
-function do_shortcode( $c ) { return preg_replace_callback( '/\[(\w+)([^\]]*)\]/', function ( $m ) { return isset( $GLOBALS['SC'][ $m[1] ] ) ? call_user_func( $GLOBALS['SC'][ $m[1] ], array(), '', $m[1] ) : $m[0]; }, (string) $c ); }
+function shortcode_exists( $t ) { return isset( $GLOBALS["SC"][ $t ] ); }
+function do_shortcode( $c ) { return preg_replace_callback( '/\[(\w+)([^\]]*)\]/', function ( $m ) { if ( ! isset( $GLOBALS['SC'][ $m[1] ] ) ) { return $m[0]; } preg_match_all( '/(\w+)="([^"]*)"/', $m[2], $kv, PREG_SET_ORDER ); $atts = array(); foreach ( $kv as $p ) { $atts[ $p[1] ] = $p[2]; } return call_user_func( $GLOBALS['SC'][ $m[1] ], $atts, '', $m[1] ); }, (string) $c ); }
 function has_shortcode( $c, $t ) { return false !== strpos( (string) $c, '[' . $t ); }
 
 /* ---- escaping / sanitising ---- */

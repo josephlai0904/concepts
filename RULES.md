@@ -95,6 +95,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.7.0** (2026-10-27): Employer FAQ (6 questions, FAQPage schema) on the /properties/ hub, filterable with `ccq_hub_faq`. Transport licence wording updated from SPAD to APAD (SPAD was replaced in 2018). Default homepage FAQ says "Since 1991" instead of "31 years". Sections 1.41.0, CLQ Sites 1.8.0.
 - **2.6.2** (2026-10-27): FAQPage schema also for the Recruitment FAQ, and for property FAQs once a site is no longer marked sample. Sections 1.40.4, CLQ Sites 1.7.7.
 - **2.6.1** (2026-10-27): Works with Rank Math (now installed): any page, property or the blog without its own Rank Math title/description uses the built-in defaults. FAQPage schema stays on with SEO plugins. SEO 1.1.0.
 - **2.6.0** (2026-10-27): New SEO module 1.0.0: a title and description for every page (editable in the "SEO (Google & AI)" box on each page), Facebook/WhatsApp/X share tags on all pages, posts and properties, company structured data (legal name, reg. no., founded 1991, phone), WebSite/WebPage/breadcrumb schema, FAQPage schema from the visible FAQ, blog and category descriptions, and a cleaner sitemap (no theme layout posts, author pages or sample properties). Steps aside if Yoast, Rank Math, AIOSEO or SEOPress is installed. Sections 1.40.3 (FAQ hand-off).

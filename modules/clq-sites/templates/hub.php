@@ -17,4 +17,9 @@ $hub = ccq_hub();
 	<?php ccq_explore( ccq_sites(), false ); ?>
 </div>
 <?php
+/* Employer FAQ (uses the Recruitment FAQ design from the Sections module when it is loaded). */
+$ccq_faq = ccq_hub_faq();
+if ( $ccq_faq && shortcode_exists( 'cgs_fwr_faq' ) ) {
+	echo do_shortcode( '[cgs_fwr_faq h2="CLQ FAQs" h3="Questions employers ask" h3e="employers ask" t="Need worker accommodation?" p="Tell us your headcount, workplace and move-in date. Our team will confirm availability and send a written quote." s1="Klang Valley CLQs" s2="Reliable Workforce Support" url="https://concepts.manyproject.my/contact/" items="' . rawurlencode( wp_json_encode( $ccq_faq ) ) . '"]' );
+}
 get_footer();

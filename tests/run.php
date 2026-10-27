@@ -104,6 +104,9 @@ if ( 'activate-request' !== $SCEN ) {
 			try { ob_start(); include $tpl; $html = ob_get_clean(); } catch ( Throwable $e ) { ob_end_clean(); $GLOBALS['ISSUES'][] = "$__name: " . $e->getMessage() . ' @ ' . basename( $e->getFile() ) . ':' . $e->getLine(); }
 		}
 		check( "page '$__name' rendered (" . basename( $tpl ) . ', ' . strlen( $html ) . ' bytes)', count( $GLOBALS['ISSUES'] ) === $before );
+		if ( 'property hub' === $__name && shortcode_exists( 'cgs_fwr_faq' ) && empty( $GLOBALS['cg_suite_skipped']['sections'] ) ) {
+			check( 'CLQ hub page shows the employer FAQ', false !== strpos( $html, 'What is a CLQ' ) );
+		}
 	}
 
 	// Every shortcode with defaults
@@ -291,6 +294,10 @@ if ( 'activate-request' !== $SCEN ) {
 		check( 'CLQ title long area shortened to <= 62 chars', 'CLQ & Worker Hostel in Telok Panglima Garang | Concepts Group' === ccq_page_title( 'Telok Panglima Garang' ) );
 		$r0 = ccq_get( $site[0] ); $r0['sample'] = '1';
 		check( 'CLQ description: no unverified bed figures while sample', ! preg_match( '/\d[\d,]* beds/', ccq_description( $r0 ) ) && false !== strpos( ccq_description( $r0 ), 'CLQ' ) );
+		$hf = function_exists( 'ccq_hub_faq' ) ? ccq_hub_faq() : array();
+		check( 'CLQ hub FAQ: at least 5 employer questions with answers', count( $hf ) >= 5 && ! array_filter( $hf, function ( $i ) { return empty( $i['q'] ) || empty( $i['a'] ); } ) );
+		check( 'CLQ hub FAQ: no unverified figures', ! preg_match( '/\d[\d,]* (beds|days|workers)/', wp_json_encode( $hf ) ) );
+		check( 'CLQ hub template shows the FAQ', false !== strpos( file_get_contents( $SUITE . '/modules/clq-sites/templates/hub.php' ), 'ccq_hub_faq()' ) );
 		check( 'CLQ hub H1 default: Centralised Labour Quarters in Klang Valley', 'Centralised Labour Quarters in Klang Valley' === ccq_hub()['title'] );
 	}
 

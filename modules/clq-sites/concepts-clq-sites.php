@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CCQ_VERSION', '1.7.7' );
+define( 'CCQ_VERSION', '1.8.0' );
 define( 'CCQ_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CCQ_URL', plugin_dir_url( __FILE__ ) );
 define( 'CCQ_FOUNDED', 1991 );
@@ -471,6 +471,18 @@ function ccq_hub() {
 		'title' => ! empty( $h['title'] ) ? $h['title'] : 'Centralised Labour Quarters in Klang Valley',
 		'intro' => ! empty( $h['intro'] ) ? $h['intro'] : 'Every site has its own fact sheet: beds, address, nearby estates and the date we last checked each figure.',
 	);
+}
+
+/* Employer FAQ on the /properties/ hub (also FAQPage schema). No figures here: each property page carries its own verified facts. */
+function ccq_hub_faq() {
+	return apply_filters( 'ccq_hub_faq', array(
+		array( 'q' => 'What is a CLQ (centralised labour quarters)?', 'a' => 'A CLQ is purpose-built, centrally managed accommodation for workers, planned around Malaysia\'s worker housing requirements under Act 446. Employers rent beds or rooms instead of running their own hostels.' ),
+		array( 'q' => 'Where are Concepts Group\'s CLQs?', 'a' => 'All our properties are in Selangor, Klang Valley: Shah Alam is operating, while Telok Panglima Garang, Jenjarom and Port Klang are in development. Each property has its own page with its status and details.' ),
+		array( 'q' => 'What is included in the rent?', 'a' => 'Inclusions vary by property and are listed on each property page. Every quote we send sets out exactly what is included, so you can compare costs clearly.' ),
+		array( 'q' => 'How many workers can you accommodate?', 'a' => 'It depends on the property and current availability. Tell us your headcount, workplace location and move-in date, and we will confirm availability and send a written quote.' ),
+		array( 'q' => 'Can employers visit the accommodation before signing?', 'a' => 'Yes. You can book a site visit to see the rooms and facilities, and ask our team about the documents available for your compliance review.' ),
+		array( 'q' => 'How soon can workers move in?', 'a' => 'At operating sites, move-in depends on bed availability at the time of your enquiry. Properties still in development accept registrations of interest only.' ),
+	) );
 }
 
 /* Sample records stay out of search results. */
