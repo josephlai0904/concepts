@@ -304,6 +304,8 @@ if ( 'activate-request' !== $SCEN ) {
 			check( 'Footer: Main Pages starts with Home', (bool) preg_match( '#<h4>Main Pages</h4><a href="' . preg_quote( home_url( '/' ), '#' ) . '">Home</a>#', $ft ) );
 			$fp = cgs_footer_pages( array( array( 'label' => 'About Us', 'url' => '', 'children' => "Our Story|https://x.test/our-story/\nVision|https://x.test/vision/\n" ), array( 'label' => 'Blog', 'url' => 'https://x.test/blog/', 'children' => '' ), array( 'label' => 'Home', 'url' => home_url( '/' ), 'children' => '' ) ) );
 			check( 'Footer: dropdown parents link to their first sub-page, Home not doubled', 4 - 1 === count( $fp ) && 'Home' === $fp[0]['label'] && 'https://x.test/our-story/' === $fp[1]['url'] && 'https://x.test/blog/' === $fp[2]['url'] );
+			$fp2 = cgs_footer_pages( array( array( 'label' => 'CLQ', 'url' => '#', 'children' => "Shah Alam|https://x.test/properties/shah-alam/\nJenjarom|https://x.test/properties/jenjarom/\n" ) ) );
+			check( 'Footer: CLQ parent links to the /properties/ hub', home_url( '/properties/' ) === $fp2[1]['url'] );
 			check( 'Footer: Contact shows the office address with a map link', false !== strpos( $ft, 'Jalan Batu Nilam 16' ) && false !== strpos( $ft, 'google.com/maps' ) );
 		}
 		check( 'CLQ hub H1 default: Centralised Labour Quarters in Klang Valley', 'Centralised Labour Quarters in Klang Valley' === ccq_hub()['title'] );

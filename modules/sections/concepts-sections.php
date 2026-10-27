@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.42.1' );
+define( 'CGS_VERSION', '1.42.2' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -537,12 +537,22 @@ function cgs_footer_pages( $menu ) {
 			continue;
 		}
 		if ( '' === $url || '#' === $url[0] ) {
-			$url = '';
+			$kids = array();
 			foreach ( preg_split( '/\r\n|\r|\n/', trim( (string) ( isset( $it['children'] ) ? $it['children'] : '' ) ) ) as $line ) {
 				$p = array_map( 'trim', explode( '|', ltrim( $line, '>' ), 2 ) );
 				if ( isset( $p[1] ) && '' !== $p[1] && '#' !== $p[1][0] ) {
-					$url = $p[1];
-					break;
+					$kids[] = $p[1];
+				}
+			}
+			$url = $kids ? $kids[0] : '';
+			/* Sub-pages that share one folder (e.g. /properties/shah-alam/, /properties/jenjarom/) -> that folder's page. */
+			if ( count( $kids ) > 1 ) {
+				$dirs = array_unique( array_map( function ( $k ) {
+					$path = trim( (string) wp_parse_url( $k, PHP_URL_PATH ), '/' );
+					return false !== strpos( $path, '/' ) ? substr( $path, 0, strpos( $path, '/' ) ) : '';
+				}, $kids ) );
+				if ( 1 === count( $dirs ) && '' !== reset( $dirs ) ) {
+					$url = home_url( '/' . reset( $dirs ) . '/' );
 				}
 			}
 		}
