@@ -257,3 +257,15 @@
   })();
 })();
 
+/* Hub grid: "See more" shows the next batch of hidden cards, then hides itself when none are left. */
+document.querySelectorAll('.ccq-more-b').forEach(function (b) {
+	var g = document.getElementById(b.getAttribute('aria-controls'));
+	if (!g) { return; }
+	var step = parseInt(g.getAttribute('data-step'), 10) || 6;
+	b.addEventListener('click', function () {
+		var hid = g.querySelectorAll('.ccq-more-item[hidden]');
+		for (var i = 0; i < hid.length && i < step; i++) { hid[i].hidden = false; }
+		if (hid[0]) { var a = hid[0].querySelector('a'); if (a) { a.focus({ preventScroll: true }); } }
+		if (hid.length <= step) { b.parentNode.hidden = true; }
+	});
+});

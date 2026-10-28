@@ -198,10 +198,20 @@ add_action( 'manage_ccq_site_posts_custom_column', function ( $col, $id ) {
 /* Hub page (/centralised-labour-quarters/) heading and intro. */
 add_action( 'admin_menu', function () {
 	add_submenu_page( 'edit.php?post_type=ccq_site', 'Properties page', 'Properties page', 'edit_pages', 'ccq-hub', function () {
-		$h = ccq_hub();
+		$h  = ccq_hub();
+		$pg = ccq_hub_page_id();
+		if ( $pg ) :
+			?>
+<div class="wrap"><h1>Properties page</h1>
+<p>The page at <a href="<?php echo esc_url( get_permalink( $pg ) ); ?>" target="_blank"><?php echo esc_html( get_permalink( $pg ) ); ?></a> is a normal page now. Edit its hero, property grid, "What is a CLQ" section and FAQ in WPBakery, like the other pages.</p>
+<p><a class="button button-primary" href="<?php echo esc_url( get_edit_post_link( $pg ) ); ?>">Edit the page</a></p>
+<p>The property cards come from <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=ccq_site' ) ); ?>">CLQ Sites</a>: publish a site and its card appears.</p></div>
+			<?php
+			return;
+		endif;
 		?>
 <div class="wrap"><h1>Properties page</h1>
-<p>The page at <a href="<?php echo esc_url( get_post_type_archive_link( 'ccq_site' ) ); ?>" target="_blank"><?php echo esc_html( get_post_type_archive_link( 'ccq_site' ) ); ?></a> lists every published site in the order set by each site's "Order" (Page Attributes). Add it to the menu under Appearance &gt; Menus &gt; Custom Links.</p>
+<p>The page at <a href="<?php echo esc_url( ccq_hub_url() ); ?>" target="_blank"><?php echo esc_html( ccq_hub_url() ); ?></a> lists every published site in the order set by each site's "Order" (Page Attributes). Add it to the menu under Appearance &gt; Menus &gt; Custom Links.</p>
 <?php if ( isset( $_GET['saved'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?><div class="notice notice-success"><p>Saved.</p></div><?php endif; ?>
 <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 <input type="hidden" name="action" value="ccq_hub"><?php wp_nonce_field( 'ccq_hub' ); ?>

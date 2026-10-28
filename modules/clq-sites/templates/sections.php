@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$hub     = get_post_type_archive_link( 'ccq_site' );
+$hub     = ccq_hub_url();
 $photos  = ccq_media_list( $r['photos'], '1536x1536' );
 $plans   = ccq_media_list( $r['plans'], 'full' );
 $near    = ccq_nearby( $r );

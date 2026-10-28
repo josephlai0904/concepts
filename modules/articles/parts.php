@@ -24,7 +24,7 @@ function cga_cta_band() {
 		</div>
 		<div class="cga-cta-btns">
 			<a class="cga-pill cga-pill-w" href="<?php echo esc_url( home_url( '/#contact' ) ); ?>">Get a quote</a>
-			<a class="cga-pill cga-pill-o" href="<?php echo esc_url( function_exists( 'ccq_get' ) ? get_post_type_archive_link( 'ccq_site' ) : home_url( '/centralised-labour-quarters/' ) ); ?>">View properties</a>
+			<a class="cga-pill cga-pill-o" href="<?php echo esc_url( function_exists( 'ccq_hub_url' ) ? ccq_hub_url() : home_url( '/centralised-labour-quarters/' ) ); ?>">View properties</a>
 		</div>
 	</div>
 </section>

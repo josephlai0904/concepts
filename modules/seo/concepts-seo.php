@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGSEO_VERSION', '1.2.4' );
+define( 'CGSEO_VERSION', '1.2.5' );
 
 /**
  * Default title and description per page slug ('front' = homepage).
@@ -25,6 +25,7 @@ function cgseo_defaults() {
 		'foreign-worker-recruitment' => array( 'Foreign Worker Recruitment Agency Malaysia | Concepts Group', 'Foreign and local worker recruitment for Malaysian employers, from quota application and source-country partners to documentation and onboarding.' ),
 		'transport-management'       => array( 'Worker Transport Management in Klang Valley | Concepts Group', 'Worker transport between accommodation and your workplace, planned around your shifts and routes. Ask Concepts Group for a transport quote.' ),
 		'document-renewal'           => array( 'Foreign Worker Permit & Document Renewal | Concepts Group', 'Help with foreign worker permit (PLKS) renewals, passports and related documents, so your workforce stays compliant and on the job.' ),
+		'centralised-labour-quarters' => array( 'CLQ & Worker Accommodation in Klang Valley | Concepts Group', 'Centralised labour quarters (CLQ) and worker accommodation in Klang Valley, Selangor: compare Concepts Group sites, rooms, rent inclusions and request a quote.' ),
 		'blog'                       => array( 'Blog: Workforce, CLQ and Recruitment Guides | Concepts Group', 'Practical guides for Malaysian employers on foreign worker recruitment, CLQ worker accommodation, compliance and workforce management.' ),
 		'contact'                    => array( 'Contact Concepts Group | Worker Accommodation & Recruitment', 'Talk to Concepts Group about worker accommodation, recruitment or transport. Call +603-3318 7773, WhatsApp +60 17-887 3361 or send an enquiry.' ),
 	);

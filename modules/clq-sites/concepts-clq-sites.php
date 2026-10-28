@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CCQ_VERSION', '1.11.4' );
+define( 'CCQ_VERSION', '1.13.1' );
 define( 'CCQ_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CCQ_URL', plugin_dir_url( __FILE__ ) );
 define( 'CCQ_FOUNDED', 1991 );
@@ -210,7 +210,7 @@ function ccq_register_types() {
 		'label'        => 'CLQ Sites',
 		'labels'       => array( 'singular_name' => 'CLQ Site', 'add_new_item' => 'Add CLQ site', 'edit_item' => 'Edit CLQ site', 'all_items' => 'All sites' ),
 		'public'       => true,
-		'has_archive'  => CCQ_BASE,
+		'has_archive'  => ccq_hub_page_id() ? false : CCQ_BASE, /* An editable page at that address takes over. */
 		'rewrite'      => array( 'slug' => CCQ_BASE, 'with_front' => false ),
 		'menu_icon'    => 'dashicons-building',
 		'menu_position'=> 21,
@@ -520,16 +520,8 @@ add_filter( 'wp_robots', function ( $robots ) {
  * ---------------------------------------------------------------- */
 function ccq_is_page() {
 	global $post;
-	return is_singular( 'ccq_site' ) || is_post_type_archive( 'ccq_site' ) || ( $post && has_shortcode( (string) $post->post_content, 'ccq_site' ) );
+	return is_singular( 'ccq_site' ) || is_post_type_archive( 'ccq_site' ) || ( $post && ( has_shortcode( (string) $post->post_content, 'ccq_site' ) || has_shortcode( (string) $post->post_content, 'ccq_hub_sections' ) ) );
 }
-
-/* Hub: 3 properties per page (one row, so the section fits one screen), same order as everywhere else. */
-add_action( 'pre_get_posts', function ( $q ) {
-	if ( ! is_admin() && $q->is_main_query() && $q->is_post_type_archive( 'ccq_site' ) ) {
-		$q->set( 'posts_per_page', 3 );
-		$q->set( 'orderby', array( 'menu_order' => 'ASC', 'title' => 'ASC' ) );
-	}
-} );
 
 add_filter( 'template_include', function ( $t ) {
 	if ( is_singular( 'ccq_site' ) ) {
@@ -594,7 +586,7 @@ function ccq_card( $p, $place = false ) {
 
 /* "Other properties" band on a property page: pale gradient, label, centred heading, simple cards, "All properties" card. */
 function ccq_explore( $sites, $with_all ) {
-	$hub = get_post_type_archive_link( 'ccq_site' );
+	$hub = ccq_hub_url();
 	?>
 <section class="ccq-sec ccq-explore" aria-labelledby="ccq-ex-h">
 	<div class="ccq-wrap">
@@ -625,21 +617,79 @@ function ccq_layer_wave( $front ) {
 		. '</svg>';
 }
 
-/* Hub band (second section, like the Foreign Worker Recruitment intro): navy, ticker of property names,
- * centred eyebrow + heading, then the property cards 3 per row with page numbers (3 per page). */
-function ccq_hub_band( $sites, $all ) {
+/* ------------------------------------------------------------------
+ * HUB BLOCK — [ccq_hub_sections]: the navy property grid (ticker, heading, cards 3 per row, page numbers)
+ * and the "What is a CLQ" explainer. Editable in WPBakery as "Concepts CLQ Properties".
+ * Cards come from the published CLQ sites: the first 6 show, "See more" reveals 6 more each click
+ * (all cards are in the HTML, so search engines see every property link).
+ * ---------------------------------------------------------------- */
+function ccq_hub_defaults() {
+	return array(
+		'eb'     => 'All properties',
+		'h'      => 'Explore Concepts accommodation',
+		'he'     => 'accommodation',
+		'per'    => '6',
+		'about'  => 'yes',
+		'aimg'   => home_url( '/wp-content/uploads/2026/10/Candid-hostel-conversation-by-the-bunks.webp' ),
+		'aalt'   => 'Workers talking beside their bunk beds in a Concepts hostel room',
+		'aeb'    => 'About CLQ',
+		'ah'     => 'What is a centralised labour quarters (CLQ)?',
+		'ahe'    => 'centralised labour quarters',
+		'ap'     => 'A centralised labour quarters (CLQ) is purpose-built, centrally managed housing for workers. Instead of running their own hostels, employers rent beds or rooms in a CLQ, and the operator looks after the building, facilities and daily upkeep, planned around Malaysia\'s worker housing law, Act 446.',
+		'points' => '',
+	);
+}
+
+function ccq_hub_points_default() {
+	return array(
+		array( 't' => 'Planned around Act 446', 'd' => 'The Workers\' Minimum Standards of Housing and Amenities Act 1990 sets the standard for worker housing, from living space to basic amenities.' ),
+		array( 't' => 'Managed for you', 'd' => 'Upkeep, shared-area cleaning and day-to-day site issues are handled by the operator\'s team instead of your HR staff.' ),
+		array( 't' => 'Close to industrial areas', 'd' => 'Our properties sit near the industrial estates of Klang Valley, which keeps the daily trip to work short.' ),
+		array( 't' => 'Easy to compare', 'd' => 'Each property page lists its rooms, rent inclusions and nearby places, so you can shortlist before a site visit.' ),
+	);
+}
+
+/* Text with one accent phrase in blue. */
+function ccq_accent( $text, $accent ) {
+	$h = esc_html( $text );
+	$a = esc_html( $accent );
+	return ( '' !== $a && false !== strpos( $h, $a ) ) ? str_replace( $a, '<em>' . $a . '</em>', $h ) : $h;
+}
+
+/* Image field: attachment ID or URL. */
+function ccq_img_src( $v, $fallback ) {
+	$v = trim( (string) $v );
+	if ( ctype_digit( $v ) ) {
+		$u = wp_get_attachment_image_url( (int) $v, 'large' );
+		return $u ? $u : $fallback;
+	}
+	return '' !== $v ? $v : $fallback;
+}
+
+add_shortcode( 'ccq_hub_sections', function ( $atts ) {
+	$d = ccq_hub_defaults();
+	$a = shortcode_atts( $d, $atts, 'ccq_hub_sections' );
+	foreach ( array( 'eb', 'h', 'aeb', 'ah', 'ap' ) as $k ) {
+		if ( '' === trim( (string) $a[ $k ] ) ) {
+			$a[ $k ] = $d[ $k ];
+		}
+	}
+	$per  = max( 1, min( 24, (int) $a['per'] ) );
+	$all  = ccq_sites();
+	$pts  = array();
+	if ( '' !== trim( (string) $a['points'] ) && function_exists( 'vc_param_group_parse_atts' ) ) {
+		$pts = array_values( array_filter( (array) vc_param_group_parse_atts( $a['points'] ), function ( $p ) {
+			return is_array( $p ) && ! empty( $p['t'] );
+		} ) );
+	}
+	$pts = $pts ? $pts : ccq_hub_points_default();
 	$pin = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>';
-	$arw = function ( $d ) {
-		return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' . ( 'l' === $d ? 'M19 12H5M11 6l-6 6 6 6' : 'M5 12h14M13 6l6 6-6 6' ) . '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+	$arw = function ( $dir ) {
+		return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' . ( 'l' === $dir ? 'M19 12H5M11 6l-6 6 6 6' : 'M5 12h14M13 6l6 6-6 6' ) . '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 	};
-	$pages = paginate_links( array(
-		'type'      => 'array',
-		'mid_size'     => 1,
-		'add_fragment' => '#ccq-properties',
-		'prev_text' => '<span class="screen-reader-text">Previous page</span>' . $arw( 'l' ),
-		'next_text' => '<span class="screen-reader-text">Next page</span>' . $arw( 'r' ),
-	) );
+	ob_start();
 	?>
+<div id="ccq-page" class="ccq ccq-hub">
 <section class="cgs-ab2 ccq-hubx" id="ccq-properties" aria-labelledby="ccq-ex-h">
 	<?php if ( $all ) : ?>
 	<div class="ccq-hubx-bar" aria-hidden="true"><div class="ccq-hubx-track">
@@ -650,49 +700,120 @@ function ccq_hub_band( $sites, $all ) {
 	<?php endif; ?>
 	<div class="ccq-hubx-body">
 		<div class="ccq-hubx-head">
-			<h2 class="cgs-hero-eb">All properties</h2>
-			<h3 id="ccq-ex-h" class="cgs-about-h">Explore Concepts <em>accommodation</em></h3>
+			<h2 class="cgs-hero-eb"><?php echo esc_html( $a['eb'] ); ?></h2>
+			<h3 id="ccq-ex-h" class="cgs-about-h"><?php echo ccq_accent( $a['h'], $a['he'] ); // Escaped in ccq_accent. ?></h3>
 		</div>
-		<div class="ccq-cards ccq-hubx-grid">
-			<?php foreach ( array_values( $sites ) as $p ) { ccq_card( $p, true ); } ?>
+		<div class="ccq-cards ccq-hubx-grid" id="ccq-grid" data-step="<?php echo (int) $per; ?>">
+			<?php foreach ( array_values( $all ) as $i => $p ) {
+				if ( $i >= $per ) {
+					echo '<div class="ccq-more-item" hidden>';
+				}
+				ccq_card( $p, true );
+				if ( $i >= $per ) {
+					echo '</div>';
+				}
+			} ?>
 		</div>
-		<?php if ( $pages ) : ?>
-		<nav class="ccq-pages" aria-label="Property pages"><?php foreach ( $pages as $l ) { echo $l; } // Built by WordPress. ?></nav>
+		<?php if ( count( $all ) > $per ) : ?>
+		<div class="ccq-seemore"><button type="button" class="ccq-more-b" aria-controls="ccq-grid">See more<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
 		<?php endif; ?>
 	</div>
-	<?php echo ccq_layer_wave( '#fff' ); // Static SVG. ?>
+	<?php echo ccq_layer_wave( 'yes' === $a['about'] ? '#fff' : '#eaf4ff' ); // Static SVG. ?>
 </section>
-	<?php
-}
-
-/* Hub explainer before the FAQ: what a CLQ is, answered first, then four short points (search and AI answers). */
-function ccq_hub_about() {
-	$img = apply_filters( 'ccq_hub_about_img', home_url( '/wp-content/uploads/2026/10/Candid-hostel-conversation-by-the-bunks.webp' ) );
-	$pts = array(
-		array( 'Planned around Act 446', 'The Workers\' Minimum Standards of Housing and Amenities Act 1990 sets the standard for worker housing, from living space to basic amenities.' ),
-		array( 'Managed for you', 'Upkeep, shared-area cleaning and day-to-day site issues are handled by the operator\'s team instead of your HR staff.' ),
-		array( 'Close to industrial areas', 'Our properties sit near the industrial estates of Klang Valley, which keeps the daily trip to work short.' ),
-		array( 'Easy to compare', 'Each property page lists its rooms, rent inclusions and nearby places, so you can shortlist before a site visit.' ),
-	);
-	?>
+	<?php if ( 'yes' === $a['about'] ) : ?>
 <section class="ccq-about" aria-labelledby="ccq-about-h">
 	<div class="ccq-about-in">
-		<figure class="ccq-about-ph"><img src="<?php echo esc_url( $img ); ?>" alt="Workers talking beside their bunk beds in a Concepts hostel room" loading="lazy" decoding="async"></figure>
+		<figure class="ccq-about-ph"><img src="<?php echo esc_url( ccq_img_src( $a['aimg'], $d['aimg'] ) ); ?>" alt="<?php echo esc_attr( $a['aalt'] ); ?>" loading="lazy" decoding="async"></figure>
 		<div class="ccq-about-txt">
-			<p class="ccq-about-eb">About CLQ</p>
-			<h2 id="ccq-about-h" class="ccq-about-h">What is a <em>centralised labour quarters</em> (CLQ)?</h2>
-			<p class="ccq-about-lead">A centralised labour quarters (CLQ) is purpose-built, centrally managed housing for workers. Instead of running their own hostels, employers rent beds or rooms in a CLQ, and the operator looks after the building, facilities and daily upkeep, planned around Malaysia's worker housing law, Act 446.</p>
+			<p class="ccq-about-eb"><?php echo esc_html( $a['aeb'] ); ?></p>
+			<h2 id="ccq-about-h" class="ccq-about-h"><?php echo ccq_accent( $a['ah'], $a['ahe'] ); // Escaped in ccq_accent. ?></h2>
+			<p class="ccq-about-lead"><?php echo esc_html( $a['ap'] ); ?></p>
 			<div class="ccq-about-pts">
 				<?php foreach ( $pts as $pt ) : ?>
-				<div><h3><?php echo esc_html( $pt[0] ); ?></h3><p><?php echo esc_html( $pt[1] ); ?></p></div>
+				<div><h3><?php echo esc_html( $pt['t'] ); ?></h3><p><?php echo esc_html( isset( $pt['d'] ) ? $pt['d'] : '' ); ?></p></div>
 				<?php endforeach; ?>
 			</div>
 		</div>
 	</div>
 	<?php echo ccq_layer_wave( '#eaf4ff' ); // Into the FAQ. ?>
 </section>
+	<?php endif; ?>
+</div>
 	<?php
+	return ob_get_clean();
+} );
+
+add_action( 'vc_before_init', function () {
+	if ( ! function_exists( 'vc_map' ) ) {
+		return;
+	}
+	$d = ccq_hub_defaults();
+	$g = 'What is a CLQ';
+	vc_map( array(
+		'name'        => 'Concepts CLQ Properties',
+		'base'        => 'ccq_hub_sections',
+		'category'    => 'Concepts Group',
+		'icon'        => 'icon-wpb-row',
+		'description' => 'Property grid (cards from CLQ Sites, with page numbers) and the "What is a CLQ" section',
+		'params'      => array(
+			array( 'type' => 'textfield', 'heading' => 'Label above heading', 'param_name' => 'eb', 'value' => $d['eb'] ),
+			array( 'type' => 'textfield', 'heading' => 'Heading', 'param_name' => 'h', 'value' => $d['h'] ),
+			array( 'type' => 'textfield', 'heading' => 'Blue words in heading', 'param_name' => 'he', 'value' => $d['he'] ),
+			array( 'type' => 'textfield', 'heading' => 'Cards shown at first', 'param_name' => 'per', 'value' => $d['per'], 'description' => 'Also how many each "See more" click adds. 6 = two rows of three.' ),
+			array( 'type' => 'dropdown', 'heading' => 'Show the "What is a CLQ" section', 'param_name' => 'about', 'value' => array( 'Yes' => 'yes', 'No' => 'no' ), 'std' => 'yes', 'group' => $g ),
+			array( 'type' => 'attach_image', 'heading' => 'Photo', 'param_name' => 'aimg', 'group' => $g, 'description' => 'Empty = the hostel conversation photo.' ),
+			array( 'type' => 'textfield', 'heading' => 'Photo description (alt text)', 'param_name' => 'aalt', 'value' => $d['aalt'], 'group' => $g ),
+			array( 'type' => 'textfield', 'heading' => 'Label above heading', 'param_name' => 'aeb', 'value' => $d['aeb'], 'group' => $g ),
+			array( 'type' => 'textfield', 'heading' => 'Heading (a question works best for Google and AI answers)', 'param_name' => 'ah', 'value' => $d['ah'], 'group' => $g ),
+			array( 'type' => 'textfield', 'heading' => 'Blue words in heading', 'param_name' => 'ahe', 'value' => $d['ahe'], 'group' => $g ),
+			array( 'type' => 'textarea', 'heading' => 'Short answer (2-3 sentences)', 'param_name' => 'ap', 'value' => $d['ap'], 'group' => $g ),
+			array(
+				'type'       => 'param_group',
+				'heading'    => 'Points',
+				'param_name' => 'points',
+				'group'      => $g,
+				'value'      => rawurlencode( wp_json_encode( ccq_hub_points_default() ) ),
+				'params'     => array(
+					array( 'type' => 'textfield', 'heading' => 'Title', 'param_name' => 't', 'admin_label' => true ),
+					array( 'type' => 'textarea', 'heading' => 'Text', 'param_name' => 'd' ),
+				),
+			),
+		),
+	) );
+} );
+
+/* The hub page: a published page whose address is /centralised-labour-quarters/ (0 = none, the built-in listing is used). */
+function ccq_hub_page_id() {
+	static $id = null;
+	if ( null === $id ) {
+		$p  = get_page_by_path( CCQ_BASE );
+		$id = ( $p && 'publish' === $p->post_status ) ? (int) $p->ID : 0;
+	}
+	return $id;
 }
+
+/* Address of the hub, wherever it comes from. */
+function ccq_hub_url() {
+	$id = ccq_hub_page_id();
+	if ( $id ) {
+		return get_permalink( $id );
+	}
+	$u = get_post_type_archive_link( 'ccq_site' );
+	return $u ? $u : home_url( '/' . CCQ_BASE . '/' );
+}
+
+/* True on the hub, as an editable page or as the built-in listing. */
+function ccq_is_hub() {
+	global $post;
+	return is_post_type_archive( 'ccq_site' ) || ( is_page() && $post && has_shortcode( (string) $post->post_content, 'ccq_hub_sections' ) );
+}
+
+add_filter( 'body_class', function ( $c ) {
+	if ( ccq_is_hub() ) {
+		$c[] = 'ccq-hub-page';
+	}
+	return $c;
+} );
 
 /* [ccq_site slug="shah-alam"] — the full page inside any WPBakery page. */
 add_shortcode( 'ccq_site', function ( $atts ) {
@@ -776,7 +897,7 @@ add_action( 'wp_head', function () {
 	}
 	$home = home_url( '/' );
 	$org  = array( '@type' => 'Organization', '@id' => $home . '#organization', 'name' => 'Concepts Group', 'url' => $home, 'foundingDate' => (string) CCQ_FOUNDED );
-	$hub  = get_post_type_archive_link( 'ccq_site' );
+	$hub  = ccq_hub_url();
 	$g    = array();
 
 	if ( is_post_type_archive( 'ccq_site' ) ) {

@@ -213,15 +213,16 @@ body:has(#ccq-page.ccq-hub) .titlebar{display:none!important}
 #ccq-page.ccq-hub .ccq-hubx{position:relative}
 #ccq-page.ccq-hub .ccq-hubx-body{padding-bottom:calc(clamp(28px,3vw,44px) + clamp(56px,6vw,110px))}
 .ccq-lwave,#ccq-page.ccq .ccq-lwave{position:absolute;left:0;bottom:-1px;width:100%;max-width:none;height:clamp(56px,6vw,110px);display:block;pointer-events:none;z-index:2}
-.ccq-hub-faq{position:relative;background:#eef3f9}
-.ccq-hub-faq .cgs-fq{padding-bottom:calc(clamp(60px,7vw,100px) + clamp(60px,7vw,130px))}
-/* Page numbers under the grid */
-#ccq-page.ccq-hub .ccq-pages{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:clamp(24px,2.4vw,36px)}
-#ccq-page.ccq-hub .ccq-pages :is(a,span){display:inline-grid;place-items:center;min-width:44px;height:44px;padding:0 10px;border-radius:999px;font:500 15px/1 var(--fb);color:#d6e8fb;text-decoration:none}
-#ccq-page.ccq-hub .ccq-pages a:hover{background:rgba(255,255,255,.1);color:#fff}
-#ccq-page.ccq-hub .ccq-pages .current{background:var(--blue);color:#fff}
-#ccq-page.ccq-hub .ccq-pages svg{width:18px;height:18px}
-#ccq-page.ccq-hub .ccq-pages .screen-reader-text{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* FAQ on the hub: homepage layered wave on its bottom edge, into the footer's light background */
+body.ccq-hub-page .cgs-fq{position:relative;padding-bottom:calc(clamp(60px,7vw,100px) + clamp(56px,6vw,110px))}
+body.ccq-hub-page .cgs-fq::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:clamp(56px,6vw,110px);pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 200' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%230b5fc4'/%3E%3Cstop offset='.55' stop-color='%231e90ff'/%3E%3Cstop offset='1' stop-color='%237cc0ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 200V18C210 6 430 40 640 92S1080 176 1260 118C1340 92 1400 52 1440 34V200Z' fill='url(%23g)'/%3E%3Cpath d='M0 200V70C250 52 480 88 700 132S1120 182 1290 150C1360 136 1410 112 1440 96V200Z' fill='%23cfe6ff' fill-opacity='.95'/%3E%3Cpath d='M0 200V118C260 92 500 120 730 150S1140 192 1310 172C1370 165 1415 150 1440 138V200Z' fill='%23eef3f9'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+/* Hidden cards wait for "See more"; the wrapper lets the card sit in the grid like the others */
+#ccq-page.ccq-hub .ccq-more-item{display:contents}
+#ccq-page.ccq-hub .ccq-more-item[hidden]{display:none}
+#ccq-page.ccq-hub .ccq-seemore{display:flex;justify-content:center;margin-top:clamp(28px,3vw,44px)}
+#ccq-page.ccq-hub .ccq-more-b{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:13px 26px;border-radius:50px;border:1px solid rgba(255,255,255,.5);background:none;color:#fff;font:600 15px/1.2 var(--fb);cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+#ccq-page.ccq-hub .ccq-more-b:hover{background:#fff;border-color:#fff;color:var(--navy)}
+#ccq-page.ccq-hub .ccq-more-b svg{width:18px;height:18px}
 #ccq-page.ccq-hub .ccq-hubx .ccq-card{color:#fff}
 #ccq-page.ccq-hub .ccq-hubx .ccq-card-ph{background:rgba(255,255,255,.08)}
 #ccq-page.ccq-hub .ccq-hubx .ccq-card-go{border-color:rgba(255,255,255,.35);color:#fff}

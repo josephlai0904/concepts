@@ -95,6 +95,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.9.0** (2026-10-28): The CLQ hub is an editable WPBakery page now (page "Centralised Labour Quarters", slug centralised-labour-quarters): Concepts Story Hero + new "Concepts CLQ Properties" block `[ccq_hub_sections]` (grid label/heading, cards shown at first, the "What is a CLQ" photo, heading, answer and points) + Recruitment FAQ. Grid shows 6 cards, centred "See more" adds 6 per click (all cards stay in the HTML for search engines). When that page is published the built-in listing steps aside (`ccq_hub_page_id()`, `ccq_hub_url()`); unpublish it and the built-in listing returns at the same address. FAQ bottom wave via CSS on `body.ccq-hub-page`. CLQ Sites 1.13.1, SEO 1.2.5 (page title default), Articles 1.2.4.
 - **2.8.4** (2026-10-28): Share previews: default image is now a 1200x630 JPG (Concepts-Group-CLQ-share-1200x630-1.jpg, media ID 894) with size and alt tags; any .webp share image falls back to it, because WhatsApp often shows no picture for .webp. SEO 1.2.4.
 - **2.8.3** (2026-10-28): Homepage title "Centralised Labour Quarters & Labour Supply | Concepts Group". SEO 1.2.3.
 - **2.8.2** (2026-10-28): Homepage title "Centralised Labour Quarters & Workforce KL | Concepts Group". SEO 1.2.2.
