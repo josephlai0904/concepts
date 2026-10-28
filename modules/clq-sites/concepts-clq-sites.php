@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CCQ_VERSION', '1.10.0' );
+define( 'CCQ_VERSION', '1.11.4' );
 define( 'CCQ_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CCQ_URL', plugin_dir_url( __FILE__ ) );
 define( 'CCQ_FOUNDED', 1991 );
@@ -523,6 +523,14 @@ function ccq_is_page() {
 	return is_singular( 'ccq_site' ) || is_post_type_archive( 'ccq_site' ) || ( $post && has_shortcode( (string) $post->post_content, 'ccq_site' ) );
 }
 
+/* Hub: 3 properties per page (one row, so the section fits one screen), same order as everywhere else. */
+add_action( 'pre_get_posts', function ( $q ) {
+	if ( ! is_admin() && $q->is_main_query() && $q->is_post_type_archive( 'ccq_site' ) ) {
+		$q->set( 'posts_per_page', 3 );
+		$q->set( 'orderby', array( 'menu_order' => 'ASC', 'title' => 'ASC' ) );
+	}
+} );
+
 add_filter( 'template_include', function ( $t ) {
 	if ( is_singular( 'ccq_site' ) ) {
 		return CCQ_DIR . 'templates/single.php';
@@ -567,17 +575,19 @@ function ccq_render( $post ) {
 	return ob_get_clean();
 }
 
-/* One property card: photo, name with a round arrow, then status and beds on one line. */
-function ccq_card( $p ) {
+/* One property card: photo, name with a round arrow, then one meta line:
+ * status and beds (property pages) or postcode, city and state ($place, the hub). */
+function ccq_card( $p, $place = false ) {
 	$o    = ccq_get( $p );
 	$ph   = ccq_media_list( $o['photos'], 'medium_large' );
-	$b    = ccq_beds_label( $o );
-	$meta = array_filter( array( ccq_status_label( $o['status'] ), $b ) );
+	$meta = $place
+		? array_filter( array( trim( $o['postcode'] . ' ' . ( $o['city'] ? $o['city'] : $o['area'] ) ), $o['state'] ) )
+		: array_filter( array( ccq_status_label( $o['status'] ), ccq_beds_label( $o ) ) );
 	?>
 <a class="ccq-card" href="<?php echo esc_url( $o['url'] ); ?>">
 	<span class="ccq-card-ph"><?php if ( $ph ) : ?><img src="<?php echo esc_url( $ph[0]['src'] ); ?>" alt="" loading="lazy" decoding="async"><?php endif; ?></span>
 	<span class="ccq-card-row"><span class="ccq-card-n"><?php echo esc_html( $o['area'] ); ?></span><span class="ccq-card-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-	<span class="ccq-card-b"><?php echo esc_html( implode( ' · ', $meta ) ); ?></span>
+	<span class="ccq-card-b"><?php echo esc_html( implode( $place ? ', ' : ' · ', $meta ) ); ?></span>
 </a>
 	<?php
 }
@@ -615,17 +625,26 @@ function ccq_layer_wave( $front ) {
 		. '</svg>';
 }
 
-/* Hub band, same pattern as the Foreign Worker Recruitment intro: navy section, ticker of property names,
- * centred eyebrow + heading, text and button | property cards. Reuses the Sections module's .cgs-ab2 classes. */
-function ccq_hub_band( $sites, $intro ) {
-	$contact = get_page_by_path( 'contact' ) ? get_permalink( get_page_by_path( 'contact' ) ) : home_url( '/#contact' );
-	$pin     = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>';
+/* Hub band (second section, like the Foreign Worker Recruitment intro): navy, ticker of property names,
+ * centred eyebrow + heading, then the property cards 3 per row with page numbers (3 per page). */
+function ccq_hub_band( $sites, $all ) {
+	$pin = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>';
+	$arw = function ( $d ) {
+		return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' . ( 'l' === $d ? 'M19 12H5M11 6l-6 6 6 6' : 'M5 12h14M13 6l6 6-6 6' ) . '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+	};
+	$pages = paginate_links( array(
+		'type'      => 'array',
+		'mid_size'     => 1,
+		'add_fragment' => '#ccq-properties',
+		'prev_text' => '<span class="screen-reader-text">Previous page</span>' . $arw( 'l' ),
+		'next_text' => '<span class="screen-reader-text">Next page</span>' . $arw( 'r' ),
+	) );
 	?>
-<section class="cgs-ab2 ccq-hubx" aria-labelledby="ccq-ex-h">
-	<?php if ( $sites ) : ?>
+<section class="cgs-ab2 ccq-hubx" id="ccq-properties" aria-labelledby="ccq-ex-h">
+	<?php if ( $all ) : ?>
 	<div class="ccq-hubx-bar" aria-hidden="true"><div class="ccq-hubx-track">
-		<?php for ( $r = 0; $r < 4; $r++ ) : foreach ( $sites as $p ) : $o = ccq_get( $p ); ?>
-		<span class="ccq-hubx-c"><?php echo $pin; // Static SVG. ?><?php echo esc_html( $o['area'] ); ?><small><?php echo esc_html( ccq_status_label( $o['status'] ) ); ?></small></span>
+		<?php for ( $r = 0; $r < 4; $r++ ) : foreach ( $all as $p ) : $o = ccq_get( $p ); ?>
+		<span class="ccq-hubx-c"><?php echo $pin; // Static SVG. ?><?php echo esc_html( $o['area'] ); ?></span>
 		<?php endforeach; endfor; ?>
 	</div></div>
 	<?php endif; ?>
@@ -634,22 +653,43 @@ function ccq_hub_band( $sites, $intro ) {
 			<h2 class="cgs-hero-eb">All properties</h2>
 			<h3 id="ccq-ex-h" class="cgs-about-h">Explore Concepts <em>accommodation</em></h3>
 		</div>
-		<div class="cgs-ab2-in">
-			<div class="ccq-hubx-l"><div class="cgs-about-txt">
-				<p><?php echo esc_html( $intro ); ?></p>
-				<p>Tell us your headcount, workplace and move-in date. Our team will confirm which property suits you and send a written quote.</p>
-				<a class="cgs-hb cgs-hb1" href="<?php echo esc_url( $contact ); ?>">Talk to a specialist<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-			</div>
-			<?php if ( count( $sites ) > 2 ) : ?>
-			<div class="ccq-hubx-nav"><button type="button" class="ccq-hubx-pv" aria-label="Previous properties"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="ccq-hubx-nx" aria-label="Next properties"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
-			<?php endif; ?>
-			</div>
-			<div class="ccq-cards ccq-hubx-tr">
-				<?php foreach ( array_values( $sites ) as $p ) { ccq_card( $p ); } ?>
+		<div class="ccq-cards ccq-hubx-grid">
+			<?php foreach ( array_values( $sites ) as $p ) { ccq_card( $p, true ); } ?>
+		</div>
+		<?php if ( $pages ) : ?>
+		<nav class="ccq-pages" aria-label="Property pages"><?php foreach ( $pages as $l ) { echo $l; } // Built by WordPress. ?></nav>
+		<?php endif; ?>
+	</div>
+	<?php echo ccq_layer_wave( '#fff' ); // Static SVG. ?>
+</section>
+	<?php
+}
+
+/* Hub explainer before the FAQ: what a CLQ is, answered first, then four short points (search and AI answers). */
+function ccq_hub_about() {
+	$img = apply_filters( 'ccq_hub_about_img', home_url( '/wp-content/uploads/2026/10/Candid-hostel-conversation-by-the-bunks.webp' ) );
+	$pts = array(
+		array( 'Planned around Act 446', 'The Workers\' Minimum Standards of Housing and Amenities Act 1990 sets the standard for worker housing, from living space to basic amenities.' ),
+		array( 'Managed for you', 'Upkeep, shared-area cleaning and day-to-day site issues are handled by the operator\'s team instead of your HR staff.' ),
+		array( 'Close to industrial areas', 'Our properties sit near the industrial estates of Klang Valley, which keeps the daily trip to work short.' ),
+		array( 'Easy to compare', 'Each property page lists its rooms, rent inclusions and nearby places, so you can shortlist before a site visit.' ),
+	);
+	?>
+<section class="ccq-about" aria-labelledby="ccq-about-h">
+	<div class="ccq-about-in">
+		<figure class="ccq-about-ph"><img src="<?php echo esc_url( $img ); ?>" alt="Workers talking beside their bunk beds in a Concepts hostel room" loading="lazy" decoding="async"></figure>
+		<div class="ccq-about-txt">
+			<p class="ccq-about-eb">About CLQ</p>
+			<h2 id="ccq-about-h" class="ccq-about-h">What is a <em>centralised labour quarters</em> (CLQ)?</h2>
+			<p class="ccq-about-lead">A centralised labour quarters (CLQ) is purpose-built, centrally managed housing for workers. Instead of running their own hostels, employers rent beds or rooms in a CLQ, and the operator looks after the building, facilities and daily upkeep, planned around Malaysia's worker housing law, Act 446.</p>
+			<div class="ccq-about-pts">
+				<?php foreach ( $pts as $pt ) : ?>
+				<div><h3><?php echo esc_html( $pt[0] ); ?></h3><p><?php echo esc_html( $pt[1] ); ?></p></div>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	</div>
-	<?php echo ccq_layer_wave( '#eaf4ff' ); // Static SVG. ?>
+	<?php echo ccq_layer_wave( '#eaf4ff' ); // Into the FAQ. ?>
 </section>
 	<?php
 }

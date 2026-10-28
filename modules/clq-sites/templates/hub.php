@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 $hub   = ccq_hub();
 $sites = ccq_sites();
+global $wp_query;
+$page_sites = ( $wp_query && is_array( $wp_query->posts ) ) ? $wp_query->posts : array_slice( $sites, 0, 3 ); /* This page of the grid (3 per page). */
 $areas = array();
 $photo = '';
 foreach ( $sites as $p ) {
@@ -19,7 +21,8 @@ foreach ( $sites as $p ) {
 }
 $last  = count( $areas ) > 1 ? array_pop( $areas ) : '';
 $where = $areas ? implode( ', ', $areas ) . ( $last ? ' and ' . $last : '' ) : 'Klang Valley';
-$lead  = 'Managed worker accommodation near the industrial areas of ' . $where . '. Compare each property\'s rooms, rent inclusions and nearby places, then book a site visit.';
+$opt   = get_option( 'ccq_hub', array() );
+$lead  = ! empty( $opt['intro'] ) ? $opt['intro'] : 'Managed worker accommodation near the industrial areas of ' . $where . '. Compare each property\'s rooms, rent inclusions and nearby places, then book a site visit.';
 /* "Centralised Labour Quarters in Klang Valley" -> first line, blue second line. */
 $cut   = strrpos( $hub['title'], ' in ' );
 $h1    = false !== $cut ? substr( $hub['title'], 0, $cut ) : $hub['title'];
@@ -40,7 +43,8 @@ $h2    = false !== $cut ? substr( $hub['title'], $cut + 1 ) : '';
 		</div>
 	</section>
 	<?php endif; ?>
-	<?php ccq_hub_band( $sites, $hub['intro'] ); ?>
+	<?php ccq_hub_band( $page_sites, $sites ); ?>
+	<?php ccq_hub_about(); ?>
 </div>
 <?php
 /* Employer FAQ (uses the Recruitment FAQ design from the Sections module when it is loaded). */
