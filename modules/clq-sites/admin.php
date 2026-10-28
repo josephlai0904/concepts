@@ -195,7 +195,7 @@ add_action( 'manage_ccq_site_posts_custom_column', function ( $col, $id ) {
 	}
 }, 10, 2 );
 
-/* Hub page (/properties/) heading and intro. */
+/* Hub page (/centralised-labour-quarters/) heading and intro. */
 add_action( 'admin_menu', function () {
 	add_submenu_page( 'edit.php?post_type=ccq_site', 'Properties page', 'Properties page', 'edit_pages', 'ccq-hub', function () {
 		$h = ccq_hub();

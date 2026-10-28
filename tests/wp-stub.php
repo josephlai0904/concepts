@@ -146,7 +146,7 @@ function paginate_links( $a = array() ) { $l = array( '<a class="page-numbers">2
 function get_query_var( $k, $d = '' ) { return $d; }
 function register_post_type( $t, $a ) { $GLOBALS['PT'][ $t ] = $a; }
 function register_rest_route( $ns, $r, $a ) { $GLOBALS['ROUTES'][ $ns . $r ] = $a; }
-function get_post_type_archive_link( $t ) { return home_url( '/properties/' ); }
+function get_post_type_archive_link( $t ) { return home_url( '/centralised-labour-quarters/' ); }
 function attachment_url_to_postid( $u ) { return 0; }
 function wp_get_attachment_image_src( $id, $s = '' ) { return array( 'https://concepts.test/i' . $id . '.jpg', 800, 600, false ); }
 function wp_get_attachment_image_url( $id, $s = '' ) { return 999 === (int) $id ? 'https://concepts.test/wp-content/uploads/2026/10/Concepts-Group-White-Logo.webp' : 'https://concepts.test/i' . $id . '.jpg'; }

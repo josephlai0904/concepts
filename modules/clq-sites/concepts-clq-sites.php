@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CCQ_VERSION', '1.8.0' );
+define( 'CCQ_VERSION', '1.10.0' );
 define( 'CCQ_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CCQ_URL', plugin_dir_url( __FILE__ ) );
 define( 'CCQ_FOUNDED', 1991 );
@@ -174,9 +174,30 @@ function ccq_get( $post = null ) {
 }
 
 /* ------------------------------------------------------------------
- * 2. POST TYPES — public "CLQ Site" (/properties/{slug}/, hub at /properties/)
+ * 2. POST TYPES — public "CLQ Site" (/centralised-labour-quarters/{slug}/, hub at /centralised-labour-quarters/;
+ *    old /properties/ links redirect there)
  *    and private "Enquiry" records (the spreadsheet rows).
  * ---------------------------------------------------------------- */
+/* Address of the hub and property pages. */
+if ( ! defined( 'CCQ_BASE' ) ) {
+	define( 'CCQ_BASE', 'centralised-labour-quarters' );
+}
+
+/* Old /properties/... links (menus, bookmarks, Google) move permanently to the new address. */
+add_action( 'template_redirect', function () {
+	$path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' );
+	$home = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+	if ( '' !== $home && 0 === strpos( $path, $home . '/' ) ) {
+		$path = substr( $path, strlen( $home ) + 1 );
+	}
+	if ( 'properties' === $path || 0 === strpos( $path, 'properties/' ) ) {
+		$rest  = trim( substr( $path, strlen( 'properties' ) ), '/' );
+		$query = isset( $_SERVER['QUERY_STRING'] ) && '' !== $_SERVER['QUERY_STRING'] ? '?' . wp_unslash( $_SERVER['QUERY_STRING'] ) : '';
+		wp_safe_redirect( home_url( '/' . CCQ_BASE . '/' . ( '' !== $rest ? $rest . '/' : '' ) ) . $query, 301 );
+		exit;
+	}
+}, 1 );
+
 add_action( 'init', 'ccq_register_types' );
 add_action( 'init', function () {
 	if ( get_option( 'ccq_rewrite_ver' ) !== CCQ_VERSION ) {
@@ -189,8 +210,8 @@ function ccq_register_types() {
 		'label'        => 'CLQ Sites',
 		'labels'       => array( 'singular_name' => 'CLQ Site', 'add_new_item' => 'Add CLQ site', 'edit_item' => 'Edit CLQ site', 'all_items' => 'All sites' ),
 		'public'       => true,
-		'has_archive'  => 'properties',
-		'rewrite'      => array( 'slug' => 'properties', 'with_front' => false ),
+		'has_archive'  => CCQ_BASE,
+		'rewrite'      => array( 'slug' => CCQ_BASE, 'with_front' => false ),
 		'menu_icon'    => 'dashicons-building',
 		'menu_position'=> 21,
 		'supports'     => array( 'title', 'page-attributes', 'revisions' ),
@@ -464,7 +485,7 @@ function ccq_sites( $exclude = 0 ) {
 	) );
 }
 
-/* Hub page heading and intro (CLQ Sites > Properties page). */
+/* Hub page heading and intro (CLQ Sites > Properties page), shown at /centralised-labour-quarters/. */
 function ccq_hub() {
 	$h = get_option( 'ccq_hub', array() );
 	return array(
@@ -473,7 +494,7 @@ function ccq_hub() {
 	);
 }
 
-/* Employer FAQ on the /properties/ hub (also FAQPage schema). No figures here: each property page carries its own verified facts. */
+/* Employer FAQ on the hub (also FAQPage schema). No figures here: each property page carries its own verified facts. */
 function ccq_hub_faq() {
 	return apply_filters( 'ccq_hub_faq', array(
 		array( 'q' => 'What is a CLQ (centralised labour quarters)?', 'a' => 'A CLQ is purpose-built, centrally managed accommodation for workers, planned around Malaysia\'s worker housing requirements under Act 446. Employers rent beds or rooms instead of running their own hostels.' ),
@@ -546,35 +567,89 @@ function ccq_render( $post ) {
 	return ob_get_clean();
 }
 
-/* "Explore other properties" band: pale gradient, pill label, centred heading, light cards.
- * $with_all adds the "See every property" card and the hub button. */
+/* One property card: photo, name with a round arrow, then status and beds on one line. */
+function ccq_card( $p ) {
+	$o    = ccq_get( $p );
+	$ph   = ccq_media_list( $o['photos'], 'medium_large' );
+	$b    = ccq_beds_label( $o );
+	$meta = array_filter( array( ccq_status_label( $o['status'] ), $b ) );
+	?>
+<a class="ccq-card" href="<?php echo esc_url( $o['url'] ); ?>">
+	<span class="ccq-card-ph"><?php if ( $ph ) : ?><img src="<?php echo esc_url( $ph[0]['src'] ); ?>" alt="" loading="lazy" decoding="async"><?php endif; ?></span>
+	<span class="ccq-card-row"><span class="ccq-card-n"><?php echo esc_html( $o['area'] ); ?></span><span class="ccq-card-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+	<span class="ccq-card-b"><?php echo esc_html( implode( ' · ', $meta ) ); ?></span>
+</a>
+	<?php
+}
+
+/* "Other properties" band on a property page: pale gradient, label, centred heading, simple cards, "All properties" card. */
 function ccq_explore( $sites, $with_all ) {
 	$hub = get_post_type_archive_link( 'ccq_site' );
 	?>
 <section class="ccq-sec ccq-explore" aria-labelledby="ccq-ex-h">
 	<div class="ccq-wrap">
 		<span class="ccq-pilllabel"><?php echo $with_all ? 'Other properties' : 'All properties'; ?></span>
-		<h2 id="ccq-ex-h" class="ccq-ex-h">Explore Concepts accommodation <strong>across Klang Valley.</strong></h2>
+		<h2 id="ccq-ex-h" class="ccq-ex-h">Explore Concepts <strong>accommodation</strong></h2>
 		<div class="ccq-cards">
-			<?php foreach ( array_values( $sites ) as $i => $p ) :
-				$o  = ccq_get( $p );
-				$ph = ccq_media_list( $o['photos'], 'medium_large' );
-				$b  = ccq_beds_label( $o ); ?>
-			<?php if ( $i ) : ?><span class="ccq-join" aria-hidden="true"></span><?php endif; ?>
-			<a class="ccq-card" href="<?php echo esc_url( $o['url'] ); ?>">
-				<span class="ccq-card-n"><?php echo esc_html( $o['area'] ); ?></span>
-				<span class="ccq-card-s"><?php echo esc_html( ccq_status_label( $o['status'] ) ); ?></span>
-				<span class="ccq-card-ph"><?php if ( $ph ) : ?><img src="<?php echo esc_url( $ph[0]['src'] ); ?>" alt="" loading="lazy" decoding="async"><?php endif; ?></span>
-				<span class="ccq-card-b"><?php echo esc_html( $b ? $b : 'Beds to confirm' ); ?></span>
-			</a>
-			<?php endforeach; ?>
+			<?php foreach ( array_values( $sites ) as $p ) { ccq_card( $p ); } ?>
 			<?php if ( $with_all ) : ?>
-			<?php if ( $sites ) : ?><span class="ccq-join" aria-hidden="true"></span><?php endif; ?>
-			<a class="ccq-card ccq-card-all" href="<?php echo esc_url( $hub ); ?>"><span class="ccq-card-n">All properties</span><span class="ccq-card-t">See every property</span><span class="ccq-pill">View all</span></a>
+			<a class="ccq-card ccq-card-all" href="<?php echo esc_url( $hub ); ?>"><span class="ccq-card-t">See all properties</span><span class="ccq-card-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
 			<?php endif; ?>
 		</div>
-		<p class="ccq-note ccq-center">Every property has its own fact sheet: beds, address, nearby estates and the date we last checked each figure.</p>
 	</div>
+</section>
+	<?php
+}
+
+/* The homepage hero's three-layer wave (blue gradient, pale blue, then $front = the colour of the next section),
+ * sitting on the bottom edge of a section. */
+function ccq_layer_wave( $front ) {
+	static $n = 0;
+	$n++;
+	$g = 'ccqWaveG' . $n;
+	return '<svg class="ccq-lwave" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">'
+		. '<defs><linearGradient id="' . $g . '" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#0b5fc4"/><stop offset=".55" stop-color="#1e90ff"/><stop offset="1" stop-color="#7cc0ff"/></linearGradient></defs>'
+		. '<path d="M0 200V18C210 6 430 40 640 92S1080 176 1260 118C1340 92 1400 52 1440 34V200Z" fill="url(#' . $g . ')"/>'
+		. '<path d="M0 200V70C250 52 480 88 700 132S1120 182 1290 150C1360 136 1410 112 1440 96V200Z" fill="#cfe6ff" fill-opacity=".95"/>'
+		. '<path d="M0 200V118C260 92 500 120 730 150S1140 192 1310 172C1370 165 1415 150 1440 138V200Z" fill="' . esc_attr( $front ) . '"/>'
+		. '</svg>';
+}
+
+/* Hub band, same pattern as the Foreign Worker Recruitment intro: navy section, ticker of property names,
+ * centred eyebrow + heading, text and button | property cards. Reuses the Sections module's .cgs-ab2 classes. */
+function ccq_hub_band( $sites, $intro ) {
+	$contact = get_page_by_path( 'contact' ) ? get_permalink( get_page_by_path( 'contact' ) ) : home_url( '/#contact' );
+	$pin     = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>';
+	?>
+<section class="cgs-ab2 ccq-hubx" aria-labelledby="ccq-ex-h">
+	<?php if ( $sites ) : ?>
+	<div class="ccq-hubx-bar" aria-hidden="true"><div class="ccq-hubx-track">
+		<?php for ( $r = 0; $r < 4; $r++ ) : foreach ( $sites as $p ) : $o = ccq_get( $p ); ?>
+		<span class="ccq-hubx-c"><?php echo $pin; // Static SVG. ?><?php echo esc_html( $o['area'] ); ?><small><?php echo esc_html( ccq_status_label( $o['status'] ) ); ?></small></span>
+		<?php endforeach; endfor; ?>
+	</div></div>
+	<?php endif; ?>
+	<div class="ccq-hubx-body">
+		<div class="ccq-hubx-head">
+			<h2 class="cgs-hero-eb">All properties</h2>
+			<h3 id="ccq-ex-h" class="cgs-about-h">Explore Concepts <em>accommodation</em></h3>
+		</div>
+		<div class="cgs-ab2-in">
+			<div class="ccq-hubx-l"><div class="cgs-about-txt">
+				<p><?php echo esc_html( $intro ); ?></p>
+				<p>Tell us your headcount, workplace and move-in date. Our team will confirm which property suits you and send a written quote.</p>
+				<a class="cgs-hb cgs-hb1" href="<?php echo esc_url( $contact ); ?>">Talk to a specialist<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+			</div>
+			<?php if ( count( $sites ) > 2 ) : ?>
+			<div class="ccq-hubx-nav"><button type="button" class="ccq-hubx-pv" aria-label="Previous properties"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="ccq-hubx-nx" aria-label="Next properties"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+			<?php endif; ?>
+			</div>
+			<div class="ccq-cards ccq-hubx-tr">
+				<?php foreach ( array_values( $sites ) as $p ) { ccq_card( $p ); } ?>
+			</div>
+		</div>
+	</div>
+	<?php echo ccq_layer_wave( '#eaf4ff' ); // Static SVG. ?>
 </section>
 	<?php
 }
@@ -720,7 +795,7 @@ add_action( 'wp_head', function () {
 				array( '@type' => 'WebPage', '@id' => $url . '#webpage', 'url' => $url, 'name' => ccq_page_title( $r['area'] ), 'about' => array( '@id' => $url . '#site' ), 'breadcrumb' => array( '@id' => $url . '#breadcrumb' ), 'dateModified' => get_the_modified_date( 'c' ) ),
 				array( '@type' => 'BreadcrumbList', '@id' => $url . '#breadcrumb', 'itemListElement' => array(
 					array( '@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => $home ),
-					array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Properties', 'item' => $hub ),
+					array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Centralised Labour Quarters', 'item' => $hub ),
 					array( '@type' => 'ListItem', 'position' => 3, 'name' => $r['area'], 'item' => $url ),
 				) ),
 			);

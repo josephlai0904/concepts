@@ -256,3 +256,19 @@
     ds.forEach(function (d) { d.addEventListener('toggle', function () { if (d.open) ds.forEach(function (o) { if (o !== d) o.open = false; }); }); });
   })();
 })();
+
+/* Hub: arrows slide the property cards one card at a time. */
+document.querySelectorAll('.ccq-hubx').forEach(function (s) {
+	var tr = s.querySelector('.ccq-hubx-tr');
+	if (!tr) { return; }
+	function step(d) {
+		var c = tr.querySelector('.ccq-card');
+		if (!c) { return; }
+		var w = c.getBoundingClientRect().width + (parseFloat(getComputedStyle(tr).columnGap) || 20);
+		var end = tr.scrollWidth - tr.clientWidth - 2;
+		var to = tr.scrollLeft + d * w;
+		tr.scrollTo({ left: to > end + w / 2 ? 0 : (to < -w / 2 ? end : to) });
+	}
+	s.querySelectorAll('.ccq-hubx-pv').forEach(function (b) { b.addEventListener('click', function () { step(-1); }); });
+	s.querySelectorAll('.ccq-hubx-nx').forEach(function (b) { b.addEventListener('click', function () { step(1); }); });
+});

@@ -67,8 +67,8 @@ $surr = array(
 $why = array(
 	array( 'Since ' . CCQ_FOUNDED, 'Operating since ' . CCQ_FOUNDED, $r['proof_client'] ? $r['proof_client'] : 'Concepts Group has provided manpower and worker accommodation in Malaysia since ' . CCQ_FOUNDED . '. Ask the site team for a client reference.', 'ring' ),
 	array( 'Licensed and checkable', 'Licensed and checkable', '', 'cert' ),
-	array( 'One named contact', 'One named contact on site', '', 'contact' ),
-	array( 'Rooms you can see', 'Rooms you can see first', 'Real photographs of this site\'s rooms and facilities are on this page. Book a visit to walk the site before you commit.', 'rooms' ),
+	array( 'Comfy and reliable', 'Comfortable, reliable accommodation', 'Clean, well-kept rooms and shared facilities, looked after by a site team that handles maintenance and day-to-day issues, so your workers can rest well and stay focused at work.', 'contact' ),
+	array( 'Facilities you can see', 'Facilities you can see first', 'Real photographs of this site\'s rooms and facilities are on this page. Book a visit to walk the site before you commit.', 'rooms' ),
 );
 
 $why_imgs = ccq_media_list( $r['why_images'], 'large' );
@@ -81,7 +81,7 @@ $slides   = array_slice( $photos, 0, 9 );
 <!-- 1. HERO -->
 <section class="ccq-hero" aria-labelledby="ccq-h1">
 	<div class="ccq-hero-txt">
-		<nav class="ccq-bc" aria-label="Breadcrumb"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a><span aria-hidden="true">›</span><a href="<?php echo esc_url( $hub ); ?>">Properties</a><span aria-hidden="true">›</span><span aria-current="page"><?php echo esc_html( $r['area'] ); ?></span></nav>
+		<nav class="ccq-bc" aria-label="Breadcrumb"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a><span aria-hidden="true">›</span><a href="<?php echo esc_url( $hub ); ?>">Centralised Labour Quarters</a><span aria-hidden="true">›</span><span aria-current="page"><?php echo esc_html( $r['area'] ); ?></span></nav>
 		<h1 id="ccq-h1" class="ccq-h1"><?php echo esc_html( $r['area'] . ' workers accommodation' ); ?><br><?php echo esc_html( 'and hostel' ); ?></h1>
 		<p class="ccq-lead"><?php echo esc_html( $r['fit'] ? $r['fit'] : $r['story'] ); ?></p>
 		<a class="ccq-btn" href="#ccq-contact" data-ccq-ev="quote_click">Talk to a specialist</a>
@@ -164,7 +164,8 @@ $slides   = array_slice( $photos, 0, 9 );
 								<p>Ask the site team for the certificate number, validity date and the authority's reference.</p>
 							<?php endif; ?>
 						<?php elseif ( 'contact' === $w[3] ) : ?>
-							<p><?php echo esc_html( trim( ( $r['contact_name'] ? $r['contact_name'] : 'Your site contact' ) . ( $r['visiting_hours'] ? ', ' . $r['visiting_hours'] : '' ) . '. ' . ( $r['response_time'] ? $r['response_time'] . '.' : '' ) ) ); ?></p>
+							<p><?php echo esc_html( $w[2] ); ?></p>
+							<?php if ( $r['contact_name'] ) : ?><p><?php echo esc_html( trim( 'Site contact: ' . $r['contact_name'] . ( $r['visiting_hours'] ? ', ' . $r['visiting_hours'] : '' ) . '.' ) ); ?></p><?php endif; ?>
 						<?php else : ?>
 							<p><?php echo esc_html( $w[2] ); ?><?php if ( $r['video_url'] ) : ?> <a href="<?php echo esc_url( $r['video_url'] ); ?>" target="_blank" rel="noopener">Watch the walkthrough</a><?php endif; ?></p>
 						<?php endif; ?>

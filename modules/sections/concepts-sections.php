@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGS_VERSION', '1.42.3' );
+define( 'CGS_VERSION', '1.42.4' );
 define( 'CGS_UP', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/' );
 define( 'CGS_LOGO', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/logo-white.png' );
 define( 'CGS_LOGO_HD', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-Logo.webp' );
@@ -527,7 +527,8 @@ function cgs_menu_items( $id ) {
 }
 
 /* Footer "Main Pages" links (2.7.3): Home first, and dropdown parents without a link of their own
- * (About Us, CLQ, Service) point to their first sub-page instead of the current page. */
+ * (About Us, CLQ, Service) point to their first sub-page instead of the current page.
+ * "Service" goes to the homepage's list of all services (2.8.0). */
 function cgs_footer_pages( $menu ) {
 	$home = home_url( '/' );
 	$out  = array( array( 'label' => 'Home', 'url' => $home ) );
@@ -545,7 +546,7 @@ function cgs_footer_pages( $menu ) {
 				}
 			}
 			$url = $kids ? $kids[0] : '';
-			/* Sub-pages that share one folder (e.g. /properties/shah-alam/, /properties/jenjarom/) -> that folder's page. */
+			/* Sub-pages that share one folder (e.g. /centralised-labour-quarters/shah-alam/, .../jenjarom/) -> that folder's page. */
 			if ( count( $kids ) > 1 ) {
 				$dirs = array_unique( array_map( function ( $k ) {
 					$path = trim( (string) wp_parse_url( $k, PHP_URL_PATH ), '/' );
@@ -554,6 +555,9 @@ function cgs_footer_pages( $menu ) {
 				if ( 1 === count( $dirs ) && '' !== reset( $dirs ) ) {
 					$url = home_url( '/' . reset( $dirs ) . '/' );
 				}
+			}
+			if ( preg_match( '/^services?$/i', trim( (string) $it['label'] ) ) ) {
+				$url = home_url( '/#services' );
 			}
 		}
 		if ( '' !== $url ) {
@@ -2276,7 +2280,7 @@ add_action( 'vc_before_init', function () {
 	) );
 } );
 
-/* Published CLQ property page whose slug matches a location name ("Shah Alam" -> /properties/shah-alam/), or ''. */
+/* Published CLQ property page whose slug matches a location name ("Shah Alam" -> /centralised-labour-quarters/shah-alam/), or ''. */
 function cgs_clq_site_url( $name ) {
 	if ( ! function_exists( 'ccq_get' ) ) {
 		return '';
