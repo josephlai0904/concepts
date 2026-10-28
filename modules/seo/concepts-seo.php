@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGSEO_VERSION', '1.2.3' );
+define( 'CGSEO_VERSION', '1.2.4' );
 
 /**
  * Default title and description per page slug ('front' = homepage).
@@ -51,7 +51,8 @@ function cgseo_org() {
 	);
 }
 
-define( 'CGSEO_IMAGE', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concept-Group-Hostel-and-accommodation.webp' );
+/* Default share image: a 1200x630 JPG (WhatsApp often skips .webp previews). */
+define( 'CGSEO_IMAGE', 'https://concepts.manyproject.my/wp-content/uploads/2026/10/Concepts-Group-CLQ-share-1200x630-1.jpg' );
 
 function cgseo_off() {
 	return defined( 'WPSEO_VERSION' ) || class_exists( 'RankMath' ) || defined( 'AIOSEO_VERSION' ) || defined( 'SEOPRESS_VERSION' );
@@ -96,7 +97,8 @@ add_filter( 'pre_get_document_title', function ( $t ) {
 
 /* Social tags shared by every page type. */
 function cgseo_social( $title, $desc, $url, $img, $type = 'website' ) {
-	$img = $img ? $img : CGSEO_IMAGE;
+	/* No image, or a .webp one (WhatsApp often shows no picture for those): use the JPG default. */
+	$img = ( $img && ! preg_match( '/\.webp(\?|$)/i', $img ) ) ? $img : CGSEO_IMAGE;
 	$tags = array(
 		'og:type'        => $type,
 		'og:site_name'   => 'Concepts Group',
@@ -106,6 +108,11 @@ function cgseo_social( $title, $desc, $url, $img, $type = 'website' ) {
 		'og:url'         => $url,
 		'og:image'       => $img,
 	);
+	if ( CGSEO_IMAGE === $img ) {
+		$tags['og:image:width']  = '1200';
+		$tags['og:image:height'] = '630';
+		$tags['og:image:alt']    = 'Concepts Group centralised labour quarters buildings with sports courts';
+	}
 	foreach ( $tags as $k => $v ) {
 		if ( '' !== (string) $v ) {
 			echo '<meta property="' . esc_attr( $k ) . '" content="' . esc_attr( $v ) . '">' . "\n";

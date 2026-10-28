@@ -95,6 +95,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.8.4** (2026-10-28): Share previews: default image is now a 1200x630 JPG (Concepts-Group-CLQ-share-1200x630-1.jpg, media ID 894) with size and alt tags; any .webp share image falls back to it, because WhatsApp often shows no picture for .webp. SEO 1.2.4.
 - **2.8.3** (2026-10-28): Homepage title "Centralised Labour Quarters & Labour Supply | Concepts Group". SEO 1.2.3.
 - **2.8.2** (2026-10-28): Homepage title "Centralised Labour Quarters & Workforce KL | Concepts Group". SEO 1.2.2.
 - **2.8.1** (2026-10-28): Homepage title leads with "Centralised Labour Quarters (CLQ) Malaysia"; description starts with CLQ and worker accommodation. SEO 1.2.1.
