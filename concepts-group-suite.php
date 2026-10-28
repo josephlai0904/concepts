@@ -3,7 +3,7 @@
  * Plugin Name:       Concepts Group Suite
  * Plugin URI:        https://manyproject.my
  * Description:       All-in-one plugin for the Concepts Group site. Combines Concepts Group Sections (global CSS, header, hero, footer and page sections), Concepts Articles (blog article and listing templates) and Concepts CLQ Sites (property pages, hub, enquiry form). Replaces the three separate plugins: they are switched off automatically on activation.
- * Version:           2.7.4
+ * Version:           2.7.5
  * Requires at least: 5.9
  * Requires PHP:      7.4
  * Author:            Many Project (Web App Marketing Sdn Bhd)
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CG_SUITE_VERSION', '2.7.4' );
+define( 'CG_SUITE_VERSION', '2.7.5' );
 define( 'CG_SUITE_FILE', __FILE__ );
 define( 'CG_SUITE_DIR', plugin_dir_path( __FILE__ ) );
 

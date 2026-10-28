@@ -95,6 +95,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.7.5** (2026-10-28): Phone menu text smaller: top items 22px → 17px, pages 15px, sub-pages 14px, tighter rows; "Get in touch" button 15px. Sections 1.42.3.
 - **2.7.4** (2026-10-27): Footer "CLQ" links to the /properties/ hub (its sub-pages share that folder). Sections 1.42.2.
 - **2.7.3** (2026-10-27): Footer: "Main Pages" starts with Home, and About Us / CLQ / Service now link to their first sub-page (they pointed to the current page). Contact column shows the office address with a Google Maps link (editable, `CGS_ADDRESS`). Company address added to the Organization schema. Sections 1.42.1, SEO 1.2.0.
 - **2.7.2** (2026-10-27): Dark bands (Recruitment support, Transport/Story CTA, Commitment) use the homepage hero's layered wave (light, pale blue, blue gradient) instead of the flat two-line wave. `cgs_ct_wave()`. Sections 1.42.0.
