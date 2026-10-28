@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CGSEO_VERSION', '1.2.0' );
+define( 'CGSEO_VERSION', '1.2.1' );
 
 /**
  * Default title and description per page slug ('front' = homepage).
@@ -19,7 +19,7 @@ define( 'CGSEO_VERSION', '1.2.0' );
  */
 function cgseo_defaults() {
 	return array(
-		'front'                      => array( 'Worker Accommodation & Workforce Solutions | Concepts Group', 'Centralised labour quarters (CLQ), worker recruitment, transport and workforce management for employers in Klang Valley, Malaysia, since 1991.' ),
+		'front'                      => array( 'Centralised Labour Quarters (CLQ) Malaysia | Concepts Group', 'Centralised labour quarters (CLQ) and worker accommodation in Klang Valley, plus foreign worker recruitment, transport and workforce support since 1991.' ),
 		'our-story'                  => array( 'Our Story: Workforce Solutions Since 1991 | Concepts Group', 'Since 1991, Concepts Group has supported Malaysian employers with worker recruitment, accommodation, transport and workforce management. Read our story.' ),
 		'vision-mission'             => array( 'Vision & Mission | Concepts Group Malaysia', 'Our vision and mission: safe, well-managed worker accommodation and dependable workforce support that help Malaysian employers grow responsibly.' ),
 		'foreign-worker-recruitment' => array( 'Foreign Worker Recruitment Agency Malaysia | Concepts Group', 'Foreign and local worker recruitment for Malaysian employers, from quota application and source-country partners to documentation and onboarding.' ),
