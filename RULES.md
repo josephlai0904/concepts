@@ -95,6 +95,7 @@ concepts-group-suite/
 
 ## Changelog
 
+- **2.8.3** (2026-10-28): Homepage title "Centralised Labour Quarters & Labour Supply | Concepts Group". SEO 1.2.3.
 - **2.8.2** (2026-10-28): Homepage title "Centralised Labour Quarters & Workforce KL | Concepts Group". SEO 1.2.2.
 - **2.8.1** (2026-10-28): Homepage title leads with "Centralised Labour Quarters (CLQ) Malaysia"; description starts with CLQ and worker accommodation. SEO 1.2.1.
 - **2.8.0** (2026-10-28): CLQ hub moved to /centralised-labour-quarters/ (property pages to /centralised-labour-quarters/{slug}/); old /properties/ links redirect 301. Hub uses the service-page pattern: story hero, then a navy band with a property-name ticker and the cards 3 per row (1 on phones), 3 per page with page numbers (`#ccq-properties`), no status shown; new "What is a CLQ" explainer (photo | answer + four points) before the FAQ; homepage layered wave between sections and around the FAQ. Simpler property cards (photo, name + arrow, one meta line); "Explore Concepts accommodation" heading. Property "Why" tabs: "Comfy and reliable" and "Facilities you can see first". Footer "Service" links to the homepage services list. Sections 1.42.4, CLQ Sites 1.11.4, Articles 1.2.3.
